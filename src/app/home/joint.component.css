@@ -1,0 +1,16 @@
+
+::ng-deep  .radio-shapes{
+    border:none;
+    color: #45d9d9;
+
+}
+.table td,.table th{
+	color: #999999;
+}
+.table th{
+    font-weight: 600;
+
+}
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
+}

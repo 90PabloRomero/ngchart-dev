@@ -1,0 +1,33 @@
+                                <div class="row" style="margin-left: 0px;position: relative;padding-top: 15px;padding-bottom: 10px;width:100%">
+                                    <div class="col-3" *ngFor="let contact of contactsSelected" style="position: relative; font-size: 60%; border:1px solid #45d9d9;border-radius: 5px;padding: 10px">
+                                        <div>{{contact.name}}</div>
+                                        <button type="button" class="close" aria-label="Close" style="outline: none;color: #45d9d9;position: absolute;right: 0px;top: 0px" (click)="deleteContactSelected(contact)">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <button *ngIf="contactsSelected.length>0" class="btn btn-xs" style="position: absolute;right:0px;top:-2px;padding:0px" (click)="addNewContacts()">
+                                        <i class="bi bi-check2-all"></i>
+                                    </button>
+                                    <button *ngIf="contactsSelected.length>0" class="btn btn-xs" style="position: absolute;right:40px;top:-2px;padding: 0px " (click)="cancelAllContactSelect()">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                                <div class="ng-autocomplete" style="width: 100%">
+                                    <ng-autocomplete #autocomplete2 [data]="contactsResultList" [searchKeyword]="keyword" (selected)='selectEvent($event)' (closed)="onCloseAutocomplete($event)" (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocused($event)' [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                    </ng-autocomplete>
+                                    <ng-template #itemTemplate let-item>
+                                        <a>
+                 <!--                                <img style="height: 20px;" class="rounded-circle mr-1" src="assets/images/nick.png"> -->
+                                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#45d9d9" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                      <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                    </svg>
+                                               <span [innerHTML]="item.name" class="ml-2 mt-1"></span>
+                                            <!--                                         <a [innerHTML]="item.name"></a> -->
+                                        </a>
+                                    </ng-template>
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                        

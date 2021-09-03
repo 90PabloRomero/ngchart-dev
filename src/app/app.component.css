@@ -1,0 +1,233 @@
+::host {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
+}
+::ng-deep .node-wrapper{
+    height: 16px;
+    font-size: 12px;
+}
+::ng-deep  .accordion>.card{
+    z-index: 1 !important;
+    overflow: visible;
+}
+.bg-light {
+    background-color: #ffffff!important;
+}
+.panel-title{
+	color: #777;
+}
+.card-header{
+	padding: 0px;
+} 
+
+#advising-input-wrap{
+	padding-top: 10px;
+}
+
+.tab-title-small{
+	font-size: 65%;
+}
+.nav-link{
+	padding-left: 0.4rem;
+	padding-right: 0.4rem;
+}
+
+.hidePanel{
+	display: none;
+}
+.nav-item{
+	position: relative;	
+}
+::ng-deep .nav-pills a, .nav-pills a:hover{
+    color: #90a4ae;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+}
+::ng-deep .nav-pills a:hover{
+    color: #607d8b;
+}
+
+::ng-deep .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+/*    color: #0097a7;*/
+	color: #45d9d9;
+    background-color: rgba(224, 247, 250, 0.35);
+    border-bottom: 2px solid #45d9d9;
+}
+.ng-autocomplete {
+    width: 100%;
+}
+
+.nav-tabs .nav-link {
+    border-radius: 0px;
+    border-right: 1px solid transparent;
+    padding: 0px;
+    /* border: 1px solid transparent; */
+   /* border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;*/
+}
+
+#sheetContainer{
+/*  background: white;
+  background-image: radial-gradient(#45d9d9 1px, transparent 0);
+  background-size: 20px 30px;
+  background-position: -19px -19px;*/
+}
+
+.btn-outline-dark {
+/*    color: #343a40;*/
+    border-color: #ffff; 
+}
+
+.btn{
+    color: #555555;
+    box-shadow: none !important;
+    text-decoration: none;
+    background-color: #ffffff !important;
+} 
+
+.btn:hover{
+    box-shadow: none !important;
+    text-decoration: none;
+    color: #45d9d9;
+    background-color: #ffffff !important;
+} 
+
+.btn-success{
+    color: #ffffff;
+    box-shadow: none !important;
+    text-decoration: none;
+    background-color: #45d9d9 !important;
+    border-color: #45d9d9;
+} 
+.btn-danger{
+    color: #45d9d9;
+    border-color: #45d9d9;
+} 
+.btn-danger:hover,.btn-success:hover{
+    color: #777777;
+}
+
+.btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active {
+    color: #45d9d9;
+    border-color: #45d9d9;
+}
+
+::ng-deep .card{
+	border: none;
+}
+::ng-deep .card .card-header {
+    padding: 0.25rem 0.25rem !important; 
+    background-color: #ffffff !important;
+	border: none;
+}
+
+::ng-deep .btn.focus{
+    box-shadow: none !important;
+    text-decoration: none;
+    color: #45d9d9;
+    background-color: #ffffff !important;
+}
+::ng-deep .btn:focus{
+    box-shadow: none !important;
+    text-decoration: none;
+    color: #45d9d9;
+    background-color: #ffffff !important;
+} 
+::ng-deep .btn:hover{
+    box-shadow: none !important;
+    text-decoration: none;
+    color: #45d9d9;
+    background-color: #ffffff !important;
+} 
+::ng-deep .btn:hover .panel-title{
+    color: #45d9d9;
+}
+#position-data{
+    border: 1px solid #cfcfcf;
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 5px;
+}
+.btn-outline-dark:not(:disabled):not(.disabled).active, .btn-outline-dark:not(:disabled):not(.disabled):active, .show>.btn-outline-dark.dropdown-toggle {
+    color: grey;
+    border: none;
+    border-color: #ffffff;
+
+}
+#btn-filter-graph,#btn-filter-graph:focus{
+    background-color: rgba(255,255,255,0) !important; 
+    padding:0px; 
+    z-index:10000; 
+    position: absolute;right: 4px;top:1px
+}
+#filter,#filter:focus{
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius:.25rem;
+}
+
+::ng-deep  .card-body {
+    padding-top: 0px;
+}
+.table td,.table th{
+    color: #999999;
+}
+.table th{
+    font-weight: 600;
+
+}
+.navbar-brand{
+    font-weight: 700;
+}
+#user-info{
+    float: right;
+}
+#user-info i{
+    color:#45d9d9;
+}
+#user-info .user-name{
+    font-size: 1rem;
+    font-weight: 700;
+}
+#user-info img{
+    height: 50px;
+    border: 2px solid #45d9d9;
+    padding: 3px;
+}
+@media only screen and (max-width: 1024px) {
+    .navbar-brand{
+        font-size: 70%;
+    }
+    #user-info .user-name{
+        font-size: 0.6rem;
+    }
+    #user-info img{
+        height: 30px;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .navbar-brand{
+        font-size: 70%;
+    }
+    #user-info .user-name{
+        font-size: 0.6rem;
+    }
+    #user-info img{
+        height: 30px;
+    }
+}
+
+@media only screen and (max-width: 1375px) {
+	#advising-input-wrap{
+		padding-top: 0px;
+	}
+	#advising-input-wrap{
+		line-height: 18px	
+	}
+
+}
+
+
