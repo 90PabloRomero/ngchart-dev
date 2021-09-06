@@ -45,7 +45,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     @ViewChild('paperView', { // jointjs paper 
         static: true
     }) paperView: JointComponent;
-
     nodeType: any = "child";
     name = 'OrgChart';
     modalWindow: NgbModalRef;
@@ -2246,14 +2245,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    fileToUpload: File = null;
+    fileToUpload: File [] = [];
     handleFileInput(files: FileList) {
-        this.fileToUpload = files.item(0);
+        this.fileToUpload = []
+        // this.fileToUpload = files.item(0);
+        for (var i = 0; i < files.length; i++) { 
+            this.fileToUpload.push(files.item(i));
+        }
     }
 
 
 
     checkForAttachmentExistingName(newAttachmentName:any,cb:any){
+        let value = false
         if (this.treeNodeCurrent.data && this.treeNodeCurrent.data.attachments){
            if(this.treeNodeCurrent.data.attachments.length<=0){
             cb(false);
@@ -2261,28 +2265,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
            }
 
             this.treeNodeCurrent.data.attachments.forEach((attachment,i)=>{
-               if( newAttachmentName == attachment.name.substr(11,attachment.name.length-1)){
+                newAttachmentName.forEach(element => {
+                    if( element.name == attachment.name.substr(11,attachment.name.length-1)){
+                       value = true                        
+                       }
+                     
+                });
+            })
+            if(value){
                 cb(true);
                 return
-               }
-               if(i>=this.treeNodeCurrent.data.attachments.length-1){
+               } else {
                 cb(false);
                 return;
                }
-            })
         }else{
                cb(false);
                 return;
               }
     } 
 
-    postFile(recordToEdit: any, fileToUpload: File, tree: any) { // upload attachment
-        this.checkForAttachmentExistingName(fileToUpload.name,(isNameExist)=>{
+    postFile(recordToEdit: any, fileToUpload: File[], tree: any) { // upload attachment
+        console.log(fileToUpload)
+        this.checkForAttachmentExistingName(fileToUpload ,(isNameExist)=>{
                 if (isNameExist){  alert("File name exists!");  return}
 
-                const formData: FormData = new FormData();
-                formData.append('upload', fileToUpload, fileToUpload.name);
-                this.http.post < any > (urlApi + '/upload-file', formData)
+               
+                
+                for (var i = 0; i < fileToUpload.length; i++) { 
+
+                    const formData: FormData = new FormData();
+                    formData.append("upload", fileToUpload[i], fileToUpload[i].name );
+                    this.http.post < any > (urlApi + '/upload-file', formData)
                     .subscribe(
                         (any) => {
                             if (any) {
@@ -2291,7 +2305,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                                     this.addAttachment({
                                         name: any.file
                                     });
-                                    this.savePosition(this.positionCurrent, tree);
+                                  
                                 }
                                 return;
                             }
@@ -2301,6 +2315,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             return;
                         }
                     );
+                }
+                this.savePosition(this.positionCurrent, tree);
+                // formData.append('upload', fileToUpload, fileToUpload.name);
                 return
 
 
