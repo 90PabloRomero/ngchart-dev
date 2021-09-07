@@ -52,6 +52,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     sheetToEdit: Sheet;
     projectToEdit: Project;
     projects: Project[];
+    contactToEdit: Contact;
+    // contacts: Contact[];
     sheets: Sheet[]; //active sheets non view
     projectSheets: Sheet[]; //all sheets from project
     sheetSelected: Sheet;
@@ -130,6 +132,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.contactService.getUserContacts();
         this.paperView.urlApi = urlApi;
         this.getProjects();
+        this.getContacts();
         this.sheetSelected = new Sheet;
         this.sheetSelected.SheetName = "Sheet"
         this.projectSelected = new Project;
@@ -284,6 +287,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.projects = any;
+                    }
+                },
+                err => {
+                    if (err.error && err.error.message) {
+                        alert(err.error.message);
+                    }
+                    return;
+                }
+            );
+    }
+    getContacts() {   //currently get all projects, TODO: need to filter by user, external  contacts api server were not defined yet
+        this.http.get < any > (urlApi + '/contact')
+            .subscribe(
+                (any) => {
+                    if (any) {
+                        this.contacts = any;
                     }
                 },
                 err => {
@@ -616,6 +635,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
 
     }
+    
+    openContactForm(event, inputFormTemplate, contact: Contact) {
+        this.contactToEdit = new Contact;
+        if (contact) {
+            Object.assign(this.contactToEdit, contact);
+        }
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(inputFormTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'md',
+            scrollable: false
+        });
+
+    }
 
     refreshSelectedSheetAfterDelete(sheet: Sheet) { //refresh selected sheet after tree deleting  
         this.positionCurrent = new Position;
@@ -818,6 +851,68 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
+
+    saveContact(contact: any, isNameUpdate?: boolean) {  // save  project on db
+        if (contact.ID) { //if exists
+            if (!contact.Name||contact.Name==""){
+                alert("Contact name is required!");
+                return;
+            }
+            let querystring="";
+            if (isNameUpdate){
+                querystring="?isn=yes"
+            }
+            this.http.put < any > (urlApi + '/contact/' + contact.ID+querystring, contact)
+                .subscribe(
+                    (any) => {
+                        if (any) {
+                            alert("Contact Updated!");
+                            this.getContacts();
+                            return;
+                        }
+                    },
+                    err => {
+                        if (err && err.error) {
+                            if (String(err.error.error).match('UNIQUE constraint failed')) {
+                                alert("Contact name exists!");
+                            }
+                        }
+
+                        if (err.error && err.error.message) {
+                            alert(err.error.message);
+                        }
+                        return;
+                    }
+                );
+        } else {
+            if (!contact.Name||contact.Name==""){
+                alert("Project name is required!");
+                return;
+            }
+
+            this.http.post < any > (urlApi + '/contact', contact)
+                .subscribe(
+                    (any) => {
+                        if (any) {
+                            this.getContacts();
+                            return
+                        }
+                    },
+                    err => {
+                        if (err && err.error) {
+                            if (String(err.error.error).match('UNIQUE constraint failed')) {
+                                alert("Contact name exists!");
+                            }
+                        }
+
+                        return;
+                    }
+                );
+
+        }
+
+    }
+
     confirmDeleteProject(popover) {
         if (popover.isOpen()) {
             popover.close();
@@ -845,6 +940,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             this.nodes = [];
                             this.positionCurrent = new Position;
                         }
+                    },
+                    err => {
+                        if (err.error && err.error.message) {
+                            alert(err.error.message);
+                        }
+                        return;
+                    }
+                );
+        }
+    }
+    deleteContact(contact: Contact) { // delete project from db
+        if (contact.ID != 0) {
+            this.http.delete < any > (urlApi + '/contact/' + contact.ID)
+                .subscribe(
+                    (any) => {
+                     console.log(any)
+                     this.getContacts();
                     },
                     err => {
                         if (err.error && err.error.message) {
@@ -1717,19 +1829,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     //Sheet
 
     //search contacts exampls, aditional , exceptions
-    contacts: Contact[] = [{
-        ID: 1,
-        Name: 'contact1'
-    }, {
-        ID: 2,
-        Name: 'contact2'
-    }, {
-        ID: 3,
-        Name: 'contact3'
-    }, {
-        ID: 4,
-        Name: 'contact4'
-    }]
+    contacts: Contact[] = []
 
     searchContacts = (text$: Observable < string > ) =>
         text$.pipe(
@@ -2290,10 +2390,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.checkForAttachmentExistingName(fileToUpload ,(isNameExist)=>{
                 if (isNameExist){  alert("File name exists!");  return}
 
-               
+                console.log(fileToUpload.length)
                 
                 for (var i = 0; i < fileToUpload.length; i++) { 
-
+                    console.log("Ffffffffff")
                     const formData: FormData = new FormData();
                     formData.append("upload", fileToUpload[i], fileToUpload[i].name );
                     this.http.post < any > (urlApi + '/upload-file', formData)
@@ -2302,10 +2402,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             if (any) {
                                 this.modalWindow.close();
                                 if (any && any.file != "/files/nofile") {
+                                    console.log(any.file)
                                     this.addAttachment({
                                         name: any.file
                                     });
-                                  
+                                    this.savePosition(this.positionCurrent, tree);
                                 }
                                 return;
                             }
@@ -2316,7 +2417,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         }
                     );
                 }
-                this.savePosition(this.positionCurrent, tree);
+                
                 // formData.append('upload', fileToUpload, fileToUpload.name);
                 return
 
