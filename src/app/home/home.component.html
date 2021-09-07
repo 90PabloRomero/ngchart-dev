@@ -479,7 +479,20 @@
                             <a ngbNavLink>
                                 <span class="tab-title-small">Position Description</span></a>
                             <ng-template ngbNavContent>
-                                <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+								<ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
+									<li  [ngbNavItem]="1">
+										<a ngbNavLink><span class="tab-title">Key Responsabilities</span></a>
+										<ng-template ngbNavContent>
+										<textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+										</ng-template>
+									</li>
+									<li  [ngbNavItem]="2">
+										<a ngbNavLink><span class="tab-title">Essential Skills</span></a>
+										<ng-template ngbNavContent>
+										<textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+										</ng-template>
+									</li>
+								</ul>
                             </ng-template>
                         </li>
                         <li [ngbNavItem]="3">
