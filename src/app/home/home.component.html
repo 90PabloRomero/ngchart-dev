@@ -479,7 +479,39 @@
                             <a ngbNavLink>
                                 <span class="tab-title-small">Position Description</span></a>
                             <ng-template ngbNavContent>
-								<ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
+                                <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+                                    <li [ngbNavItem]="1">
+                                      <a ngbNavLink>Key responsabilities</a>
+                                      <ng-template ngbNavContent>
+                                        <p style="background-color:#c7f4f4;">Description</p>
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                        <label for="vehicle1">  &nbsp; &nbsp;   loren nt ullaamco est</label><br>
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                      </ng-template>
+                                    </li>
+                                    <li [ngbNavItem]="2">
+                                      <a ngbNavLink>Essential skills</a>
+                                      <ng-template ngbNavContent>
+                                        <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
+                                          farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts
+                                        </p>
+                                      </ng-template>
+                                    </li>
+                                  </ul>
+                                  
+                                  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                                  
+                            
+								<!-- <ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
 									<li  [ngbNavItem]="1">
 										<a ngbNavLink><span class="tab-title">Key Responsabilities</span></a>
 										<ng-template ngbNavContent>
@@ -492,8 +524,11 @@
 										<textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
 										</ng-template>
 									</li>
-								</ul>
+								</ul> -->
                             </ng-template>
+                     
+                              
+                           
                         </li>
                         <li [ngbNavItem]="3">
                             <a ngbNavLink><span class="tab-title-small">Position Employee</span></a>

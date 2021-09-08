@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         nodeHeight: 23, //23
 
     };
-
+    activeTab = 1;
     textSearch = "";
     textSearch2 = "";
     filterNodeByLevel = 0;
