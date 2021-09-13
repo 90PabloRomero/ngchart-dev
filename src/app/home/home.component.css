@@ -1,3 +1,6 @@
+.active {
+    background-color: #F7FCFC;
+    border-right: solid 4px #45d9d9;}
 ::host {
     display: flex;
     width: 100%;

@@ -79,6 +79,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     activeDetail: any;
     nodes = [];
     positions = {};
+    optionsChecked = [];
     options = {  // angular tree comp config 
         allowDrag: (node) => {
             return true;
@@ -373,6 +374,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.accordion.expand("2") //open accordeon tree to activate tree
         this.isProjectFisrtTreeUpdate = true;
         this.projectSelected = project;
+        console.log(this.projectSelected)
         this.sheets = [];
         this.activeSheets = {};
         let allData = {
@@ -492,22 +494,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
     addSheetToViewByName(sheetName: any) {
         this.projectSheets.forEach((sheet) => {
             if (sheet.SheetName == sheetName) {
-                this.addSheetToView(sheet);
+                this.addSheetToView([sheet.ID]);
                 return;
             }
         })
     }
 
-    addSheetToView(sheet: any) {
-        if (!this.activeSheets[sheet.ID]) {
-            this.sheets.push(sheet);
-            this.activeSheets[sheet.ID] = true;
-            this.activeId = sheet.ID;
-            this.loadSheet(sheet);
-        } else {
-            this.activeId = sheet.ID;
-            this.loadSheet(sheet);
-        }
+    addSheetToView(checked: any) {
+        this.optionsChecked.forEach( id => {
+            let sheet = this.projectSheets.find( v=> v.ID == id)
+            console.log(sheet)
+            if (!this.activeSheets[sheet.ID]) {
+                this.sheets.push(sheet);
+                this.activeSheets[sheet.ID] = true;
+                this.activeId = sheet.ID;
+                this.loadSheet(sheet);
+            } else {
+                this.activeId = sheet.ID;
+                this.loadSheet(sheet);
+            }
+        })
+      
     }
 
     removeSheetFromView(sheet: Sheet) {
@@ -1149,7 +1156,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     onNodeFocus($event, tree) { // set data when tree node is focused
+        console.log("______________")
         let nodeCurrent = tree.treeModel.getFocusedNode();
+        console.log(nodeCurrent)
         if ((nodeCurrent.data.is_displacement && nodeCurrent.data.is_displacement == true) ||
             (nodeCurrent.data.isfunctionalrel && nodeCurrent.data.isfunctionalrel == true)) {
             this.positionCurrent = new Position;
@@ -2325,13 +2334,42 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     attachmentsHash = {}
     addAttachment(attachment: any) { // add position attachements
+        let parts = attachment.name.split('.')
+        let extension = parts[parts.length - 1];
+        let className = ""
+        switch (extension.toLowerCase()) {
+            case 'jpg':
+            case 'gif':
+            case 'bmp':
+            case 'png':
+            case 'jpeg':
+                className = "bi bi-file-earmark-image" 
+                break;
+            case 'm4v':
+            case 'avi':
+            case 'mpg':
+            case 'mp4':
+                className = "bi bi-film" 
+                break;
+            case 'pdf':
+                className = "bi bi-file-earmark-pdf" 
+                break;
+            case 'ppt':
+                className = "bi bi-file-earmark-ppt" 
+                break;
+              //etc
+            default : className = "bi bi-files" 
+          }
         if (this.attachmentsHash[attachment.name]) { 
             return //
         } //
         this.attachmentsHash[attachment.name] = true //
         this.treeNodeCurrent.data.attachments.push({
-            name: attachment.name
+            name: attachment.name,
+            class: className
         });
+        this.treeNodeCurrent.data.attachments.sort((a,b) => (a.name.slice(11) > b.name.slice(11)) ? 1 : ((b.name.slice(11) > a.name.slice(11)) ? -1 : 0))
+        console.log(this.treeNodeCurrent.data.attachments)
         this.onUpdateTree(null, this.treeOrg);
     }
 
@@ -2478,6 +2516,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     onNodeSelectFunctionRel($event, tree: any, modal: any) { //set functional rel
+      
         let functionalRelNode = tree.treeModel.getFocusedNode();
         this.addFunctionalRel(functionalRelNode, tree)
         modal.close()
@@ -2721,5 +2760,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
             })
         }
+    }
+    updateCheckedOptions(id) {
+        const index = this.optionsChecked.indexOf(id);
+        if (index > -1) {
+            this.optionsChecked.splice(index, 1);
+        } else {
+            this.optionsChecked.push(id)
+        }
+        
+        console.log(this.optionsChecked)
     }
 }
