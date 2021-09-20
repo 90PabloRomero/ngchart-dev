@@ -24,6 +24,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { SelectContactComponent } from '../select-contact/select-contact.component';
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
+import { node } from 'canvg/lib/presets';
 
 
 const positionsName = [];
@@ -2538,39 +2539,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     functionalrelsHash = {}
-    addFunctionalRel(functionalrel: any, tree: any) { //
-        if (this.positionCurrent.ID == functionalrel.data.id) {
-            return
-        }
-        let nodeCurrent = tree.treeModel.getNodeById(this.positionCurrent.ID);
-
-        if (functionalrel.data.id == nodeCurrent.parent.id) {
-            alert("Functional Relationship not allowed on same parent")
-            return
-        }
-
-        if (functionalrel.level >= nodeCurrent.level) {
-            alert("Functional Relationship only allowed on upper levels")
-            return
-        }
-        if (this.functionalrelsHash[functionalrel.data.id]) { 
-            return 
-        } 
-        this.functionalrelsHash[functionalrel.data.id] = true 
-        this.treeNodeCurrent.data.functionalrels.push({
-            name: functionalrel.data.name,
-            id: functionalrel.data.id
-        });
-        this.addFunctionalRelTreeNode(tree, nodeCurrent, functionalrel)
-        this.savePosition(this.positionCurrent, tree);
-        if (this.sheetSelected && this.sheetSelected.ID && this.sheetSelected.ID != 0) {
-            if (this.activeId == this.sheetSelected.ID) {
-                setTimeout(() => {
-                    this.loadSheet(this.sheetSelected)
-                }, 200)
-            }
-        }
-    }
+  
 
 
     refreshSheetOnView() {
@@ -2770,5 +2739,39 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         
         console.log(this.optionsChecked)
+    }
+    addFunctionalRel(functionalrel: any, tree: any) { //
+        if (this.positionCurrent.ID == functionalrel.data.id) {
+            return
+        }
+        let nodeCurrent = tree.treeModel.getNodeById(this.positionCurrent.ID);
+
+        if (functionalrel.data.id == nodeCurrent.parent.id) {
+            alert("Functional Relationship not allowed on same parent")
+            return
+        }
+
+        if (functionalrel.level >= nodeCurrent.level) {
+            console.log(functionalrel.level + "    " + nodeCurrent.level)
+            alert("Functional Relationship only allowed on upper levels")
+            return
+        }
+        if (this.functionalrelsHash[functionalrel.data.id]) { 
+            return 
+        } 
+        this.functionalrelsHash[functionalrel.data.id] = true 
+        this.treeNodeCurrent.data.functionalrels.push({
+            name: functionalrel.data.name,
+            id: functionalrel.data.id
+        });
+        this.addFunctionalRelTreeNode(tree, nodeCurrent, functionalrel)
+        this.savePosition(this.positionCurrent, tree);
+        if (this.sheetSelected && this.sheetSelected.ID && this.sheetSelected.ID != 0) {
+            if (this.activeId == this.sheetSelected.ID) {
+                setTimeout(() => {
+                    this.loadSheet(this.sheetSelected)
+                }, 200)
+            }
+        }
     }
 }
