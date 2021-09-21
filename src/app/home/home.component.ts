@@ -2339,6 +2339,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let extension = parts[parts.length - 1];
         let className = ""
         switch (extension.toLowerCase()) {
+            case 'doc':
+            case 'docx':
+                className = "bi bi-file-earmark-word" 
+                break;
+            case 'xlsx':
+                className = "bi bi-file-earmark-spreadsheet" 
+                break;               
             case 'jpg':
             case 'gif':
             case 'bmp':
@@ -2355,6 +2362,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             case 'pdf':
                 className = "bi bi-file-earmark-pdf" 
                 break;
+            case 'pptx':
             case 'ppt':
                 className = "bi bi-file-earmark-ppt" 
                 break;
