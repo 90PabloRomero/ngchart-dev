@@ -2377,7 +2377,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             name: attachment.name,
             class: className
         });
-        this.treeNodeCurrent.data.attachments.sort((a,b) => (a.name.slice(11) > b.name.slice(11)) ? 1 : ((b.name.slice(11) > a.name.slice(11)) ? -1 : 0))
+        this.treeNodeCurrent.data.attachments.sort((a,b) => (a.name.slice(11).toLowerCase() > b.name.slice(11).toLowerCase()) ? 1 : ((b.name.slice(11).toLowerCase() > a.name.slice(11).toLowerCase()) ? -1 : 0))
         console.log(this.treeNodeCurrent.data.attachments)
         this.onUpdateTree(null, this.treeOrg);
     }
