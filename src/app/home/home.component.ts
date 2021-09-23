@@ -493,15 +493,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     addSheetToViewByName(sheetName: any) {
+       
         this.projectSheets.forEach((sheet) => {
             if (sheet.SheetName == sheetName) {
-                this.addSheetToView([sheet.ID]);
+                this.optionsChecked = [sheet.ID]
+                this.addSheetToView();
                 return;
             }
         })
     }
 
-    addSheetToView(checked: any) {
+    addSheetToView() {
         this.optionsChecked.forEach( id => {
             let sheet = this.projectSheets.find( v=> v.ID == id)
             console.log(sheet)
@@ -515,7 +517,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.loadSheet(sheet);
             }
         })
-      
+        this.optionsChecked = []
     }
 
     removeSheetFromView(sheet: Sheet) {
