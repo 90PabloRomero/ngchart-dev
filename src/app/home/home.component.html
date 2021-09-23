@@ -412,20 +412,20 @@
             <form>
                 <div class="form-row">
                     <div class="col">
-                        <input type="text" class="form-control mt-1" id="PositionNameInput" name="PositionNameInput" placeholder="Position Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" (change)="saveNamePosition(positionCurrent,tree)">
+                        <input type="text" class="form-control mt-1" id="PositionNameInput" name="PositionNameInput" placeholder="Position Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" (input)="saveNamePosition(positionCurrent,tree)">
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control mt-1" id="PositionCodeInput" name="PositionCodeInput" placeholder="Position Code" #PositionCode="ngModel" [(ngModel)]="positionCurrent.PositionCode" (change)="savePosition(positionCurrent,tree)">
+                        <input type="text" class="form-control mt-1" id="PositionCodeInput" name="PositionCodeInput" placeholder="Position Code" #PositionCode="ngModel" [(ngModel)]="positionCurrent.PositionCode" (input)="savePosition(positionCurrent,tree)">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col" style="position: relative;">
-                        <input type="text" class="form-control mt-1" id="PositionInmediateSuperiorInput" name="PositionInmediateSuperiorInput" placeholder="Inmediate Superior" #PositionInmediateSuperior="ngModel" [(ngModel)]="positionCurrent.PositionInmediateSuperior" (change)="savePosition(positionCurrent,tree)" disabled>
+                        <input type="text" class="form-control mt-1" id="PositionInmediateSuperiorInput" name="PositionInmediateSuperiorInput" placeholder="Inmediate Superior" #PositionInmediateSuperior="ngModel" [(ngModel)]="positionCurrent.PositionInmediateSuperior" (input)="savePosition(positionCurrent,tree)" disabled>
                         <i (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 8px;top:18px;" class="bi bi-search"></i>
                     </div>
                     <div class="col">
                         <div class="form-check mt-1" id="advising-input-wrap">
-                            <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" (change)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
+                            <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" (input)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
                             <label id="advising-input-label" class="form-check-label" for="AdvisingAuthorityCodeInput">
                                 Advising Authority
                             </label>
@@ -434,15 +434,15 @@
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <input type="text" class="form-control mt-1" id="LocationInput" name="LocationInput" placeholder="Location" #Location="ngModel" [(ngModel)]="positionCurrent.Location" (change)="savePosition(positionCurrent,tree)">
+                        <input type="text" class="form-control mt-1" id="LocationInput" name="LocationInput" placeholder="Location" #Location="ngModel" [(ngModel)]="positionCurrent.Location" (input)="savePosition(positionCurrent,tree)">
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control mt-1" id="AbbreviationInput" name="AbbreviationInput" placeholder="Abbreviation" #Abbreviation="ngModel" [(ngModel)]="positionCurrent.Abbreviation" (change)="savePosition(positionCurrent,tree)">
+                        <input type="text" class="form-control mt-1" id="AbbreviationInput" name="AbbreviationInput" placeholder="Abbreviation" #Abbreviation="ngModel" [(ngModel)]="positionCurrent.Abbreviation" (input)="savePosition(positionCurrent,tree)">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <input type="text" class="form-control mt-1" id="CompanyInput" name="CompanyInput" placeholder="Company" #Company="ngModel" [(ngModel)]="positionCurrent.Company" (change)="savePosition(positionCurrent,tree)">
+                        <input type="text" class="form-control mt-1" id="CompanyInput" name="CompanyInput" placeholder="Company" #Company="ngModel" [(ngModel)]="positionCurrent.Company" (input) ="savePosition(positionCurrent,tree)">
                     </div>
                     <div class="col">
                         <!--                         <input type="text" class="form-control mt-1" id="DedicationRegimeInput" name="DedicationRegimeInput" placeholder="Dedication Regime" #DedicationRegime="ngModel" [(ngModel)]="positionCurrent.DedicationRegime" (change)="savePosition(positionCurrent,tree)"> -->

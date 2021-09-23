@@ -1,5 +1,5 @@
+import { Position } from './../models/position';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Position } from '../models/position';
 import { Sheet } from '../models/sheet';
 import { Project } from '../models/project';
 import { Contact } from '../models/contact';
@@ -1197,6 +1197,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     saveNamePosition(position: any, tree: any) { // when position name change in details update name on graph
+        console.log(position.PositionName)
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
         treeNode.data.name = position.PositionName.replace('(a) ','');
         if(position.AdvisingAuthority){
