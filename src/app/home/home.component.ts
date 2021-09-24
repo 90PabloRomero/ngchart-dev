@@ -25,6 +25,7 @@ import { SelectContactComponent } from '../select-contact/select-contact.compone
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { node } from 'canvg/lib/presets';
+import { isTypeAliasDeclaration, unescapeLeadingUnderscores } from 'typescript';
 
 
 const positionsName = [];
@@ -1036,6 +1037,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let activeNode = tree.treeModel.getActiveNode();
         // find current tree node if exists on graph
         let baseRoot = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  activeNode.data.id })
+        if(!baseRoot && !activeNode.isRoot) {
+            alert('Please select the parent node that exist on graph')
+        }
         setTimeout(()=>{this.paperView.adjustGraphContent()},800) 
         setTimeout(()=>{this.saveSheet(this.sheetSelected)},1000) 
         
@@ -1159,7 +1163,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     onNodeFocus($event, tree) { // set data when tree node is focused
-        console.log("______________")
         let nodeCurrent = tree.treeModel.getFocusedNode();
         console.log(nodeCurrent)
         if ((nodeCurrent.data.is_displacement && nodeCurrent.data.is_displacement == true) ||
@@ -2407,38 +2410,37 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     checkForAttachmentExistingName(newAttachmentName:any,cb:any){
-        let value = false
+        let value = ""
         if (this.treeNodeCurrent.data && this.treeNodeCurrent.data.attachments){
            if(this.treeNodeCurrent.data.attachments.length<=0){
-            cb(false);
+            cb("");
             return;
            }
 
             this.treeNodeCurrent.data.attachments.forEach((attachment,i)=>{
                 newAttachmentName.forEach(element => {
                     if( element.name == attachment.name.substr(11,attachment.name.length-1)){
-                       value = true                        
+                       value = element.name                        
                        }
                      
                 });
             })
-            if(value){
-                cb(true);
+            if(value != ""){
+                cb(value);
                 return
                } else {
-                cb(false);
+                cb("");
                 return;
                }
         }else{
-               cb(false);
+               cb("");
                 return;
               }
     } 
 
     postFile(recordToEdit: any, fileToUpload: File[], tree: any) { // upload attachment
-        console.log(fileToUpload)
         this.checkForAttachmentExistingName(fileToUpload ,(isNameExist)=>{
-                if (isNameExist){  alert("File name exists!");  return}
+                if (isNameExist != ""){  alert(`${isNameExist} is aleady exist!`);  return}
 
                 console.log(fileToUpload.length)
                 
@@ -2504,6 +2506,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     onNodeSelectSetImendiateSuperior($event, tree: any, modal: any) { //set inmediate superior modal
         let node = tree.treeModel.getFocusedNode();
         let nodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return this.treeNodeCurrent.data.id == item.data.id })
+        if(nodeCurrent.isRoot) {
+            alert("The Root node cannot change the position")
+            return
+        }
         let parentNode: any = nodeCurrent.realParent ? nodeCurrent.realParent : nodeCurrent.treeModel.virtualRoot;
         if (nodeCurrent) {
             this.treeOrg.treeModel.moveNode(

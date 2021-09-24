@@ -231,6 +231,8 @@ export class JointComponent implements OnInit, AfterViewInit {
 
         let dragRef: any = event.source._dragRef
         let pointerPosition = JSON.parse(JSON.stringify(dragRef._lastKnownPointerPosition));
+        console.log(pointerPosition)
+        if(pointerPosition.x < (window.screen.width / 4)) {  event.source.reset(); return }
         var localPoint1 = this.paper.clientToLocalPoint({
             x: pointerPosition.x,
             y: pointerPosition.y
@@ -639,6 +641,11 @@ export class JointComponent implements OnInit, AfterViewInit {
     deleteNodeAllSheets(node: any, sheets: any) {
         let nodeId: any = node.data.id //use  tree_id 
         sheets.forEach((sheet) => {
+            if(node.isRoot) {
+                this.saveSheet(sheet, [])
+                return
+            }
+          
             if (sheet.Data != "" && sheet.Data != null && sheet.Data != undefined) {
                 let data: any = JSON.parse(sheet.Data)
                 this.getGraphIdFromNodeId(nodeId, data.cells, (cell) => {
