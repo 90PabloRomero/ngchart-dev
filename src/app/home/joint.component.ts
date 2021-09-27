@@ -28,6 +28,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() sheetDimentionsChangeEvent = new EventEmitter(); //sheet dimentions change event
     @Output() nodeGraphNameChangeEvent = new EventEmitter();  // change name graph node
     @Output() graphNodeAddedEvent = new EventEmitter(); // graph node elemente added 
+    @Output() mouseDownGraphNodeEvent = new EventEmitter(); // used to fire on circle actions
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -133,6 +134,31 @@ export class JointComponent implements OnInit, AfterViewInit {
         markup: '<g class="rotatable"><g class="scalable"><rect class="card"/></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
 
+    Member3 = joint.dia.Element.define('org.Member3', {
+        size: { width: 260, height: 140 },
+        attrs: {
+            rect: { width: 170, height: 60 },
+            '.card': { fill: '#FFFFFF', stroke: '#000000', 'stroke-width': 2, 'pointer-events': 'visiblePainted', rx: 10, ry: 10 },
+            '.rank': { 'text-decoration': 'none', ref: '.card', 'ref-x': 0.5, 'ref-y': 0.2, 'font-family': 'Courier New', 'font-size': 14, 'font-weight': 900, 'text-anchor': 'middle', 'vertical-alligment': 'middle', 'text-direction': 'horizontal' },
+            '.c1': { ref: '.card', 'ref-x': 0.33, 'ref-y': 0.76, },
+            '.c2': { ref: '.card', 'ref-x': 0.48, 'ref-y': 0.76, },
+            '.c3': { ref: '.card', 'ref-x': 0.63, 'ref-y': 0.76, },
+            '.n1': { 'text-decoration': 'none', ref: '.card', 'ref-x': 0.35, 'ref-y': 0.7, 'font-family': 'Courier New', 'font-size': 14, 'text-anchor': 'end' },
+            '.n2': { 'text-decoration': 'none', ref: '.card', 'ref-x': 0.5, 'ref-y': 0.7, 'font-family': 'Courier New', 'font-size': 14, 'text-anchor': 'end' },
+            '.n3': { 'text-decoration': 'none', ref: '.card', 'ref-x': 0.65, 'ref-y': 0.7, 'font-family': 'Courier New', 'font-size': 14, 'text-anchor': 'end' },
+        },
+        "org_parent": '',
+        "org_parent_id": '',
+        "org_level": 0,
+        "n1": 0,
+        "n2": 0,
+        "n3": 0,
+        "is_advisor": false,
+        "position_type": 'position',
+        "tree_id": 0,
+    }, {
+        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="card"><circle id="circle-move-up" name="circle-move-up" cx="85" cy="-20" r="10" style="cursor:n-resize;"></circle><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="10" style="cursor:s-resize;"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="10" style="cursor:w-resize;"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="10" style="cursor:e-resize;"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
+    });
 
     constructor(
         private modalService: NgbModal,
@@ -174,13 +200,23 @@ export class JointComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         setTimeout(() => {
             this.doLayout();
-            this.paper.on('cell:pointerclick', (t) => {  // set current node on graph node clicked
-                if ((t.model.attributes.type == "org.Member") || (t.model.attributes.type == "org.Member2")) {
+            this.paper.on('cell:pointerclick', (t, evt) => {  // set current node on graph node clicked
+                if ((t.model.attributes.type == "org.Member") || (t.model.attributes.type == "org.Member2") || (t.model.attributes.type == "org.Member3")) {
                     let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
                     this.nodeGraphCurrent = t.model;
                 }
+                console.log('clicked')
                 this.nodeGraphAnyLastSelected = t;
                 this.clickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details
+
+                //Circle clicks
+                if (evt) {
+                    const idx = evt.target.id;
+                    if (idx.indexOf('move-up') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'up', event: evt });
+                    else if (idx.indexOf('move-down') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'down', event: evt });
+                    else if (idx.indexOf('move-left') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'left', event: evt });
+                    else if (idx.indexOf('move-right') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'right', event: evt });
+                }
             });
 
             this.paper.on('cell:contextmenu', (cellView, e, x, y) => {
@@ -231,8 +267,6 @@ export class JointComponent implements OnInit, AfterViewInit {
 
         let dragRef: any = event.source._dragRef
         let pointerPosition = JSON.parse(JSON.stringify(dragRef._lastKnownPointerPosition));
-        console.log(pointerPosition)
-        if(pointerPosition.x < (window.screen.width / 4)) {  event.source.reset(); return }
         var localPoint1 = this.paper.clientToLocalPoint({
             x: pointerPosition.x,
             y: pointerPosition.y
@@ -586,7 +620,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     getGraphIdFromNodeName(name: any, cells: any, cb) {
         cells.forEach((cell) => {
-            if (cell.type == "org.Member2") {
+            if (cell.type == "org.Member2" || cell.type == "org.Member3") {
                 if (cell.attrs[".rank"].text == name) {
                     cb(cell)
                 }
@@ -616,7 +650,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         });
         this.saveSheet(sheet, cells);
         cells.forEach((elem) => {
-            if (elem.org_parent_id == cell.id && elem.type == "org.Member2") {
+            if (elem.org_parent_id == cell.id && (elem.type == "org.Member2" || elem.type == "org.Member3")) {
                 _.remove(cells, function(el: any) {
                     return el.id == elem.id;
                 });
@@ -641,11 +675,6 @@ export class JointComponent implements OnInit, AfterViewInit {
     deleteNodeAllSheets(node: any, sheets: any) {
         let nodeId: any = node.data.id //use  tree_id 
         sheets.forEach((sheet) => {
-            if(node.isRoot) {
-                this.saveSheet(sheet, [])
-                return
-            }
-          
             if (sheet.Data != "" && sheet.Data != null && sheet.Data != undefined) {
                 let data: any = JSON.parse(sheet.Data)
                 this.getGraphIdFromNodeId(nodeId, data.cells, (cell) => {
@@ -1086,7 +1115,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     //define and return a graph element without adding to graph. Used on tree node and sheets sync 
-    memberDef(parent: any, x: any, y: any, rank: any, name: any, image: any, background: any, textColor: any, isAdvisor: any) {
+    memberDef(parent: any, x: any, y: any, rank: any, name: any, id: any, image: any, background: any, textColor: any, isAdvisor: any, currentNode: any) {
         let org_parent: any = 'root';
         let org_parent_id: any = '';
         let org_level: any = 0;
@@ -1096,25 +1125,55 @@ export class JointComponent implements OnInit, AfterViewInit {
             org_level = parent.org_level + 1;
         }
 
-        var cell = new this.Member2({
-            position: { x: x, y: y },
-            attrs: {
-                '.card': { fill: this.shapeProperties.fill.color, stroke: this.shapeProperties.line.color, 'stroke-width': this.shapeProperties.line.width },
-                '.rank': { text: rank, fill: textColor, 'word-spacing': '-5px', 'letter-spacing': 0, },
-                '.n1': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
-                '.n2': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
-                '.n3': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
-            },
-            "org_parent": org_parent,
-            "org_parent_id": org_parent_id,
-            "org_level": org_level,
-            "n1": 0,
-            "n2": 0,
-            "n3": 0,
-            "is_advisor": isAdvisor,
-            "tree_id": 0,
-        });
+        //Selected Node
+        if (parent && currentNode.id == id && rank != "**Displacement**") {
+            var cell = new this.Member3({
+                position: { x: x, y: y },
+                attrs: {
+                    '.card': { fill: this.shapeProperties.fill.color, stroke: this.shapeProperties.line.color, 'stroke-width': this.shapeProperties.line.width },
+                    '.rank': { text: rank, fill: textColor, 'word-spacing': '-5px', 'letter-spacing': 0, },
+                    '.n1': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
+                    '.n2': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
+                    '.n3': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
+                },
+                "org_parent": org_parent,
+                "org_parent_id": org_parent_id,
+                "org_level": org_level,
+                "n1": 0,
+                "n2": 0,
+                "n3": 0,
+                "is_advisor": isAdvisor,
+                "tree_id": 0,
+            });
+            return this.memberAddDisplacement(cell, rank, parent)
+        }
+            
+        //Common Node
+        else {
+            var cell = new this.Member2({
+                position: { x: x, y: y },
+                attrs: {
+                    '.card': { fill: this.shapeProperties.fill.color, stroke: this.shapeProperties.line.color, 'stroke-width': this.shapeProperties.line.width },
+                    '.rank': { text: rank, fill: textColor, 'word-spacing': '-5px', 'letter-spacing': 0, },
+                    '.n1': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
+                    '.n2': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
+                    '.n3': { text: "0", fill: "#ffffff", 'font-size': 13, 'font-family': 'Arial', 'letter-spacing': 0 },
+                },
+                "org_parent": org_parent,
+                "org_parent_id": org_parent_id,
+                "org_level": org_level,
+                "n1": 0,
+                "n2": 0,
+                "n3": 0,
+                "is_advisor": isAdvisor,
+                "tree_id": 0,
+            });
+            return this.memberAddDisplacement(cell, rank, parent)
+        }
+    };
 
+    memberAddDisplacement(cell: any, rank: any, parent: any) {
+        //Displacement Node
         if (rank == "**Displacement**") {
             cell.attributes.size.height = 0;
             cell.attributes.size.width = 0;
@@ -1131,13 +1190,8 @@ export class JointComponent implements OnInit, AfterViewInit {
             cell.attr('.c2/display', 'none')
             cell.attr('.c3/display', 'none')
         }
-
-
-
         return cell;
-    };
-
-
+    }
 
     getLinkDef(source: any, target: any, isDisplacement ? : any) {  // returns a link definition without adding to graph
         let endDirections = ['top'];

@@ -1,5 +1,5 @@
-import { Position } from './../models/position';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Position } from '../models/position';
 import { Sheet } from '../models/sheet';
 import { Project } from '../models/project';
 import { Contact } from '../models/contact';
@@ -25,7 +25,6 @@ import { SelectContactComponent } from '../select-contact/select-contact.compone
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { node } from 'canvg/lib/presets';
-import { isTypeAliasDeclaration, unescapeLeadingUnderscores } from 'typescript';
 
 
 const positionsName = [];
@@ -44,6 +43,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     @ViewChild('accordion') accordion;
     @ViewChild('selectContactComp') selectContactComp;  // autocomplete for contacts
     @ViewChild('treenodesearchinput') treeNodeSearchInput;
+    @ViewChild('errorTemplate') errorTemplate;
     @ViewChild('paperView', { // jointjs paper 
         static: true
     }) paperView: JointComponent;
@@ -108,6 +108,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     userName: any;
     accessToken: any;
     userContacts: any = [];
+    errorMessage: any;
 
     constructor(
         private modalService: NgbModal,
@@ -150,6 +151,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     onTreeEvent(event: any) {  // any event on tree component 
         if (event.eventName == 'moveNode') { // if a tree node is moved updates all sheets and related data
+            this.updateAllSheetsFromTreeNode();
+            return
+        } else if (event.eventName == 'blur') { // if a tree node change focus
+            this.treeNodeCurrent = event.node.data;
             this.updateAllSheetsFromTreeNode();
             return
         }
@@ -236,6 +241,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.savePosition(positionCurrent,tree)
    }
 
+    mouseDownGraphNode(event: any) {
+        if (event.action == 'up') { this.treeNodeOneLevelUp(this.treeOrg); }
+        else if (event.action == 'down') { this.treeNodeOneLevelDown(this.treeOrg); }
+        else if (event.action == 'left') { this.treeNodeSameLevelUp(this.treeOrg); }
+        else if (event.action == 'right') { this.treeNodeSameLevelDown(this.treeOrg); }
+    }
+    
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return event.attributes.tree_id == item.data.id });
         if (this.treeNodeCurrent) {
@@ -494,17 +506,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     addSheetToViewByName(sheetName: any) {
-       
         this.projectSheets.forEach((sheet) => {
             if (sheet.SheetName == sheetName) {
-                this.optionsChecked = [sheet.ID]
-                this.addSheetToView();
+                this.addSheetToView([sheet.ID]);
                 return;
             }
         })
     }
 
-    addSheetToView() {
+    addSheetToView(checked: any) {
         this.optionsChecked.forEach( id => {
             let sheet = this.projectSheets.find( v=> v.ID == id)
             console.log(sheet)
@@ -518,7 +528,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.loadSheet(sheet);
             }
         })
-        this.optionsChecked = []
+      
     }
 
     removeSheetFromView(sheet: Sheet) {
@@ -661,6 +671,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
+    openErrorAlert(message) {
+        this.errorMessage = message;
+        this.modalService.open(this.errorTemplate, {ariaLabelledBy: 'modal-basic-title', size: 'sm'}).result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+    
     refreshSelectedSheetAfterDelete(sheet: Sheet) { //refresh selected sheet after tree deleting  
         this.positionCurrent = new Position;
         if (!this.sheetSelected.ID) {
@@ -1037,9 +1056,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let activeNode = tree.treeModel.getActiveNode();
         // find current tree node if exists on graph
         let baseRoot = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  activeNode.data.id })
-        if(!baseRoot && !activeNode.isRoot) {
-            alert('Please select the parent node that exist on graph')
-        }
         setTimeout(()=>{this.paperView.adjustGraphContent()},800) 
         setTimeout(()=>{this.saveSheet(this.sheetSelected)},1000) 
         
@@ -1049,7 +1065,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 let newCell = this.paperView.memberDef(null,
                     350,
                     50,
-                    activeNode.data.name.replace('(a) ',''), activeNode.data.name.replace('(a) ',''), 'male.png', '#ffffff', '#797979', false);
+                    activeNode.data.name.replace('(a) ', ''),
+                    activeNode.data.name.replace('(a) ', ''),
+                    activeNode.data.id,
+                    'male.png',
+                    '#ffffff',
+                    '#797979',
+                    false,
+                    this.treeNodeCurrent
+                );
                 newCell.attributes.tree_id = activeNode.data.id;
                 this.paperView.graph.addCell(newCell);
                 this.generateGraphRecur(activeNode, newCell);
@@ -1080,29 +1104,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
                     }else{
 
-
-                        let newCell = this.paperView.memberDef(parentNew.attributes,
+                        //if(child.data.id == this.tree.treeModel.focusedNode.id)
+                        //    parentNew.attributes.type = 'org.Member3';
+                        //else
+                        //    parentNew.attributes.type = 'org.Member2';
+                        
+                        let newCell = this.paperView.memberDef(
+                            parentNew.attributes,
                             parentNew.attributes.position.x + (200 * unitX),
                             parentNew.attributes.position.y + (130),
-                            child.data.name.replace('(a) ',''), child.data.name.replace('(a) ',''), 'male.png', '#ffffff', '#797979', false)
+                            child.data.name.replace('(a) ', ''),
+                            child.data.name.replace('(a) ', ''),
+                            child.data.id,
+                            'male.png',
+                            '#ffffff',
+                            '#797979',
+                            false,
+                            this.treeNodeCurrent)
                         
                             newCell.attributes.is_advisor=false;
-                        if (child.data.position.AdvisingAuthority){
-                            newCell.attributes.is_advisor=true;
+                            if (child.data.position.AdvisingAuthority){
+                                newCell.attributes.is_advisor=true;
                         }
 
                         let newLink = this.paperView.getLinkDef(parentNew, newCell);
 
                         newCell.attributes.tree_id = child.data.id
+
                         this.paperView.graph.addCell(newCell);
-
-                        
                         this.paperView.graph.addCell(newLink);
-
                         unitX = unitX + 1;
 
                         //this.generateGraphRecur(child, newCell)
-
                     }
                 }
             })
@@ -1163,6 +1196,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     onNodeFocus($event, tree) { // set data when tree node is focused
+        console.log("______________")
         let nodeCurrent = tree.treeModel.getFocusedNode();
         console.log(nodeCurrent)
         if ((nodeCurrent.data.is_displacement && nodeCurrent.data.is_displacement == true) ||
@@ -1200,7 +1234,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     saveNamePosition(position: any, tree: any) { // when position name change in details update name on graph
-        console.log(position.PositionName)
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
         treeNode.data.name = position.PositionName.replace('(a) ','');
         if(position.AdvisingAuthority){
@@ -1452,7 +1485,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
-    checkAndUpdateTreeNodeAddedAllSheets(parent: any, newNodeName: any) { //executed only when node is not root 
+    checkAndUpdateTreeNodeAddedAllSheets(parent: any, newNodeName: any, newNodeId: any) { //executed only when node is not root 
         this.projectSheets.forEach((sheet) => {
             if (sheet.Data != "") {
 
@@ -1460,10 +1493,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 cells.cells.forEach((cell) => {
                     if (cell.type != "org.Arrow") {
                         if (cell.attrs[".rank"].text == parent.data.name) {
-                            let newCell = this.paperView.memberDef(cell,
+                            let newCell = this.paperView.memberDef(
+                                cell,
                                 cell.position.x + (200),
                                 cell.position.y + (130),
-                                newNodeName, newNodeName, 'male.png', '#ffffff', '#797979', false)
+                                newNodeName,
+                                newNodeName,
+                                newNodeId,
+                                'male.png',
+                                '#ffffff',
+                                '#797979',
+                                false,
+                                this.treeNodeCurrent
+                            )
                             cells.cells.push(newCell.attributes);
                             let newLink = this.paperView.getLinkDef(cell, newCell);
                             cells.cells.push(newLink.attributes);
@@ -1516,8 +1558,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.onUpdateTree(null, tree);
     }
 
-    treeNodeSameLevelUp(tree: any) {  
+    treeNodeSameLevelUp(tree: any) {
+
+        
         if (!tree.treeModel.getActiveNode()) {
+            
             alert('No active or selected Node!')
             return;
         }
@@ -1541,6 +1586,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             parent: parentNode
         })
     }
+
     treeNodeSameLevelDown(tree: any) {
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
@@ -1566,7 +1612,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             parent: parentNode
         })
     }
-
 
     treeNodeOneLevelDown(tree: any) {
         if (!tree.treeModel.getActiveNode()) {
@@ -1597,7 +1642,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             (tree.treeModel.getNodeById(previousSibling.id)).expand()
         }, 300)
     }
-
 
     treeNodeOneLevelUp(tree: any) {
         if (!tree.treeModel.getActiveNode()) {
@@ -1657,6 +1701,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             cb()
         }, 300)
+    }
+
+    moveUpNode(tree: any) {
+        if (!tree.treeModel.getActiveNode()) {
+            alert('No active or selected Node!')
+            return;
+        }
+        let node: any = tree.treeModel.getActiveNode();
+        if (node.isRoot == true) {
+            alert("No allowed at root level");
+            return;
+        }
+
     }
 
     addNodeDisplacement(tree: any) {
@@ -1721,34 +1778,39 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
         let i = node.index
         let c = 0
-        node.data.children.forEach((child) => {
-            child = tree.treeModel.getNodeById(child.id);
-            parentNode = tree.treeModel.getNodeById(parentNode.id);
-            if (child.data.displacement_num) {
-                child.data.displacement_num = child.data.displacement_num - 1;
-                child.data.position.SpacesToSupervisor = child.data.displacement_num;
+        if (node.data.children.length == 0 && node.data.name == '**Displacement**') {
+            node = tree.treeModel.getNodeById(node.id);
+            this.deleteNode(tree);
+        } else {
+            node.data.children.forEach((child) => {
+                child = tree.treeModel.getNodeById(child.id);
+                parentNode = tree.treeModel.getNodeById(parentNode.id);
+                if (child.data.displacement_num) {
+                    child.data.displacement_num = child.data.displacement_num - 1;
+                    child.data.position.SpacesToSupervisor = child.data.displacement_num;
 
-                if (child.data.displacement_num < 0) { child.data.displacement_num = 0 };
-            }
+                    if (child.data.displacement_num < 0) { child.data.displacement_num = 0 };
+                }
 
-            tree.treeModel.moveNode(child, {
-                dropOnNode: false,
-                index: i,
-                parent: parentNode
-            }, {
-                index: 0,
-                parent: parentNode
+                tree.treeModel.moveNode(child, {
+                    dropOnNode: false,
+                    index: i,
+                    parent: parentNode
+                }, {
+                    index: 0,
+                    parent: parentNode
+                })
+                tree.treeModel.update();
+                if (c >= node.data.children.length - 1 || node.data.name == '**Displacement**') {
+                    node = tree.treeModel.getNodeById(node.id);
+                    // node.setActiveAndVisible();
+                    this.deleteNode(tree);
+                }
+
+                i = i + 1
+                c = c + 1
             })
-            tree.treeModel.update();
-            if (c >= node.data.children.length - 1) {
-                node = tree.treeModel.getNodeById(node.id);
-                node.setActiveAndVisible();
-                this.deleteNode(tree);
-            }
-
-            i = i + 1
-            c = c + 1
-        })
+        }
     }
 
 
@@ -2410,37 +2472,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     checkForAttachmentExistingName(newAttachmentName:any,cb:any){
-        let value = ""
+        let value = false
         if (this.treeNodeCurrent.data && this.treeNodeCurrent.data.attachments){
            if(this.treeNodeCurrent.data.attachments.length<=0){
-            cb("");
+            cb(false);
             return;
            }
 
             this.treeNodeCurrent.data.attachments.forEach((attachment,i)=>{
                 newAttachmentName.forEach(element => {
                     if( element.name == attachment.name.substr(11,attachment.name.length-1)){
-                       value = element.name                        
+                       value = true                        
                        }
                      
                 });
             })
-            if(value != ""){
-                cb(value);
+            if(value){
+                cb(true);
                 return
                } else {
-                cb("");
+                cb(false);
                 return;
                }
         }else{
-               cb("");
+               cb(false);
                 return;
               }
     } 
 
     postFile(recordToEdit: any, fileToUpload: File[], tree: any) { // upload attachment
+        console.log(fileToUpload)
         this.checkForAttachmentExistingName(fileToUpload ,(isNameExist)=>{
-                if (isNameExist != ""){  alert(`${isNameExist} is aleady exist!`);  return}
+                if (isNameExist){  alert("File name exists!");  return}
 
                 console.log(fileToUpload.length)
                 
@@ -2506,10 +2569,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     onNodeSelectSetImendiateSuperior($event, tree: any, modal: any) { //set inmediate superior modal
         let node = tree.treeModel.getFocusedNode();
         let nodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return this.treeNodeCurrent.data.id == item.data.id })
-        if(nodeCurrent.isRoot) {
-            alert("The Root node cannot change the position")
-            return
-        }
         let parentNode: any = nodeCurrent.realParent ? nodeCurrent.realParent : nodeCurrent.treeModel.virtualRoot;
         if (nodeCurrent) {
             this.treeOrg.treeModel.moveNode(
@@ -2692,10 +2751,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         console.log("updateAllSheetsFromTreeNode", "!treeNodeRootForSheet", sheet.SheetName)
                     }
                     if (treeNodeRootForSheet) {
-                        let newCell = this.paperView.memberDef(null,
+                        let newCell = this.paperView.memberDef(
+                            null,
                             (350),
                             (50),
-                            treeNodeRootForSheet.data.name.replace('(a) ',''), treeNodeRootForSheet.data.name.replace('(a) ',''), 'male.png', '#ffffff', '#797979', false)
+                            treeNodeRootForSheet.data.name.replace('(a) ', ''),
+                            treeNodeRootForSheet.data.name.replace('(a) ', ''),
+                            treeNodeRootForSheet.data.id,
+                            'male.png',
+                            '#ffffff',
+                            '#797979',
+                            false,
+                            this.treeNodeCurrent
+                        )
                         newCell.attributes.tree_id = treeNodeRootForSheet.data.id;
                         newCells.cells.push(newCell.attributes);
                         sheet.Data = JSON.stringify(newCells);
@@ -2729,10 +2797,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
             let unitX = -1;
             activeNode.children.forEach((child) => {
                 if (child.data.isfunctionalrel == true) {} else {
-                    let newCell = this.paperView.memberDef(parentNew,
+                    let newCell = this.paperView.memberDef(
+                        parentNew,
                         parentNew.position.x + (200 * unitX),
                         parentNew.position.y + (130),
-                        child.data.name.replace('(a) ',''), child.data.name.replace('(a) ',''), 'male.png', '#ffffff', '#797979', false);
+                        child.data.name.replace('(a) ', ''),
+                        child.data.name.replace('(a) ', ''),
+                        child.data.id,
+                        'male.png',
+                        '#ffffff',
+                        '#797979',
+                        false,
+                        this.treeNodeCurrent
+                    );
                     newCell.attributes.tree_id = child.data.id;
                     cells.cells.push(newCell.attributes);
                     let newLink = this.paperView.getLinkDef(parentNew, newCell, child.data.is_displacement);
