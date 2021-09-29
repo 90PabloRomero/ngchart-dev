@@ -2471,78 +2471,80 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
 
-    checkForAttachmentExistingName(newAttachmentName:any,cb:any){
-        let value = false
-        if (this.treeNodeCurrent.data && this.treeNodeCurrent.data.attachments){
-           if(this.treeNodeCurrent.data.attachments.length<=0){
+    checkForAttachmentExistingName(newAttachment: any, cb: any) {
+        let value = false;
+        if (this.treeNodeCurrent.data && this.treeNodeCurrent.data.attachments) {
+          if (this.treeNodeCurrent.data.attachments.length <= 0) {
             cb(false);
             return;
-           }
-
-            this.treeNodeCurrent.data.attachments.forEach((attachment,i)=>{
-                newAttachmentName.forEach(element => {
-                    if( element.name == attachment.name.substr(11,attachment.name.length-1)){
-                       value = true                        
-                       }
-                     
-                });
-            })
-            if(value){
-                cb(true);
-                return
-               } else {
-                cb(false);
-                return;
-               }
-        }else{
-               cb(false);
-                return;
-              }
-    } 
-
-    postFile(recordToEdit: any, fileToUpload: File[], tree: any) { // upload attachment
-        console.log(fileToUpload)
-        this.checkForAttachmentExistingName(fileToUpload ,(isNameExist)=>{
-                if (isNameExist){  alert("File name exists!");  return}
-
-                console.log(fileToUpload.length)
-                
-                for (var i = 0; i < fileToUpload.length; i++) { 
-                    console.log("Ffffffffff")
-                    const formData: FormData = new FormData();
-                    formData.append("upload", fileToUpload[i], fileToUpload[i].name );
-                    this.http.post < any > (urlApi + '/upload-file', formData)
-                    .subscribe(
-                        (any) => {
-                            if (any) {
-                                this.modalWindow.close();
-                                if (any && any.file != "/files/nofile") {
-                                    console.log(any.file)
-                                    this.addAttachment({
-                                        name: any.file
-                                    });
-                                    this.savePosition(this.positionCurrent, tree);
-                                }
-                                return;
-                            }
-                        },
-                        err => {
-                            alert(err)
-                            return;
-                        }
-                    );
+          }
+    
+          this.treeNodeCurrent.data.attachments.forEach((attachment, i) => {
+            if (
+              newAttachment.name ==
+              attachment.name.substr(11, attachment.name.length - 1)
+            ) {
+              value = true;
+            }
+          });
+          if (value) {
+            cb(true);
+            return;
+          } else {
+            cb(false);
+            return;
+          }
+        } else {
+          cb(false);
+          return;
+        }
+      }
+    
+      postFile(recordToEdit: any, fileToUpload: File[], tree: any) {
+        // upload attachment
+        console.log(fileToUpload);
+    
+        console.log(fileToUpload.length);
+    
+        let alreadyExist: any[] = [];
+    
+        for (var i = 0; i < fileToUpload.length; i++) {
+          this.checkForAttachmentExistingName(fileToUpload[i], (isNameExist) => {
+            if (isNameExist) {
+              alert("File name " + fileToUpload[i].name + " already exists! ");
+            } else {
+              console.log("Ffffffffff");
+              const formData: FormData = new FormData();
+              formData.append("upload", fileToUpload[i], fileToUpload[i].name);
+              this.http.post<any>(urlApi + "/upload-file", formData).subscribe(
+                (any) => {
+                  if (any) {
+                    this.modalWindow.close();
+                    if (any && any.file != "/files/nofile") {
+                      console.log(any.file);
+                      this.addAttachment({
+                        name: any.file,
+                      });
+                      this.savePosition(this.positionCurrent, tree);
+                    }
+                    return;
+                  }
+                },
+                (err) => {
+                  alert(err);
+                  return;
                 }
-                
-                // formData.append('upload', fileToUpload, fileToUpload.name);
-                return
-
-
-
-        })
-    }
-    fileNameSub(fileName: any) {
-        return fileName.substr(11, fileName.length - 1)
-    }
+              );
+            }
+          });
+        }
+    
+        // formData.append('upload', fileToUpload, fileToUpload.name);
+        return;
+      }
+      fileNameSub(fileName: any) {
+        return fileName.substr(11, fileName.length - 1);
+      }
 
 
 
