@@ -25,6 +25,7 @@ import { SelectContactComponent } from '../select-contact/select-contact.compone
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { node } from 'canvg/lib/presets';
+import { IActionMapping, ITreeOptions, KEYS, TREE_ACTIONS } from '@circlon/angular-tree-component';
 
 
 const positionsName = [];
@@ -82,6 +83,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     nodes = [];
     positions = {};
     optionsChecked = [];
+    /*
     options = {  // angular tree comp config 
         allowDrag: (node) => {
             return true;
@@ -98,6 +100,41 @@ export class HomeComponent implements OnInit, AfterViewInit {
         nodeHeight: 23, //23
 
     };
+    */
+    actionMapping: IActionMapping = {
+        mouse: {
+          contextMenu: (tree, node, $event) => {
+            $event.preventDefault();
+            alert(`context menu for ${node.data.name}`);
+          },
+          dblClick: (tree, node, $event) => {
+            if (node.hasChildren) {
+              TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+            }
+          },
+          click: (tree, node, $event) => {
+            $event.shiftKey
+              ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
+              : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
+          },
+          mouseOver: (tree, node, $event) => {
+            $event.preventDefault();
+            console.log(`mouseOver ${node.data.name}`);
+          },
+          mouseOut: (tree, node, $event) => {
+            $event.preventDefault();
+            console.log(`mouseOut ${node.data.name}`);
+          }
+        },
+        keys: {
+          [KEYS.ENTER]: (tree, node, $event) => alert(`This is ${node.data.name}`)
+        }
+      };
+    
+      options: ITreeOptions = {
+        actionMapping: this.actionMapping
+      };
+      
     activeTab = 1;
     textSearch = "";
     textSearch2 = "";
@@ -254,6 +291,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.positionCurrent = this.treeNodeCurrent.data.position;
             this.positionCurrent.ID = this.treeNodeCurrent.data.id;
             this.positionCurrent.DedicationRegime='position';
+            this.positionCurrent.PositionInmediateSuperior=this.treeNodeCurrent.parent.data.name;
+
+            //console.log(this.positionCurrent.PositionInmediateSuperior);
+            
 
             if(event.attributes.position_type=="temporal"){
                 this.positionCurrent.DedicationRegime='temporal';
@@ -2570,7 +2611,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     onNodeSelectSetImendiateSuperior($event, tree: any, modal: any) { //set inmediate superior modal
         let node = tree.treeModel.getFocusedNode();
+        //console.log("Seleccionado " + node.data.name + " como el nodo padre");
+        
         let nodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return this.treeNodeCurrent.data.id == item.data.id })
+        //console.log("El nodo hijo de ese padre es:");
+        //console.log(nodeCurrent.data);
+
+        if(node.data.name == nodeCurrent.data.name){
+            alert("Position " + nodeCurrent.data.name + " can't be immediate superior for himself");
+            modal.close()
+            return;
+        }
+        
         let parentNode: any = nodeCurrent.realParent ? nodeCurrent.realParent : nodeCurrent.treeModel.virtualRoot;
         if (nodeCurrent) {
             this.treeOrg.treeModel.moveNode(

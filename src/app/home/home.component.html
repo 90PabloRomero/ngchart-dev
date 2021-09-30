@@ -433,7 +433,7 @@
                 <div class="form-row">
                     <div class="col" style="position: relative;">
                         <input type="text" class="form-control mt-1" id="PositionInmediateSuperiorInput" name="PositionInmediateSuperiorInput" placeholder="Inmediate Superior" #PositionInmediateSuperior="ngModel" [(ngModel)]="positionCurrent.PositionInmediateSuperior" (change)="savePosition(positionCurrent,tree)" disabled>
-                        <i (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 8px;top:18px;" class="bi bi-search"></i>
+                        <i *ngIf="this.positionCurrent.PositionInmediateSuperior" (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 8px;top:18px;" class="bi bi-search"></i>
                     </div>
                     <div class="col">
                         <div class="form-check mt-1" id="advising-input-wrap">
