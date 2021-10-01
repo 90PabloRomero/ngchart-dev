@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { node } from 'canvg/lib/presets';
 import { IActionMapping, ITreeOptions, KEYS, TREE_ACTIONS } from '@circlon/angular-tree-component';
+import { event } from 'jquery';
 
 
 const positionsName = [];
@@ -83,8 +84,56 @@ export class HomeComponent implements OnInit, AfterViewInit {
     nodes = [];
     positions = {};
     optionsChecked = [];
-    /*
-    options = {  // angular tree comp config 
+   
+    actionMapping: IActionMapping = {
+        mouse: {
+          contextMenu: (tree, node, $event) => {
+            //$event.preventDefault();
+            //alert(`context menu for ${node.data.name}`);
+          },
+          dblClick: (tree, node, $event) => {
+            if (node.hasChildren) {
+              TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+            }
+          },
+          click: (tree, node, $event) => {
+            $event.shiftKey
+              ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
+              : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
+            
+              //Dar click nuevamente para que el nodo no quede nunca en el estado DESELECTED
+              if(!node.isActive) node.mouseAction('click',$event);
+              //console.log($event)
+
+              //let clicked_element = document.getElementById($event.data.id) as HTMLElement;
+              //clicked_element.click();              
+          },
+          dragEnd: (tree, node, $event) => {
+              //console.log("Dragged Node: " + node.data.name);
+              //tree.setActiveNode(node, true);
+              this.generateGraph(this.treeOrg);
+          },
+          /*
+          mouseOver: (tree, node, $event) => {
+            $event.preventDefault();
+            console.log(`mouseOver ${node.data.name}`);
+          },
+          mouseOut: (tree, node, $event) => {
+            $event.preventDefault();
+            console.log(`mouseOut ${node.data.name}`);
+          }*/
+        },
+        keys: {
+          [KEYS.ENTER]: (tree, node, $event) => {
+            if (node.hasChildren) {
+                TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+            }
+          }
+        }
+      };
+    
+      options: ITreeOptions = {
+        actionMapping: this.actionMapping,
         allowDrag: (node) => {
             return true;
         },
@@ -98,43 +147,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         animateSpeed: 30,
         animateAcceleration: 1.2,
         nodeHeight: 23, //23
+      };
 
-    };
-    */
-    actionMapping: IActionMapping = {
-        mouse: {
-          contextMenu: (tree, node, $event) => {
-            $event.preventDefault();
-            alert(`context menu for ${node.data.name}`);
-          },
-          dblClick: (tree, node, $event) => {
-            if (node.hasChildren) {
-              TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-            }
-          },
-          click: (tree, node, $event) => {
-            $event.shiftKey
-              ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
-              : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
-          },
-          mouseOver: (tree, node, $event) => {
-            $event.preventDefault();
-            console.log(`mouseOver ${node.data.name}`);
-          },
-          mouseOut: (tree, node, $event) => {
-            $event.preventDefault();
-            console.log(`mouseOut ${node.data.name}`);
-          }
-        },
-        keys: {
-          [KEYS.ENTER]: (tree, node, $event) => alert(`This is ${node.data.name}`)
-        }
-      };
-    
-      options: ITreeOptions = {
-        actionMapping: this.actionMapping
-      };
-      
     activeTab = 1;
     textSearch = "";
     textSearch2 = "";
@@ -1124,7 +1138,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.generateGraphRecur(activeNode, baseRoot);
             } 
         }
-
+       return; 
     }
 
 
