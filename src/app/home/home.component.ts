@@ -128,6 +128,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (node.hasChildren) {
                 TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
             }
+            node.mouseAction('click',$event);
           }
         }
       };
@@ -1510,6 +1511,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         })
         return
+    }
+
+    deleteNodeConfirmedByUser(tree){
+        if (!tree.treeModel.getActiveNode()) {
+            alert('No active or selected Node!')
+            return;
+        }
+        let node = tree.treeModel.getActiveNode();
+        this.deleteNode(tree);
+
+        //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
+        setTimeout(function(){ alert("Succesfully deleted " + node.data.name + " and below relations."); }, 500);
+        
     }
 
     deleteNode(tree) {  // delete tree node 
