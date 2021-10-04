@@ -297,9 +297,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     mouseDownGraphNode(event: any) {
         if (event.action == 'up') { this.circleAddNodeNorth(this.treeOrg, event); }
-        else if (event.action == 'down') { this.circleAddNodeEast(this.treeOrg, event); }
-        else if (event.action == 'left') { this.circleAddNodeSouth(this.treeOrg, event); }
-        else if (event.action == 'right') { this.circleAddNodeWest(this.treeOrg, event); }
+        else if (event.action == 'down') { this.circleAddNodeSouth(this.treeOrg, event); }
+        else if (event.action == 'left') { this.circleAddNodeWest(this.treeOrg, event); }
+        else if (event.action == 'right') { this.circleAddNodeEast(this.treeOrg, event); }
     }
     
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
@@ -1756,7 +1756,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     circleCreateNode(event: any) {
-        this.addNode(this.tree, 'node', this.positionCurrent);
+        if (event.cardinal == 'NORTH' || event.cardinal == 'SOUTH') {
+            this.paperView.addGraphNode(this.paperView.nodeGraphCurrent, event.left, event.top, 'Child', '', event.type, null);
+            this.selectNodeComponent.close();
+            this.onUpdateTree(null, this.treeOrg);
+        }
+        else {
+            let siblingSide = 'right';
+            if (event.cardinal == 'WEST')
+                siblingSide = 'left';
+            this.paperView.addGraphNodeSibling(this.paperView.nodeGraphCurrent, event.left, event.top, 'Child', '', event.type, siblingSide,  null);
+            this.selectNodeComponent.close();
+            this.onUpdateTree(null, this.treeOrg);
+        }
     }
 
     // uuid like for displacements

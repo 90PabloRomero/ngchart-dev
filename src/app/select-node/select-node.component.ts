@@ -29,10 +29,17 @@ export class SelectNodeComponent implements OnInit {
     this.cardinal = cardinal;
   }
 
+  close() {
+    if(this.drop.isOpen())
+      this.drop.toggle();
+  }
+
   createNode(type:any) {
     const data = {
       'cardinal': this.cardinal,
       'type': type,
+      'top': this.top,
+      'left': this.left
     }
     this.createNodeEvent.emit(data);
   }

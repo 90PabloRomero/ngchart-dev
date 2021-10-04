@@ -1405,7 +1405,9 @@ export class JointComponent implements OnInit, AfterViewInit {
             return
         }
 
-        modal.dismiss('Cross click')
+        if (modal) {
+            modal.dismiss('Cross click')
+        }
         let newNode: any;
 
         this.getParentFor(siblingRoot, (parent) => {
