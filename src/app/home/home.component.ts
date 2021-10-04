@@ -131,6 +131,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (node.hasChildren) {
                 TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
             }
+            node.mouseAction('click',$event);
           }
         }
       };
@@ -524,7 +525,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.treeOrg.treeModel.doForAll((item) => {
             if (item.data.isfunctionalrel) {
                 if (item.data.functionalRelSourceName && item.data.functionalRelTargetName) {
-                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName)
+                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName);
                 }
             }
         })
@@ -1513,6 +1514,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         })
         return
+    }
+
+    deleteNodeConfirmedByUser(tree){
+        if (!tree.treeModel.getActiveNode()) {
+            alert('No active or selected Node!')
+            return;
+        }
+        let node = tree.treeModel.getActiveNode();
+        this.deleteNode(tree);
+
+        //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
+        setTimeout(function(){ alert("Succesfully deleted " + node.data.name + " and below relations."); }, 500);
+        
     }
 
     deleteNode(tree) {  // delete tree node 
@@ -2876,13 +2890,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         newCell.attributes.tree_id = treeNodeRootForSheet.data.id;
                         newCells.cells.push(newCell.attributes);
                         sheet.Data = JSON.stringify(newCells);
-                        this.refreshSheetOnView();
                         this.generateSheetDataRecur(treeNodeRootForSheet, newCell.attributes, newCells, sheet);
                     } //  if treeNodeRootForSheet
                 } //  if rootSheetNode
-
+                this.refreshSheetOnView();
             }
         })
+
     }
 
 
@@ -2924,7 +2938,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     let newLink = this.paperView.getLinkDef(parentNew, newCell, child.data.is_displacement);
                     cells.cells.push(newLink.attributes);
                     sheet.Data = JSON.stringify(cells);
-                    this.refreshSheetOnView();
                     unitX = unitX + 1;
                     this.generateSheetDataRecur(child, newCell.attributes, cells, sheet)
                 }
