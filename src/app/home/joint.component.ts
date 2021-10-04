@@ -157,8 +157,9 @@ export class JointComponent implements OnInit, AfterViewInit {
         "position_type": 'position',
         "tree_id": 0,
     }, {
-        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="card"><circle id="circle-move-up" name="circle-move-up" cx="85" cy="-20" r="10" style="cursor:n-resize;"></circle><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="10" style="cursor:s-resize;"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="10" style="cursor:w-resize;"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="10" style="cursor:e-resize;"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
+        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="card"><circle id="circle-move-up" name="circle-move-up" cx="85" cy="-20" r="10"></circle><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="10"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="10"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="10"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
+    showSelectorNode = true;
 
     constructor(
         private modalService: NgbModal,

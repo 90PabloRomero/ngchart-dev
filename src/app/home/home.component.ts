@@ -4,13 +4,14 @@ import { Sheet } from '../models/sheet';
 import { Project } from '../models/project';
 import { Contact } from '../models/contact';
 import { ContactRight } from '../models/contactright';
-import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionConfig, NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
+
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import * as _ from 'lodash'
@@ -27,7 +28,7 @@ import { GlobalService } from '../global.service';
 import { node } from 'canvg/lib/presets';
 import { IActionMapping, ITreeOptions, KEYS, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { event } from 'jquery';
-
+import { SelectNodeComponent } from '../select-node/select-node.component';
 
 const positionsName = [];
 
@@ -49,6 +50,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     @ViewChild('paperView', { // jointjs paper 
         static: true
     }) paperView: JointComponent;
+    @ViewChild(SelectNodeComponent) selectNodeComponent: SelectNodeComponent; 
+
     nodeType: any = "child";
     name = 'OrgChart';
     modalWindow: NgbModalRef;
@@ -197,7 +200,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.sheets = [];
         this.panelsIds[1] = false;
         this.panelsIds[2] = false;
-        this.panelsIds[3] = true;
+       this.panelsIds[3] = true;
     }
 
     onTreeEvent(event: any) {  // any event on tree component 
@@ -293,10 +296,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
    }
 
     mouseDownGraphNode(event: any) {
-        if (event.action == 'up') { this.treeNodeOneLevelUp(this.treeOrg); }
-        else if (event.action == 'down') { this.treeNodeOneLevelDown(this.treeOrg); }
-        else if (event.action == 'left') { this.treeNodeSameLevelUp(this.treeOrg); }
-        else if (event.action == 'right') { this.treeNodeSameLevelDown(this.treeOrg); }
+        if (event.action == 'up') { this.circleAddNodeNorth(this.treeOrg, event); }
+        else if (event.action == 'down') { this.circleAddNodeEast(this.treeOrg, event); }
+        else if (event.action == 'left') { this.circleAddNodeSouth(this.treeOrg, event); }
+        else if (event.action == 'right') { this.circleAddNodeWest(this.treeOrg, event); }
     }
     
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
@@ -1613,9 +1616,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.onUpdateTree(null, tree);
     }
 
-    treeNodeSameLevelUp(tree: any) {
+    treeNodeSameLevelUp(tree: any, event: any) {
 
-        
         if (!tree.treeModel.getActiveNode()) {
             
             alert('No active or selected Node!')
@@ -1642,7 +1644,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
-    treeNodeSameLevelDown(tree: any) {
+    treeNodeSameLevelDown(tree: any, event: any) {
+
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY);
+        return;
+
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
             return;
@@ -1668,7 +1674,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
-    treeNodeOneLevelDown(tree: any) {
+    treeNodeOneLevelDown(tree: any, event: any) {
+
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY);
+        return;
+
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
             return;
@@ -1698,7 +1708,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }, 300)
     }
 
-    treeNodeOneLevelUp(tree: any) {
+    treeNodeOneLevelUp(tree: any, event: any) {
+
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY);
+        return;
+
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
             return;
@@ -1726,6 +1740,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
+    circleAddNodeNorth(tree: any, event: any) {
+        //Cick en el circulo dispara al componente valores para abrir el popup
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY, 'NORTH');
+        return;
+    }
+
+    circleAddNodeEast(tree: any, event: any) {
+        //Cick en el circulo dispara al componente valores para abrir el popup
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY, 'EAST');
+        return;
+    }
+
+    circleAddNodeSouth(tree: any, event: any) {
+        //Cick en el circulo dispara al componente valores para abrir el popup
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY, 'SOUTH');
+        return;
+    }
+
+    circleAddNodeWest(tree: any, event: any) {
+        //Cick en el circulo dispara al componente valores para abrir el popup
+        this.selectNodeComponent.open(event.event.clientX, event.event.clientY, 'WEST');
+        return;
+    }
+
+    circleCreateNode(event: any) {
+        alert(data);
+    }
 
     // uuid like for displacements
     S4() {

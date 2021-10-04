@@ -14,10 +14,11 @@ import { SelectContactComponent } from './select-contact/select-contact.componen
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { SelectNodeComponent } from './select-node/select-node.component';
 
 @NgModule({
   imports:      [AutocompleteLibModule, BrowserModule, FormsModule,NgbModule ,TreeModule,HttpClientModule,DragDropModule,OverlayModule,ColorPickerModule, AppRoutingModule],
-  declarations: [ AppComponent, JointComponent, SelectContactComponent, HomeComponent, LoginComponent ],
+  declarations: [ AppComponent, JointComponent, SelectContactComponent, HomeComponent, LoginComponent, SelectNodeComponent ],
   bootstrap:    [ AppComponent ],
 
 

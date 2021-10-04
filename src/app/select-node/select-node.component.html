@@ -1,0 +1,76 @@
+<div #drop="ngbDropdown" ngbDropdown class="d-inline-block" class="compo">
+  <button
+    id="dropdownBasic1"
+    ngbDropdownToggle
+    class="button-compo"
+    [style.top]="top"
+    [style.left]="left"
+  ></button>
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="drop">
+    <div id="">
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-12" (click)="createNode('position')" >
+              <img style="width: 100%" src="assets/images/position.png" />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="row">
+            <div
+              class="col-12" (click)="createNode('external')" >
+              <img style="width: 100%" src="assets/images/external.png" />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="row">
+            <div
+              class="col-12" (click)="createNode('vacant')" >
+              <img style="width: 100%" src="assets/images/vacant.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <div class="row">
+            <div
+              class="col-12" (click)="createNode('temporal')" >
+              <img style="width: 100%" src="assets/images/temporal.png" />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="row">
+            <div class="col-12" ngbTooltip="Functional Relationship">
+              <img style="width: 100%" src="assets/images/functionalrel.png" />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="row">
+            <div class="col-12" ngbTooltip="Direct Relationship">
+              <img style="width: 100%" src="assets/images/directrel.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <div class="row">
+            <div
+              class="col-12" (click)="createNode('temporal')" >
+              <img style="width: 100%" src="assets/images/advisor.png" />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

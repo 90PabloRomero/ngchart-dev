@@ -1,14 +1,11 @@
 @import '~@circlon/angular-tree-component/css/angular-tree-component.css';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 /* Add application styles & imports to this file! */
 
-/*html, body, div, span, my-app {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  display: flex;
+html, body, div, span, my-app {
+  font-family: 'Poppins' !important;
 }
 
 html, body, my-app {
@@ -16,6 +13,7 @@ html, body, my-app {
   height: 100%;
 }
 */
+
 /* JointJS */
 .joint-link .connection, 
 .joint-link .marker-target, 
@@ -59,4 +57,20 @@ html, body, my-app {
 
 .cell-menu ul{
 	margin-bottom: 0rem;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
