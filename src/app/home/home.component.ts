@@ -1156,7 +1156,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     let graphNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  child.data.id })
 
                     if (graphNode){
-                       // this.generateGraphRecur(child, graphNode)
+                        this.generateGraphRecur(child, graphNode)
 
                     }else{
 
@@ -1191,7 +1191,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         this.paperView.graph.addCell(newLink);
                         unitX = unitX + 1;
 
-                        //this.generateGraphRecur(child, newCell)
+                        this.generateGraphRecur(child, newCell)
                     }
                 }
             })
