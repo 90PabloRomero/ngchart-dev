@@ -436,298 +436,298 @@
                 </div>
             <form>
                 <div class="div-panel-right-inner">
-                    
+    
                     <div class="form-row">
-                    <div class="col">
-                        <label for="PositionNameInput" class="label-input-panel">Name</label>
-                        <input type="text" class="form-control mt-1 input-panel" id="PositionNameInput" name="PositionNameInput" placeholder="Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" 
-                        (change)="saveNamePosition(positionCurrent,tree)"
-                        (onblur)="saveNamePosition(positionCurrent,tree)">
-                    </div>
-
-                    <div class="col">
-                        <label for="PositionCodeInput" class="label-input-panel">Code</label>
-                        <input type="text" class="form-control mt-1 input-panel" id="PositionCodeInput" name="PositionCodeInput" #PositionCode="ngModel" [(ngModel)]="positionCurrent.PositionCode" (change)="savePosition(positionCurrent,tree)">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="col" style="position: relative;">
-                                <label for="PositionInmediateSuperiorInput" class="label-input-panel">Direct Supervisor</label>
-                                <input type="text" class="form-control mt-1 input-panel" id="PositionInmediateSuperiorInput" name="PositionInmediateSuperiorInput" placeholder="Direct Supervisor" #PositionInmediateSuperior="ngModel" [(ngModel)]="positionCurrent.PositionInmediateSuperior" (change)="savePosition(positionCurrent,tree)" disabled>
-                        <i *ngIf="positionCurrent.PositionInmediateSuperior" (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 14px;top:33px;" class="bi bi-search"></i>
-                    </div>
-
-                    <div class="col">
-                                <label for="AbbreviationInput" class="label-input-panel">Abbreviation</label>
-                                <input type="text" class="form-control mt-1 input-panel" id="AbbreviationInput" name="AbbreviationInput" placeholder="Abbreviation" #Abbreviation="ngModel" [(ngModel)]="positionCurrent.Abbreviation" (change)="savePosition(positionCurrent,tree)">
-                            </div>
+                        <div class="col">
+                            <label for="PositionNameInput" class="label-input-panel">Name</label>
+                            <input type="text" class="form-control mt-1 input-panel" id="PositionNameInput" name="PositionNameInput" placeholder="Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" 
+                            (change)="saveNamePosition(positionCurrent,tree)"
+                            (onblur)="saveNamePosition(positionCurrent,tree)">
                         </div>
 
-                        <div class="form-row">
-                            <div class="col">
-                                <label for="LocationInput" class="label-input-panel">Location</label>
-                                <input type="text" class="form-control mt-1 input-panel" id="LocationInput" name="LocationInput" placeholder="Location" #Location="ngModel" [(ngModel)]="positionCurrent.Location" (change)="savePosition(positionCurrent,tree)">
-                            </div>
+                        <div class="col">
+                            <label for="PositionCodeInput" class="label-input-panel">Code</label>
+                            <input type="text" class="form-control mt-1 input-panel" id="PositionCodeInput" name="PositionCodeInput" #PositionCode="ngModel" [(ngModel)]="positionCurrent.PositionCode" (change)="savePosition(positionCurrent,tree)">
+                        </div>
+                    </div>
 
-                            <div class="col" style="padding-top:18px">
-                                <div class="form-check mt-1" id="advising-input-wrap">
-                            <input class="form-check-input" [disabled]="!positionCurrent.PositionInmediateSuperior" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" (change)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
-                            <label id="advising-input-label" class="form-check-label" for="AdvisingAuthorityCodeInput">
-                                Advising Authority
-                            </label>
+                    <div class="form-row">
+                        <div class="col" style="position: relative;">
+                                    <label for="PositionInmediateSuperiorInput" class="label-input-panel">Direct Supervisor</label>
+                                    <input type="text" class="form-control mt-1 input-panel" id="PositionInmediateSuperiorInput" name="PositionInmediateSuperiorInput" placeholder="Direct Supervisor" #PositionInmediateSuperior="ngModel" [(ngModel)]="positionCurrent.PositionInmediateSuperior" (change)="savePosition(positionCurrent,tree)" disabled>
+                            <i *ngIf="positionCurrent.PositionInmediateSuperior" (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 14px;top:33px;" class="bi bi-search"></i>
+                        </div>
+
+                        <div class="col">
+                                    <label for="AbbreviationInput" class="label-input-panel">Abbreviation</label>
+                                    <input type="text" class="form-control mt-1 input-panel" id="AbbreviationInput" name="AbbreviationInput" placeholder="Abbreviation" #Abbreviation="ngModel" [(ngModel)]="positionCurrent.Abbreviation" (change)="savePosition(positionCurrent,tree)">
+                                </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="LocationInput" class="label-input-panel">Location</label>
+                            <input type="text" class="form-control mt-1 input-panel" id="LocationInput" name="LocationInput" placeholder="Location" #Location="ngModel" [(ngModel)]="positionCurrent.Location" (change)="savePosition(positionCurrent,tree)">
+                        </div>
+
+                        <div class="col" style="padding-top:18px">
+                            <div class="form-check mt-1" id="advising-input-wrap">
+                                <input class="form-check-input" [disabled]="!positionCurrent.PositionInmediateSuperior" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" (change)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
+                                <label id="advising-input-label" class="form-check-label" for="AdvisingAuthorityCodeInput">
+                                    Advising Authority
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                                    <label for="CompanyInput" class="label-input-panel">Company</label>
+                                    <input type="text" class="form-control mt-1 input-panel" id="CompanyInput" name="CompanyInput" placeholder="Company" #Company="ngModel" [(ngModel)]="positionCurrent.Company" (change)="savePosition(positionCurrent,tree)">
+                        </div>
+                        
+                        <div class="col">
+                            <label for="textBox.DedicationRegime" class="label-input-panel">Dedication Regime</label>
+                            <select (change)="changeDedicationRegime(positionCurrent,tree);" class="form-control input-panel label-select-panel" [(ngModel)]="positionCurrent.DedicationRegime" name="textBox.DedicationRegime">
+                                <option [ngValue]="'position'">Full</option>
+                                <option [ngValue]="'temporal'">Temporal</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col col-6">
+                            <label for="CompanyInput" class="label-input-panel">Creation date</label>
+                            <input class="form-control mt-1 input-panel" placeholder="yyyy-mm-dd" name="CreationDate" type="date" #CreationDate="ngModel" [(ngModel)]="positionCurrent.CreationDate" (change)="savePosition(positionCurrent,tree)">
+                        </div>
+                        <div class="col col-6">
+                            <label for="CompanyInput" class="label-input-panel">Space to supuervisor</label>
+                            <input type="number" class="form-control mt-1 input-panel" id="SpacesToSupervisorInput" name="SpacesToSupervisorInput" #SpacesToSupervisor="ngModel" min="0" [(ngModel)]="positionCurrent.SpacesToSupervisor" (change)="savePositionDisplacement(positionCurrent,tree)">
                         </div>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="col">
-                                <label for="CompanyInput" class="label-input-panel">Company</label>
-                                <input type="text" class="form-control mt-1 input-panel" id="CompanyInput" name="CompanyInput" placeholder="Company" #Company="ngModel" [(ngModel)]="positionCurrent.Company" (change)="savePosition(positionCurrent,tree)">
-                    </div>
+                <div class="d-flex" id="position-data">
+                    <ul ngbNav #nav3="ngbNav" [(activeId)]="activeDetail" class="nav-pills" orientation="vertical" (navChange)="onNavChangeNav3($event)">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink><span class="tab-title-small">Mission</span></a>
+                        <ng-template ngbNavContent>
+                            <textarea style="height: 100%" rows="8" class="form-control" id="PositionValues" name="PositionValues" placeholder="Mission" #PositionValues="ngModel" [(ngModel)]="positionCurrent.PositionValues" (change)="savePosition(positionCurrent,tree)"></textarea>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>
+                            <span class="tab-title-small">Position Description</span></a>
+                        <ng-template ngbNavContent>
+                            <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+                                <li [ngbNavItem]="1">
+                                    <a ngbNavLink>Key responsabilities</a>
+                                    <ng-template ngbNavContent>
+                                    <p style="background-color:#c7f4f4;">Description</p>
+                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <label for="vehicle1">  &nbsp; &nbsp;   loren nt ullaamco est</label><br>
+                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                    <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
+                                    </ng-template>
+                                </li>
+                                <li [ngbNavItem]="2">
+                                    <a ngbNavLink>Essential skills</a>
+                                    <ng-template ngbNavContent>
+                                    <textarea style="height: 320px" rows="8" class="form-control" id="PositionValues" name="PositionValues" placeholder="Essential Skills" ></textarea>
+                                    </ng-template>
+                                </li>
+                                </ul>
+                                
+                                <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                                
+                        
+                            <!-- <ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
+                                <li  [ngbNavItem]="1">
+                                    <a ngbNavLink><span class="tab-title">Key Responsabilities</span></a>
+                                    <ng-template ngbNavContent>
+                                    <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+                                    </ng-template>
+                                </li>
+                                <li  [ngbNavItem]="2">
+                                    <a ngbNavLink><span class="tab-title">Essential Skills</span></a>
+                                    <ng-template ngbNavContent>
+                                    <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+                                    </ng-template>
+                                </li>
+                            </ul> -->
+                        </ng-template>
                     
-                    <div class="col">
-                        <label for="textBox.DedicationRegime" class="label-input-panel">Dedication Regime</label>
-                        <select (change)="changeDedicationRegime(positionCurrent,tree);" class="form-control input-panel label-select-panel" [(ngModel)]="positionCurrent.DedicationRegime" name="textBox.DedicationRegime">
-                            <option [ngValue]="'position'">Full</option>
-                                    <option [ngValue]="'temporal'">Temporal</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col col-6">
-                                <label for="CompanyInput" class="label-input-panel">Creation date</label>
-                                <input class="form-control mt-1 input-panel" placeholder="yyyy-mm-dd" name="CreationDate" type="date" #CreationDate="ngModel" [(ngModel)]="positionCurrent.CreationDate" (change)="savePosition(positionCurrent,tree)">
-                            </div>
-                            <div class="col col-6">
-                                <label for="CompanyInput" class="label-input-panel">Space to supuervisor</label>
-                                <input type="number" class="form-control mt-1 input-panel" id="SpacesToSupervisorInput" name="SpacesToSupervisorInput" #SpacesToSupervisor="ngModel" min="0" [(ngModel)]="positionCurrent.SpacesToSupervisor" (change)="savePositionDisplacement(positionCurrent,tree)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex" id="position-data">
-                        <ul ngbNav #nav3="ngbNav" [(activeId)]="activeDetail" class="nav-pills" orientation="vertical" (navChange)="onNavChangeNav3($event)">
-                        <li [ngbNavItem]="1">
-                            <a ngbNavLink><span class="tab-title-small">Mission</span></a>
-                            <ng-template ngbNavContent>
-                                <textarea style="height: 100%" rows="8" class="form-control" id="PositionValues" name="PositionValues" placeholder="Mission" #PositionValues="ngModel" [(ngModel)]="positionCurrent.PositionValues" (change)="savePosition(positionCurrent,tree)"></textarea>
-                            </ng-template>
-                        </li>
-                        <li [ngbNavItem]="2">
-                            <a ngbNavLink>
-                                <span class="tab-title-small">Position Description</span></a>
-                            <ng-template ngbNavContent>
-                                <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
-                                    <li [ngbNavItem]="1">
-                                      <a ngbNavLink>Key responsabilities</a>
-                                      <ng-template ngbNavContent>
-                                        <p style="background-color:#c7f4f4;">Description</p>
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                        <label for="vehicle1">  &nbsp; &nbsp;   loren nt ullaamco est</label><br>
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                        <label for="vehicle1">  &nbsp; &nbsp; loren nt ullaamco est</label><br>
-                                      </ng-template>
-                                    </li>
-                                    <li [ngbNavItem]="2">
-                                      <a ngbNavLink>Essential skills</a>
-                                      <ng-template ngbNavContent>
-                                        <textarea style="height: 320px" rows="8" class="form-control" id="PositionValues" name="PositionValues" placeholder="Essential Skills" ></textarea>
-                                      </ng-template>
-                                    </li>
-                                  </ul>
-                                  
-                                  <div [ngbNavOutlet]="nav" class="mt-2"></div>
-                                  
                             
-								<!-- <ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
-									<li  [ngbNavItem]="1">
-										<a ngbNavLink><span class="tab-title">Key Responsabilities</span></a>
-										<ng-template ngbNavContent>
-										<textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
-										</ng-template>
-									</li>
-									<li  [ngbNavItem]="2">
-										<a ngbNavLink><span class="tab-title">Essential Skills</span></a>
-										<ng-template ngbNavContent>
-										<textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
-										</ng-template>
-									</li>
-								</ul> -->
-                            </ng-template>
-                     
-                              
-                           
-                        </li>
-                        <li [ngbNavItem]="3">
-                            <a ngbNavLink><span class="tab-title-small">Position Employee</span></a>
-                            <ng-template ngbNavContent>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <app-select-contact #selectContactComp (contactsAdded)="addNewContactsEmployeePosition($event)"></app-select-contact>
+                        
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink><span class="tab-title-small">Position Employee</span></a>
+                        <ng-template ngbNavContent>
+                            <div class="row">
+                                <div class="col-12">
+                                    <app-select-contact #selectContactComp (contactsAdded)="addNewContactsEmployeePosition($event)"></app-select-contact>
+                                </div>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr *ngFor="let person of treeNodeCurrent.data.employees_position">
+                                            <td>
+                                                <button class="btn" (click)="deleteContactsEmployeePosition(person)">
+                                                    <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            </td>
+                                            <td> {{person.name}} </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="4">
+                        <a ngbNavLink><span class="tab-title-small">Functional Relationship</span></a>
+                        <ng-template ngbNavContent>
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="openAddFunctionalRel($event,funcionalRelTemplate)" ngbTooltip="Add Functional Relationship">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                            <table>
+                                <tbody>
+                                    <tr *ngFor="let functionalRel of treeNodeCurrent.data.functionalrels">
+                                        <td>
+                                            <button class="btn" (click)="deleteFunctionalRel(functionalRel,tree)">
+                                                <i class="bi bi-x-circle"></i>
+                                            </button>
+                                        </td>
+                                        <td> {{functionalRel.name}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="5">
+                        <a ngbNavLink><span class="tab-title-small">Notes</span></a>
+                        <ng-template ngbNavContent>
+                            <textarea style="height: 100%" rows="8" class="form-control" id="Notes" name="Notes" placeholder="Notes" #Notes="ngModel" [(ngModel)]="positionCurrent.Notes" (change)="savePosition(positionCurrent,tree)"></textarea>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="6">
+                        <a ngbNavLink><span class="tab-title-small">Attachments</span></a>
+                        <ng-template ngbNavContent>
+                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="openFileUpload($event,uploadTemplate)" ngbTooltip="Add Attachment">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                            <table class="attachment-table-wrapper-scroll-y attachment-scrollbar">
+                                <tbody>
+                                    <tr *ngFor="let attachment of treeNodeCurrent.data.attachments.sort(); index as i">
+                                        <td>
+
+                                            <ng-template #popTitle>Delete?</ng-template>
+                                            <ng-template #popContent>
+                                            <button class="btn btn-sm btn-outline-danger " (click)="    deleteAttachment(attachment,tree)">Yes</button>
+                                                            <button class="btn btn-sm btn-outline-success">No</button>
+                                            </ng-template>
+                                                <button (click)="confirmDelete(p1)" triggers="manual" #p1="ngbPopover" placement="bottom" [ngbPopover]="popContent" [popoverTitle]="popTitle" type="button" class="btn btn-outline-dark btn-sm">
+                                                                <i class="bi bi-x-circle"></i>
+                                                </button>
+<!--                                                 <button class="btn" (click)="deleteAttachment(attachment,tree)">
+                                                <i class="bi bi-x-circle"></i>
+                                            </button> -->
+                                        </td>
+                                        <td style="word-break: break-word"><i [class]="attachment.class"></i> {{fileNameSub(attachment.name)}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="7">
+                        <a ngbNavLink><span class="tab-title-small">Privacy</span></a>
+                        <ng-template ngbNavContent>
+                            <div class="row">
+                                <div class="col-12" style="min-height: 140px">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form style="margin-bottom: 0px;height: 15px;">
+                                                <label class="form-control" for="enableAditional" style="border:none">
+                                                    <input type="checkbox" name="enableAditional" [(ngModel)]="treeNodeCurrent.data.privacy.enableAditional" (change)="savePosition2();">
+                                                    <small style="margin-left: 10px;">Aditional</small>
+                                                </label>
+                                            </form>
+                                        </div>
+                                        <div class="col-12">
+                                            <app-select-contact *ngIf="treeNodeCurrent.data.privacy.enableAditional" #selectContactComp (contactsAdded)="addAditionalPosition($event)"></app-select-contact>
+                                        </div>
                                     </div>
-                                    <table class="table table-sm">
+                                    <table class="table table-sm" *ngIf="treeNodeCurrent.data.privacy.enableAditional" style="margin-bottom: 0px;">
                                         <tbody>
-                                            <tr *ngFor="let person of treeNodeCurrent.data.employees_position">
+                                            <tr>
+                                                <th> </th>
+                                                <th> <small>Name</small> </th>
+                                                <th> <small>See</small> </th>
+                                                <th> <small>Modify</small> </th>
+                                                <th> <small>Delete</small> </th>
+                                            </tr>
+                                            <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsAditional">
                                                 <td>
-                                                    <button class="btn" (click)="deleteContactsEmployeePosition(person)">
+                                                    <button class="btn" (click)="deleteAditionalPosition(contact,tree)">
                                                         <i class="bi bi-x-circle"></i>
                                                     </button>
                                                 </td>
-                                                <td> {{person.name}} </td>
+                                                <td> {{contact.name}} </td>
+                                                <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see">
+                                                </td>
+                                                <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify">
+                                                </td>
+                                                <td class="pt-2"> <input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                            </ng-template>
-                        </li>
-                        <li [ngbNavItem]="4">
-                            <a ngbNavLink><span class="tab-title-small">Functional Relationship</span></a>
-                            <ng-template ngbNavContent>
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="openAddFunctionalRel($event,funcionalRelTemplate)" ngbTooltip="Add Functional Relationship">
-                                    <i class="bi bi-plus-circle"></i>
-                                </button>
-                                <table>
-                                    <tbody>
-                                        <tr *ngFor="let functionalRel of treeNodeCurrent.data.functionalrels">
-                                            <td>
-                                                <button class="btn" (click)="deleteFunctionalRel(functionalRel,tree)">
-                                                    <i class="bi bi-x-circle"></i>
-                                                </button>
-                                            </td>
-                                            <td> {{functionalRel.name}} </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </ng-template>
-                        </li>
-                        <li [ngbNavItem]="5">
-                            <a ngbNavLink><span class="tab-title-small">Notes</span></a>
-                            <ng-template ngbNavContent>
-                                <textarea style="height: 100%" rows="8" class="form-control" id="Notes" name="Notes" placeholder="Notes" #Notes="ngModel" [(ngModel)]="positionCurrent.Notes" (change)="savePosition(positionCurrent,tree)"></textarea>
-                            </ng-template>
-                        </li>
-                        <li [ngbNavItem]="6">
-                            <a ngbNavLink><span class="tab-title-small">Attachments</span></a>
-                            <ng-template ngbNavContent>
-                                <button type="button" class="btn btn-outline-dark btn-sm" (click)="openFileUpload($event,uploadTemplate)" ngbTooltip="Add Attachment">
-                                    <i class="bi bi-plus-circle"></i>
-                                </button>
-                                <table class="attachment-table-wrapper-scroll-y attachment-scrollbar">
-                                    <tbody>
-                                        <tr *ngFor="let attachment of treeNodeCurrent.data.attachments.sort(); index as i">
-                                            <td>
-
-                                                <ng-template #popTitle>Delete?</ng-template>
-                                                <ng-template #popContent>
-                                                <button class="btn btn-sm btn-outline-danger " (click)="    deleteAttachment(attachment,tree)">Yes</button>
-                                                                <button class="btn btn-sm btn-outline-success">No</button>
-                                                </ng-template>
-                                                    <button (click)="confirmDelete(p1)" triggers="manual" #p1="ngbPopover" placement="bottom" [ngbPopover]="popContent" [popoverTitle]="popTitle" type="button" class="btn btn-outline-dark btn-sm">
-                                                                    <i class="bi bi-x-circle"></i>
-                                                   </button>
-<!--                                                 <button class="btn" (click)="deleteAttachment(attachment,tree)">
-                                                    <i class="bi bi-x-circle"></i>
-                                                </button> -->
-                                            </td>
-                                            <td style="word-break: break-word"><i [class]="attachment.class"></i> {{fileNameSub(attachment.name)}} </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </ng-template>
-                        </li>
-                        <li [ngbNavItem]="7">
-                            <a ngbNavLink><span class="tab-title-small">Privacy</span></a>
-                            <ng-template ngbNavContent>
-                                <div class="row">
-                                    <div class="col-12" style="min-height: 140px">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <form style="margin-bottom: 0px;height: 15px;">
-                                                    <label class="form-control" for="enableAditional" style="border:none">
-                                                        <input type="checkbox" name="enableAditional" [(ngModel)]="treeNodeCurrent.data.privacy.enableAditional" (change)="savePosition2();">
-                                                        <small style="margin-left: 10px;">Aditional</small>
-                                                    </label>
-                                                </form>
-                                            </div>
-                                            <div class="col-12">
-                                                <app-select-contact *ngIf="treeNodeCurrent.data.privacy.enableAditional" #selectContactComp (contactsAdded)="addAditionalPosition($event)"></app-select-contact>
-                                            </div>
+                                <div class="col-12" style="min-height: 140px">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form style="margin-bottom: 0px;height: 15px;">
+                                                <label class="form-control" for="enableException" style="border:none">
+                                                    <input type="checkbox" name="enableException" [(ngModel)]="treeNodeCurrent.data.privacy.enableException" (change)="savePosition(positionCurrent,treeOrg);">
+                                                    <small style="margin-left: 10px;">Exception</small>
+                                                </label>
+                                            </form>
                                         </div>
-                                        <table class="table table-sm" *ngIf="treeNodeCurrent.data.privacy.enableAditional" style="margin-bottom: 0px;">
-                                            <tbody>
-                                                <tr>
-                                                    <th> </th>
-                                                    <th> <small>Name</small> </th>
-                                                    <th> <small>See</small> </th>
-                                                    <th> <small>Modify</small> </th>
-                                                    <th> <small>Delete</small> </th>
-                                                </tr>
-                                                <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsAditional">
-                                                    <td>
-                                                        <button class="btn" (click)="deleteAditionalPosition(contact,tree)">
-                                                            <i class="bi bi-x-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td> {{contact.name}} </td>
-                                                    <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see">
-                                                    </td>
-                                                    <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify">
-                                                    </td>
-                                                    <td class="pt-2"> <input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-12" style="min-height: 140px">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <form style="margin-bottom: 0px;height: 15px;">
-                                                    <label class="form-control" for="enableException" style="border:none">
-                                                        <input type="checkbox" name="enableException" [(ngModel)]="treeNodeCurrent.data.privacy.enableException" (change)="savePosition(positionCurrent,treeOrg);">
-                                                        <small style="margin-left: 10px;">Exception</small>
-                                                    </label>
-                                                </form>
-                                            </div>
-                                            <div class="col-12">
-                                                <app-select-contact *ngIf="treeNodeCurrent.data.privacy.enableException" #selectContactComp (contactsAdded)="addExceptionPosition($event)"></app-select-contact>
-                                                <!-- 
-                                                    <input *ngIf="positionCurrentPrivacy.enableAditional" class="form-control form-control-sm" type="text" name="enableAditionalSearch" placeholder="Search" [ngbTypeahead]="searchContacts" [resultTemplate]="rt" (selectItem)="selectAditionalPosition($event)" [inputFormatter]="formatter"> -->
-                                            </div>
+                                        <div class="col-12">
+                                            <app-select-contact *ngIf="treeNodeCurrent.data.privacy.enableException" #selectContactComp (contactsAdded)="addExceptionPosition($event)"></app-select-contact>
+                                            <!-- 
+                                                <input *ngIf="positionCurrentPrivacy.enableAditional" class="form-control form-control-sm" type="text" name="enableAditionalSearch" placeholder="Search" [ngbTypeahead]="searchContacts" [resultTemplate]="rt" (selectItem)="selectAditionalPosition($event)" [inputFormatter]="formatter"> -->
                                         </div>
-                                        <table *ngIf="treeNodeCurrent.data.privacy.enableException" class="table table-sm" style="margin-bottom: 0px;">
-                                            <tbody>
-                                                <tr>
-                                                    <th></th>
-                                                    <th> <small>Name</small> </th>
-                                                    <th> <small>See</small> </th>
-                                                    <th> <small>Modify</small> </th>
-                                                    <th> <small>Delete</small> </th>
-                                                </tr>
-                                                <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsException">
-                                                    <td> <button class="btn" (click)="deleteExceptionPosition(contact,tree)">
-                                                            <i class="bi bi-x-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td> {{contact.name}} </td>
-                                                    <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see"> </td>
-                                                    <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify"></td>
-                                                    <td class="pt-2"> <input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
+                                    <table *ngIf="treeNodeCurrent.data.privacy.enableException" class="table table-sm" style="margin-bottom: 0px;">
+                                        <tbody>
+                                            <tr>
+                                                <th></th>
+                                                <th> <small>Name</small> </th>
+                                                <th> <small>See</small> </th>
+                                                <th> <small>Modify</small> </th>
+                                                <th> <small>Delete</small> </th>
+                                            </tr>
+                                            <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsException">
+                                                <td> <button class="btn" (click)="deleteExceptionPosition(contact,tree)">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </td>
+                                                <td> {{contact.name}} </td>
+                                                <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see"> </td>
+                                                <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify"></td>
+                                                <td class="pt-2"> <input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </ng-template>
-                        </li>
+                            </div>
+                        </ng-template>
+                    </li>
                     </ul>
                     <div [ngbNavOutlet]="nav3" class="ml-2"></div>
                 </div>

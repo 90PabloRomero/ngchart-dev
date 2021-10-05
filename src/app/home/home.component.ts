@@ -278,15 +278,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
    changeDedicationRegime(positionCurrent:any,tree:any){  // change position dedication regime
         if (this.sheetSelected.ID != 0) {
             let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  positionCurrent.ID })
-            let positionType='postition'; // 'position'='full time'
+            var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == positionCurrent.ID);
+            treeNode.data.name = positionCurrent.PositionName.replace('(a) ','');
+            treeNode.data.name = positionCurrent.PositionName.replace('(t) ','');
             if(positionCurrent.DedicationRegime=='temporal'){
                this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
+               treeNode.data.name='(t) '+positionCurrent.PositionName
             }else{
                 this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'position')
+                if(positionCurrent.AdvisingAuthority) treeNode.data.name='(a) '+positionCurrent.PositionName;            
             }
             this.saveSheet(this.sheetSelected);
         } 
-        this.savePosition(positionCurrent,tree)
+        
    }
 
     mouseDownGraphNode(event: any) {
@@ -1302,10 +1306,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     changeAdvisingAuthorityPosition(position: any, tree: any) { // when position Is Advisor? change in details update on graph
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
-        treeNode.data.name = position.PositionName.replace('(a) ','');
+        
         if(position.AdvisingAuthority){
             treeNode.data.name='(a) '+position.PositionName
+        } else {
+            treeNode.data.name = position.PositionName.replace('(a) ','');
         }
+        
 
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item.attributes.tree_id == position.ID) {
