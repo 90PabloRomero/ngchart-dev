@@ -31,16 +31,16 @@
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
-  /*
+  
   .details-handle {
     position: absolute;
     top: 5px;
     right: 5px;
     color: #ccc;
     cursor: move;
-    width: 12px;
-    height: 12px;
-  }*/
+    width: 24px;
+    height: 24px;
+  }
 
 .active {
     background-color: #F7FCFC;
