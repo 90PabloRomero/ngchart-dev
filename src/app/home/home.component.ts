@@ -2766,8 +2766,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.savePosition(this.positionCurrent, this.treeOrg);
 
         if (this.sheetSelected.ID != 0) {
-            setTimeout(() => { this.refreshSheetOnView(); }, 200)
+            setTimeout(() => { 
+                this.refreshSheetOnView(); 
+            }, 200)
         }
+        setTimeout(() => { 
+            alert("Succesfully deleted functional relationship.")
+        }, 1000)
     }
 
 
