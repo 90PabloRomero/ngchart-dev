@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     treeNodeCurrent: any;
     tree: any;
     active: any;
-    panelExpanded: boolean = false;
+    panelExpanded: boolean = true;
     isProjectFisrtTreeUpdate: boolean = true;
     panelsIds: any = {};
     activeSheets: any = {};
@@ -94,22 +94,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //$event.preventDefault();
             //alert(`context menu for ${node.data.name}`);
           },
-          dblClick: (tree, node, $event) => {
-            if (node.hasChildren) {
-              TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-            }
-          },
           click: (tree, node, $event) => {
             $event.shiftKey
               ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
               : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
             
-              //Dar click nuevamente para que el nodo no quede nunca en el estado DESELECTED
-              if(!node.isActive) node.mouseAction('click',$event);
-              //console.log($event)
-
-              //let clicked_element = document.getElementById($event.data.id) as HTMLElement;
-              //clicked_element.click();              
+            if(!node.isActive) TREE_ACTIONS.ACTIVATE(tree, node, $event);
+            
+            this.panelExpanded = false;
+            node.toggleExpanded();        
           },
           dragEnd: (tree, node, $event) => {
               //console.log("Dragged Node: " + node.data.name);
@@ -131,6 +124,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (node.hasChildren) {
                 TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
             }
+            node.mouseAction('click',$event);
           }
         }
       };
@@ -200,7 +194,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.sheets = [];
         this.panelsIds[1] = false;
         this.panelsIds[2] = false;
-       this.panelsIds[3] = true;
+        this.panelsIds[3] = true;
     }
 
     onTreeEvent(event: any) {  // any event on tree component 
@@ -524,7 +518,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.treeOrg.treeModel.doForAll((item) => {
             if (item.data.isfunctionalrel) {
                 if (item.data.functionalRelSourceName && item.data.functionalRelTargetName) {
-                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName)
+                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName);
                 }
             }
         })
@@ -1515,6 +1509,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
+    deleteNodeConfirmedByUser(tree){
+        if (!tree.treeModel.getActiveNode()) {
+            alert('No active or selected Node!')
+            return;
+        }
+        let node = tree.treeModel.getActiveNode();
+        this.deleteNode(tree);
+
+        //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
+        setTimeout(function(){ alert("Succesfully deleted " + node.data.name + " and below relations."); }, 500);
+        
+    }
+
     deleteNode(tree) {  // delete tree node 
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
@@ -1617,7 +1624,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     treeNodeSameLevelUp(tree: any, event: any) {
-
+       
         if (!tree.treeModel.getActiveNode()) {
             
             alert('No active or selected Node!')
@@ -2879,11 +2886,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         newCell.attributes.tree_id = treeNodeRootForSheet.data.id;
                         newCells.cells.push(newCell.attributes);
                         sheet.Data = JSON.stringify(newCells);
-                        this.refreshSheetOnView();
                         this.generateSheetDataRecur(treeNodeRootForSheet, newCell.attributes, newCells, sheet);
                     } //  if treeNodeRootForSheet
                 } //  if rootSheetNode
-
+                this.refreshSheetOnView();
             }
         })
     }
@@ -2927,7 +2933,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     let newLink = this.paperView.getLinkDef(parentNew, newCell, child.data.is_displacement);
                     cells.cells.push(newLink.attributes);
                     sheet.Data = JSON.stringify(cells);
-                    this.refreshSheetOnView();
                     unitX = unitX + 1;
                     this.generateSheetDataRecur(child, newCell.attributes, cells, sheet)
                 }
