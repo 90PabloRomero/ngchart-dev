@@ -440,7 +440,9 @@
                     <div class="form-row">
                     <div class="col">
                         <label for="PositionNameInput" class="label-input-panel">Name</label>
-                        <input type="text" class="form-control mt-1 input-panel" id="PositionNameInput" name="PositionNameInput" placeholder="Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" (change)="saveNamePosition(positionCurrent,tree)">
+                        <input type="text" class="form-control mt-1 input-panel" id="PositionNameInput" name="PositionNameInput" placeholder="Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" 
+                        (change)="saveNamePosition(positionCurrent,tree)"
+                        (onblur)="saveNamePosition(positionCurrent,tree)">
                     </div>
 
                     <div class="col">
