@@ -2981,6 +2981,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return
         }
         if (this.functionalrelsHash[functionalrel.data.id]) { 
+            alert("Functional Relationship already exists")
             return 
         } 
         this.functionalrelsHash[functionalrel.data.id] = true 
