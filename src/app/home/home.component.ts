@@ -2965,6 +2965,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     addFunctionalRel(functionalrel: any, tree: any) { //
         if (this.positionCurrent.ID == functionalrel.data.id) {
+            alert("Not Allowed to create Functional Relationship with self")
             return
         }
         let nodeCurrent = tree.treeModel.getNodeById(this.positionCurrent.ID);
