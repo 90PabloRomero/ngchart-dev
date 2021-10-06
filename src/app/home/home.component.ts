@@ -1262,6 +1262,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     onNodeFocus($event, tree) { // set data when tree node is focused
         console.log("______________")
         let nodeCurrent = tree.treeModel.getFocusedNode();
+        console.log("tree.treeModel.activeNodes");
+        tree.treeModel.activeNodes.forEach(element => {
+            console.log(element.data)
+        });
         console.log(nodeCurrent)
         if ((nodeCurrent.data.is_displacement && nodeCurrent.data.is_displacement == true) ||
             (nodeCurrent.data.isfunctionalrel && nodeCurrent.data.isfunctionalrel == true)) {
@@ -1459,31 +1463,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    nodeToDeleteData: any = {}
-    checkBeforeDeleteTreeNode(tree: any, cb) {  // check before delete node
+    nodesToDeleteData: any = []
+    checkBeforeDeleteTreeNodes(tree: any, cb) {  // check before delete node
         if (!tree.treeModel.getActiveNode()) {
             return;
         }
-        let node = tree.treeModel.getActiveNode();
-        this.nodeToDeleteData.node = node;
-        this.refreshProjectSelectedSheets((projectSheets) => {
-            this.paperView.beforeDeleteNodeAllSheets(node, projectSheets);
-        })
-        cb()
+
+        this.nodesToDeleteData = [];
+        tree.treeModel.activeNodes.forEach(element => {
+            this.nodesToDeleteData.push(element);
+            
+            this.refreshProjectSelectedSheets((projectSheets) => {
+                this.paperView.beforeDeleteNodeAllSheets(element, projectSheets);
+            })
+            cb()
+        });        
+        
     }
 
-    openConfirmDeleteTreeNode(event: any, confirmDeleteTreeNodeTemplate: any, tree: any) { // modal confirm delete node
+    openConfirmDeleteTreeNodes(event: any, confirmDeleteTreeNodeTemplate: any, tree: any) { // modal confirm delete node
         if (!tree.treeModel.getActiveNode()) {
             return;
         }
         event.preventDefault();
         this.tree = tree;
-        this.checkBeforeDeleteTreeNode(tree, () => {
-            this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
-                ariaLabelledBy: 'modal-basic-title',
-                size: 'sm',
-                scrollable: false
-            });
+        this.checkBeforeDeleteTreeNodes(tree, () => {
+            if(!this.modalService.hasOpenModals()){ //This check is made because the event triggers once per nodeToDelete, so, we open the modal only once
+                this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
+                    ariaLabelledBy: 'modal-basic-title',
+                    size: 'sm',
+                    scrollable: false
+                });
+            }            
 
         });
 
@@ -1526,26 +1537,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
-    deleteNodeConfirmedByUser(tree){
+    deleteNodesConfirmedByUser(tree){
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
             return;
         }
-        let node = tree.treeModel.getActiveNode();
-        this.deleteNode(tree);
+        this.deleteNodes(tree);
 
         //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
-        setTimeout(function(){ alert("Succesfully deleted " + node.data.name + " and below relations."); }, 500);
-        
+        setTimeout(function(){ alert("Succesfully deleted selected node(s) and below relations."); }, 500);
     }
 
-    deleteNode(tree) {  // delete tree node 
-        if (!tree.treeModel.getActiveNode()) {
-            alert('No active or selected Node!')
-            return;
-        }
-        this.positionCurrent= new Position;
-        let node = tree.treeModel.getActiveNode();
+    deleteNodeFunctionalRels(node, tree){
         if (node.data.isfunctionalrel && node.data.isfunctionalrel == true) {
             this.deleteFunctionalRelById({
                 id: node.data.functionalRelTargetId,
@@ -1553,18 +1556,43 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }, tree)
         }
         this.delFunctionalRelsOtherNodes(tree, node);
+        return
+    }
 
+    removeNodeFromParentsChildrenData(node){
         let parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
         _.remove(parentNode.data.children, (child: any) => {
             return child === node.data;
         });
+        return
+    }
+
+    deleteActiveNodeFromTree(tree){
+        
+        this.positionCurrent= new Position;
+        let node = tree.treeModel.getActiveNode();
+
+        this.deleteNodeFunctionalRels(node, tree);
+
+        this.removeNodeFromParentsChildrenData(node);
+
         //new, delete node on all sheets 
         this.refreshProjectSelectedSheets((projectSheets) => {
             this.paperView.deleteNodeAllSheets(node, projectSheets);
         })
         tree.treeModel.update();
         this.onUpdateTree(null, tree);
+        return
+    }
 
+    deleteNodes(tree) {  // delete tree node 
+        
+        tree.treeModel.activeNodes.forEach(element => {
+            console.log("Node to Delete: ");
+            console.log(element.data);
+            this.deleteActiveNodeFromTree(tree);
+        });
+        
     }
 
     checkAndUpdateTreeNodeAddedAllSheets(parent: any, newNodeName: any, newNodeId: any) { //executed only when node is not root 
@@ -1903,7 +1931,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let c = 0
         if (node.data.children.length == 0 && node.data.name == '**Displacement**') {
             node = tree.treeModel.getNodeById(node.id);
-            this.deleteNode(tree);
+            this.deleteNodes(tree);
         } else {
             node.data.children.forEach((child) => {
                 child = tree.treeModel.getNodeById(child.id);
@@ -1927,7 +1955,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 if (c >= node.data.children.length - 1 || node.data.name == '**Displacement**') {
                     node = tree.treeModel.getNodeById(node.id);
                     // node.setActiveAndVisible();
-                    this.deleteNode(tree);
+                    this.deleteNodes(tree);
                 }
 
                 i = i + 1
