@@ -786,6 +786,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     saveOffviewSheet(sheet: any) { // on tree change this function is called to save sheet sync 
         if (sheet.ID) { //
+            //console.log("saveOffviewSheet: on tree change this function is called to save sheet sync ")
+            //console.log(sheet.Data)
             this.http.put < any > (urlApi + '/sheet/' + sheet.ID, sheet)
                 .subscribe(
                     (any) => {
@@ -813,6 +815,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 querystring="?isn=yes"
             }
             sheet.Data = JSON.stringify(this.paperView.graph.toJSON());
+            //console.log("saveSheet: save sheet on db ")
+            //console.log(sheet.Data)
             this.http.put < any > (urlApi + '/sheet/' + sheet.ID+querystring, sheet)
                 .subscribe(
                     (any) => {
@@ -886,6 +890,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (isNameUpdate){
                 querystring="?isn=yes"
             }
+            //console.log("saveProject: saving project tree ")
+            //console.log(this.projectSelected)
             this.http.put < any > (urlApi + '/project/' + project.ID+querystring, project)
                 .subscribe(
                     (any) => {
@@ -1231,6 +1237,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.projectSelected.Data = JSON.stringify(allData);
         if (!this.isProjectFisrtTreeUpdate) {
             //update project tree
+            //console.log("onUpdateTree: saving project tree ")
+            //console.log(this.projectSelected)
             this.http.put < any > (urlApi + '/project/' + this.projectSelected.ID, this.projectSelected)
                 .subscribe(
                     (any) => {
@@ -1394,6 +1402,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
         //update project tree
+        //console.log("Save Position: saving project tree")
+        //console.log(this.projectSelected)
         this.http.put < any > (urlApi + '/project/' + this.projectSelected.ID, this.projectSelected)
             .subscribe(
                 (any) => {
@@ -2726,11 +2736,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
     }
 
-    openAddFunctionalRel(event, template) {  // open functional rel modal
+    updateTreeNodeCurrentFunctionalRelHash(){
         this.functionalrelsHash = {}
         this.treeNodeCurrent.data.functionalrels.forEach((item) => {
             this.functionalrelsHash[item.id] = true;
         })
+    }
+
+    openAddFunctionalRel(event, template) {  // open functional rel modal
+        this.updateTreeNodeCurrentFunctionalRelHash();
         event.preventDefault();
         this.modalWindow = this.modalService.open(template, {
             ariaLabelledBy: 'modal-basic-title',
@@ -2989,7 +3003,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
             name: functionalrel.data.name,
             id: functionalrel.data.id
         });
+        //console.log("this.treeNodeCurrent.data.functionalrels");
+        //console.log(this.treeNodeCurrent.data.functionalrels);
+        nodeCurrent.data.functionalrels = this.treeNodeCurrent.data.functionalrels;
         this.addFunctionalRelTreeNode(tree, nodeCurrent, functionalrel)
+
         this.savePosition(this.positionCurrent, tree);
         if (this.sheetSelected && this.sheetSelected.ID && this.sheetSelected.ID != 0) {
             if (this.activeId == this.sheetSelected.ID) {
