@@ -3137,6 +3137,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     onChangeEvent(event) {
-        this.panelExpanded=this.panelExpanded == true ? false: true;
+        this.panelExpanded=this.panelExpanded == false ? true: false;
     }
 }
