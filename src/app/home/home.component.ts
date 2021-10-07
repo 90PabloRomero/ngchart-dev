@@ -1679,59 +1679,118 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.onUpdateTree(null, tree);
     }
 
-    treeNodeSameLevelUp(tree: any, event: any) {
-       
-        if (!tree.treeModel.getActiveNode()) {
-            
-            alert('No active or selected Node!')
-            return;
-        }
-        let node: any = tree.treeModel.getActiveNode();
-        if (node.isRoot == true) {
-            alert("No allowed at root level");
-            return;
-        }
-        let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
-        let previousSibling: any = node.findPreviousSibling()
-        if (!previousSibling) {
-            alert('No previous Sibling available!');
-            return;
-        }
-        tree.treeModel.moveNode(node, {
-            dropOnNode: false,
-            index: previousSibling.index,
-            parent: parentNode
-        }, {
-            index: 0,
-            parent: parentNode
-        })
+    treeNodesSameLevelUp(tree: any) {
+        this.findNonSelectedPreviousSibling(tree);
     }
 
-    treeNodeSameLevelDown(tree: any, event: any) {
+    findNonSelectedPreviousSibling(tree){
+        let previousSibling: any;
+        let parentNode: any;
 
-        if (!tree.treeModel.getActiveNode()) {
-            alert('No active or selected Node!')
-            return;
-        }
-        let node: any = tree.treeModel.getActiveNode();
-        if (node.isRoot == true) {
-            alert("No allowed at root level");
-            return;
-        }
-        let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
-        let nextSibling: any = node.findNextSibling()
-        if (!nextSibling) {
-            alert('No next Sibling available!');
-            return;
-        }
-        tree.treeModel.moveNode(nextSibling, {
-            dropOnNode: false,
-            index: node.index,
-            parent: parentNode
-        }, {
-            index: 0,
-            parent: parentNode
-        })
+        console.log("Iteration: start seeking")
+        
+        tree.treeModel.activeNodes.forEach(node => {
+            if(!node) {
+                alert('No active or selected Node!')
+                return;
+            }
+            if (node.isRoot == true) {
+                alert("No allowed at root level");
+                return;
+            }            
+
+            node = tree.treeModel.getNodeById(node.id);
+            previousSibling = node.findPreviousSibling();
+            if (!previousSibling) {
+                alert('No Previous Sibling available!');
+                return;
+            }
+            //If previousSibling is not among the selectedNodes
+            let isAmongSelected = this.siblingIsAmongSelectedNodes(tree, previousSibling);
+            if(!isAmongSelected) {
+                console.log("Sibling is not selected, SWITCH")
+                //Calculate parent Node
+                parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+                console.log("Non selected previous sibling is: " + previousSibling.data.name);
+                //Execute same level up on all selected nodes
+                this.moveSameLevelNodes(tree, previousSibling, parentNode);
+            } else {
+                //And if it is, try again because this one is selected       
+                console.log("Sibling is among selected nodes, iterate");
+            } 
+            
+        });
+
+        
+    }
+
+    moveSameLevelNodes(tree, xSibling, parentNode){
+        tree.treeModel.activeNodes.forEach(item => {
+            let node = tree.treeModel.getNodeById(item.id);
+            let sibling = tree.treeModel.getNodeById(xSibling.id);
+            tree.treeModel.moveNode(node, {
+                dropOnNode: false,
+                index: sibling.index,
+                parent: parentNode
+            }, {
+                index: 0,
+                parent: parentNode
+            })
+        });
+    }
+
+    treeNodesSameLevelDown(tree: any) {
+        this.findNonSelectedNextSibling(tree);
+    }
+
+    siblingIsAmongSelectedNodes(tree, sibling){
+        let isAmongTheSelectedNodes = false;
+            tree.treeModel.activeNodes.forEach(item => {                
+                //Check if nextSibling is among the selectedNodes
+                if( sibling == item ) isAmongTheSelectedNodes = true
+            });
+        return isAmongTheSelectedNodes;
+    }
+
+    findNonSelectedNextSibling(tree){
+        let nextSibling: any;
+        let parentNode: any;
+        
+        console.log("Iteration: start seeking")
+        
+        tree.treeModel.activeNodes.forEach(node => {
+            if(!node) {
+                alert('No active or selected Node!')
+                return;
+            }
+            if (node.isRoot == true) {
+                alert("No allowed at root level");
+                return;
+            }        
+
+            node = tree.treeModel.getNodeById(node.id);
+            nextSibling = node.findNextSibling();
+            if (!nextSibling) {
+                alert('No Next Sibling available!');
+                return;
+            }
+            //If nextSibling is among the selectedNodes
+            let isAmongSelected = this.siblingIsAmongSelectedNodes(tree, nextSibling);
+            if(!isAmongSelected) {
+                console.log("Sibling is not selected, SWITCH");
+                //Calculate parent Node
+                parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+                console.log("Non selected next sibling is: " + nextSibling.data.name);
+                //Execute same level up on all selected nodes
+                this.moveSameLevelNodes(tree, nextSibling, parentNode);
+            } else {
+                //And if it is, try again because this one is selected       
+                console.log("Sibling is among selected nodes, iterate");
+            }
+            
+        });
+
+        
     }
 
     treeNodeOneLevelDown(tree: any, event: any) {
