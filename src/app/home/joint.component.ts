@@ -100,11 +100,11 @@ export class JointComponent implements OnInit, AfterViewInit {
     tree: any;
     contacts: Contact[] = [{ ID: 1, Name: 'contact1' }, { ID: 2, Name: 'contact2' }, { ID: 3, Name: 'contact3' }, { ID: 4, Name: 'contact4' }]
 
-    c1 = '<circle class="c1" style="fill:#3cd039 ;stroke:#3cd039;stroke-width:1;stroke-miterlimit:10;" r="10">' +
+    c1 = '<circle class="c1" style="fill:#3cd039 ;stroke:#3cd039;stroke-width:1;stroke-miterlimit:10;filter: drop-shadow( 2px 2px 2px rgba(119, 255, 51, .7));" r="10">' +
         '</circle>';
-    c2 = '<circle class="c2" style="fill:#ee9f06 ;stroke:#ee9f06;stroke-width:1;stroke-miterlimit:10;" r="10">' +
+    c2 = '<circle class="c2" style="fill:#ee9f06 ;stroke:#ee9f06;stroke-width:1;stroke-miterlimit:10;filter: drop-shadow( 2px 2px 2px rgba(255, 202, 51, .7));" r="10">' +
         '</circle>';
-    c3 = '<circle class="c3" style="fill:#3977d4 ;stroke:#3977d4;stroke-width:1;stroke-miterlimit:10;" r="10">' +
+    c3 = '<circle class="c3" style="fill:#3977d4 ;stroke:#3977d4;stroke-width:1;stroke-miterlimit:10;filter: drop-shadow( 2px 2px 2px rgba(51, 178, 255, .7));" r="10">' +
         '</circle>';
 
     // custom jointjs element for positions    
@@ -135,7 +135,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     });
 
     Member3 = joint.dia.Element.define('org.Member3', {
-        size: { width: 260, height: 140 },
+        size: { width: 245, height: 105 },
         attrs: {
             rect: { width: 170, height: 60 },
             '.card': { fill: '#FFFFFF', stroke: '#000000', 'stroke-width': 2, 'pointer-events': 'visiblePainted', rx: 10, ry: 10 },
@@ -157,7 +157,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         "position_type": 'position',
         "tree_id": 0,
     }, {
-        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="card"><circle id="circle-move-up" name="circle-move-up" cx="85" cy="-20" r="10"></circle><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="10"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="10"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="10"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
+        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="card"><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="10"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="10"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="10"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
     showSelectorNode = true;
 
@@ -1396,7 +1396,6 @@ export class JointComponent implements OnInit, AfterViewInit {
             }
         })
     }
-
 
     siblingSide: any = 'left';
     addGraphNodeSibling(siblingRoot: any, unitX: any, unitY: any, name: any, code: any, positionType: any, siblingSide: any, modal: any) {

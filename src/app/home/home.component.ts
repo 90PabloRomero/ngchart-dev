@@ -29,6 +29,7 @@ import { node } from 'canvg/lib/presets';
 import { IActionMapping, ITreeOptions, KEYS, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { event } from 'jquery';
 import { SelectNodeComponent } from '../select-node/select-node.component';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 const positionsName = [];
 
@@ -175,6 +176,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ) {
         config.closeOthers = false;
         config.type = 'light';
+
+        //Switch
+
     }
 
 
@@ -2979,5 +2983,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 }, 200)
             }
         }
+    }
+
+    onChangeEvent(event) {
+        this.panelExpanded=this.panelExpanded == true ? false: true;
     }
 }
