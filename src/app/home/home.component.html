@@ -6,9 +6,9 @@
     </span>
     <div class="btn-toolbar ml-auto mr-auto" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group mr-2" role="group" aria-label="Second group">
-            <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveSheet(sheetSelected)" ngbTooltip="Save Sheet" [disabled]="!sheetSelected.ID">
+            <!-- <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveSheet(sheetSelected)" ngbTooltip="Save Sheet" [disabled]="!sheetSelected.ID">
                 <i class="bi bi-save"></i>
-            </button>
+            </button> -->
             <button type="button" class="btn btn-outline-dark btn-sm" ngbTooltip="Search Sheet" (click)="openSheetSearch($event,searchSheetTemplate)">
                 <i class="bi bi-folder2-open"></i>
             </button>
@@ -1026,7 +1026,7 @@
                         <div *ngFor="let sheet of projectSheets; index as i">
                             <div class = "form-group">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input"  (change)="updateCheckedOptions(sheet.ID)"/>{{ sheet.SheetName }}
+                                <input type="checkbox" class="form-check-input" [checked]="activeSheets[sheet.ID]" [disabled]="activeSheets[sheet.ID]" (change)="updateCheckedOptions(sheet.ID)"/>{{ sheet.SheetName }}
                               </label>
                             </div> 
                         </div>
@@ -1383,13 +1383,15 @@
     <div class="modal-body" style="padding: 1px;">
         <div class="col-12" style="background:#ffffff ">
             <h6 class="modal-title" id="modal-basic-title" style="color: #777777">
-                <span>Would you like to delete {{nodeToDeleteData.node.data.name}} and bellow relationships on all sheets?</span>
+                <div>Would you like to delete: </div>
+                <div *ngFor="let nodeToDeleteData of nodesToDeleteData" > {{nodeToDeleteData.data.name}} </div>
+                <div>and bellow relationships on all sheets?</div>
             </h6>
         </div>
         <div class="col-12" style="background:#ffffff ">
         </div>
         <div class="modal-footer" style="    justify-content: center;">
-            <button class="btn btn-success" (click)=" deleteNode(tree);modal.dismiss('Cross click')">Accept</button>
+            <button class="btn btn-success" (click)="modal.dismiss('Cross click');deleteNodesConfirmedByUser(tree)">Accept</button>
             <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </div>

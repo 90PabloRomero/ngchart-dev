@@ -23,6 +23,7 @@ import { ContactRight } from '../models/contactright';
 
 })
 export class JointComponent implements OnInit, AfterViewInit {
+    @Output() dblclickGraphNodeEvent = new EventEmitter < Position > ();    //graph position is clicked
     @Output() clickGraphNodeEvent = new EventEmitter < Position > ();    //graph position is clicked
     @Output() refreshSelectedSheetEvent = new EventEmitter < Sheet > ();  //send refresh sheet to main
     @Output() sheetDimentionsChangeEvent = new EventEmitter(); //sheet dimentions change event
@@ -201,23 +202,13 @@ export class JointComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         setTimeout(() => {
             this.doLayout();
-            this.paper.on('cell:pointerclick', (t, evt) => {  // set current node on graph node clicked
-                if ((t.model.attributes.type == "org.Member") || (t.model.attributes.type == "org.Member2") || (t.model.attributes.type == "org.Member3")) {
-                    let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
-                    this.nodeGraphCurrent = t.model;
-                }
-                console.log('clicked')
-                this.nodeGraphAnyLastSelected = t;
-                this.clickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details
 
-                //Circle clicks
-                if (evt) {
-                    const idx = evt.target.id;
-                    if (idx.indexOf('move-up') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'up', event: evt });
-                    else if (idx.indexOf('move-down') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'down', event: evt });
-                    else if (idx.indexOf('move-left') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'left', event: evt });
-                    else if (idx.indexOf('move-right') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'right', event: evt });
-                }
+            this.paper.on('cell:pointerdblclick', (t, evt) => {  // set current node on graph node clicked
+                this.click_actions(t, evt, false);
+            });
+
+            this.paper.on('cell:pointerclick', (t, evt) => {  // set current node on graph node clicked
+                this.click_actions(t, evt, true);
             });
 
             this.paper.on('cell:contextmenu', (cellView, e, x, y) => {
@@ -245,6 +236,32 @@ export class JointComponent implements OnInit, AfterViewInit {
 
         }, 1000);
 
+    }
+
+    click_actions(t, evt, click: boolean){
+        if ((t.model.attributes.type == "org.Member") || (t.model.attributes.type == "org.Member2") || (t.model.attributes.type == "org.Member3")) {
+            let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
+            this.nodeGraphCurrent = t.model;
+        }
+
+        this.nodeGraphAnyLastSelected = t;
+        
+        if(click){
+            console.log('clicked')
+            this.clickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details            
+        } else {
+            console.log('double clicked')
+            this.dblclickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details
+        }
+        
+        //Circle clicks
+        if (evt) {
+            const idx = evt.target.id;
+            if (idx.indexOf('move-up') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'up', event: evt });
+            else if (idx.indexOf('move-down') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'down', event: evt });
+            else if (idx.indexOf('move-left') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'left', event: evt });
+            else if (idx.indexOf('move-right') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'right', event: evt });
+        }
     }
 
     updateSupervisedCounters() { //update all graph node counters for supervised positions

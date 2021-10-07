@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     treeNodeCurrent: any;
     tree: any;
     active: any;
-    panelExpanded: boolean = false;
+    panelExpanded: boolean = true;
     isProjectFisrtTreeUpdate: boolean = true;
     panelsIds: any = {};
     activeSheets: any = {};
@@ -95,27 +95,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //$event.preventDefault();
             //alert(`context menu for ${node.data.name}`);
           },
-          dblClick: (tree, node, $event) => {
-            if (node.hasChildren) {
-              TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-            }
-          },
           click: (tree, node, $event) => {
             $event.shiftKey
               ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
               : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
             
-              //Dar click nuevamente para que el nodo no quede nunca en el estado DESELECTED
-              if(!node.isActive) node.mouseAction('click',$event);
-              //console.log($event)
-
-              //let clicked_element = document.getElementById($event.data.id) as HTMLElement;
-              //clicked_element.click();              
+            if(!node.isActive) TREE_ACTIONS.ACTIVATE(tree, node, $event);
+            
+            this.panelExpanded = false;
+            node.toggleExpanded();    
           },
           dragEnd: (tree, node, $event) => {
               //console.log("Dragged Node: " + node.data.name);
               //tree.setActiveNode(node, true);
               this.generateGraph(this.treeOrg);
+          },
+          drop: (tree, node, $event, { from, to }) => {
+            const activeNodes = tree.activeNodes;
+            if (activeNodes.length > 1) {
+                activeNodes.forEach(item => {
+                  const currentItem = tree.getNodeById(item.id);
+                  tree.moveNode(currentItem, to);
+                });
+              } else {
+                tree.moveNode(from, to);
+              }
           },
           /*
           mouseOver: (tree, node, $event) => {
@@ -132,6 +136,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (node.hasChildren) {
                 TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
             }
+            node.mouseAction('click',$event);
           }
         }
       };
@@ -204,7 +209,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.sheets = [];
         this.panelsIds[1] = false;
         this.panelsIds[2] = false;
-       this.panelsIds[3] = true;
+        this.panelsIds[3] = true;
     }
 
     onTreeEvent(event: any) {  // any event on tree component 
@@ -288,15 +293,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
    changeDedicationRegime(positionCurrent:any,tree:any){  // change position dedication regime
         if (this.sheetSelected.ID != 0) {
             let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  positionCurrent.ID })
-            let positionType='postition'; // 'position'='full time'
+            var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == positionCurrent.ID);
+            treeNode.data.name = positionCurrent.PositionName.replace('(a) ','');
+            treeNode.data.name = positionCurrent.PositionName.replace('(t) ','');
             if(positionCurrent.DedicationRegime=='temporal'){
                this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
+               treeNode.data.name='(t) '+positionCurrent.PositionName
             }else{
                 this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'position')
+                if(positionCurrent.AdvisingAuthority) treeNode.data.name='(a) '+positionCurrent.PositionName;            
             }
             this.saveSheet(this.sheetSelected);
         } 
-        this.savePosition(positionCurrent,tree)
+        
    }
 
     mouseDownGraphNode(event: any) {
@@ -528,7 +537,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.treeOrg.treeModel.doForAll((item) => {
             if (item.data.isfunctionalrel) {
                 if (item.data.functionalRelSourceName && item.data.functionalRelTargetName) {
-                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName)
+                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName);
                 }
             }
         })
@@ -792,6 +801,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     saveOffviewSheet(sheet: any) { // on tree change this function is called to save sheet sync 
         if (sheet.ID) { //
+            //console.log("saveOffviewSheet: on tree change this function is called to save sheet sync ")
+            //console.log(sheet.Data)
             this.http.put < any > (urlApi + '/sheet/' + sheet.ID, sheet)
                 .subscribe(
                     (any) => {
@@ -819,6 +830,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 querystring="?isn=yes"
             }
             sheet.Data = JSON.stringify(this.paperView.graph.toJSON());
+            //console.log("saveSheet: save sheet on db ")
+            //console.log(sheet.Data)
             this.http.put < any > (urlApi + '/sheet/' + sheet.ID+querystring, sheet)
                 .subscribe(
                     (any) => {
@@ -892,6 +905,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (isNameUpdate){
                 querystring="?isn=yes"
             }
+            //console.log("saveProject: saving project tree ")
+            //console.log(this.projectSelected)
             this.http.put < any > (urlApi + '/project/' + project.ID+querystring, project)
                 .subscribe(
                     (any) => {
@@ -1162,7 +1177,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     let graphNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  child.data.id })
 
                     if (graphNode){
-                       // this.generateGraphRecur(child, graphNode)
+                        this.generateGraphRecur(child, graphNode)
 
                     }else{
 
@@ -1197,7 +1212,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         this.paperView.graph.addCell(newLink);
                         unitX = unitX + 1;
 
-                        //this.generateGraphRecur(child, newCell)
+                        this.generateGraphRecur(child, newCell)
                     }
                 }
             })
@@ -1237,6 +1252,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.projectSelected.Data = JSON.stringify(allData);
         if (!this.isProjectFisrtTreeUpdate) {
             //update project tree
+            //console.log("onUpdateTree: saving project tree ")
+            //console.log(this.projectSelected)
             this.http.put < any > (urlApi + '/project/' + this.projectSelected.ID, this.projectSelected)
                 .subscribe(
                     (any) => {
@@ -1260,6 +1277,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     onNodeFocus($event, tree) { // set data when tree node is focused
         console.log("______________")
         let nodeCurrent = tree.treeModel.getFocusedNode();
+        console.log("tree.treeModel.activeNodes");
+        tree.treeModel.activeNodes.forEach(element => {
+            console.log(element.data)
+        });
         console.log(nodeCurrent)
         if ((nodeCurrent.data.is_displacement && nodeCurrent.data.is_displacement == true) ||
             (nodeCurrent.data.isfunctionalrel && nodeCurrent.data.isfunctionalrel == true)) {
@@ -1312,10 +1333,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     changeAdvisingAuthorityPosition(position: any, tree: any) { // when position Is Advisor? change in details update on graph
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
-        treeNode.data.name = position.PositionName.replace('(a) ','');
+        
         if(position.AdvisingAuthority){
             treeNode.data.name='(a) '+position.PositionName
+        } else {
+            treeNode.data.name = position.PositionName.replace('(a) ','');
         }
+        
 
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item.attributes.tree_id == position.ID) {
@@ -1397,6 +1421,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
         //update project tree
+        //console.log("Save Position: saving project tree")
+        //console.log(this.projectSelected)
         this.http.put < any > (urlApi + '/project/' + this.projectSelected.ID, this.projectSelected)
             .subscribe(
                 (any) => {
@@ -1452,31 +1478,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    nodeToDeleteData: any = {}
-    checkBeforeDeleteTreeNode(tree: any, cb) {  // check before delete node
+    nodesToDeleteData: any = []
+    checkBeforeDeleteTreeNodes(tree: any, cb) {  // check before delete node
         if (!tree.treeModel.getActiveNode()) {
             return;
         }
-        let node = tree.treeModel.getActiveNode();
-        this.nodeToDeleteData.node = node;
-        this.refreshProjectSelectedSheets((projectSheets) => {
-            this.paperView.beforeDeleteNodeAllSheets(node, projectSheets);
-        })
-        cb()
+
+        this.nodesToDeleteData = [];
+        tree.treeModel.activeNodes.forEach(element => {
+            this.nodesToDeleteData.push(element);
+            
+            this.refreshProjectSelectedSheets((projectSheets) => {
+                this.paperView.beforeDeleteNodeAllSheets(element, projectSheets);
+            })
+            cb()
+        });        
+        
     }
 
-    openConfirmDeleteTreeNode(event: any, confirmDeleteTreeNodeTemplate: any, tree: any) { // modal confirm delete node
+    openConfirmDeleteTreeNodes(event: any, confirmDeleteTreeNodeTemplate: any, tree: any) { // modal confirm delete node
         if (!tree.treeModel.getActiveNode()) {
             return;
         }
         event.preventDefault();
         this.tree = tree;
-        this.checkBeforeDeleteTreeNode(tree, () => {
-            this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
-                ariaLabelledBy: 'modal-basic-title',
-                size: 'sm',
-                scrollable: false
-            });
+        this.checkBeforeDeleteTreeNodes(tree, () => {
+            if(!this.modalService.hasOpenModals()){ //This check is made because the event triggers once per nodeToDelete, so, we open the modal only once
+                this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
+                    ariaLabelledBy: 'modal-basic-title',
+                    size: 'sm',
+                    scrollable: false
+                });
+            }            
 
         });
 
@@ -1519,13 +1552,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
-    deleteNode(tree) {  // delete tree node 
+    deleteNodesConfirmedByUser(tree){
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
             return;
         }
-        this.positionCurrent= new Position;
-        let node = tree.treeModel.getActiveNode();
+        this.deleteNodes(tree);
+
+        //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
+        setTimeout(function(){ alert("Succesfully deleted selected node(s) and below relations."); }, 500);
+    }
+
+    deleteNodeFunctionalRels(node, tree){
         if (node.data.isfunctionalrel && node.data.isfunctionalrel == true) {
             this.deleteFunctionalRelById({
                 id: node.data.functionalRelTargetId,
@@ -1533,18 +1571,43 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }, tree)
         }
         this.delFunctionalRelsOtherNodes(tree, node);
+        return
+    }
 
+    removeNodeFromParentsChildrenData(node){
         let parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
         _.remove(parentNode.data.children, (child: any) => {
             return child === node.data;
         });
+        return
+    }
+
+    deleteActiveNodeFromTree(tree){
+        
+        this.positionCurrent= new Position;
+        let node = tree.treeModel.getActiveNode();
+
+        this.deleteNodeFunctionalRels(node, tree);
+
+        this.removeNodeFromParentsChildrenData(node);
+
         //new, delete node on all sheets 
         this.refreshProjectSelectedSheets((projectSheets) => {
             this.paperView.deleteNodeAllSheets(node, projectSheets);
         })
         tree.treeModel.update();
         this.onUpdateTree(null, tree);
+        return
+    }
 
+    deleteNodes(tree) {  // delete tree node 
+        
+        tree.treeModel.activeNodes.forEach(element => {
+            console.log("Node to Delete: ");
+            console.log(element.data);
+            this.deleteActiveNodeFromTree(tree);
+        });
+        
     }
 
     checkAndUpdateTreeNodeAddedAllSheets(parent: any, newNodeName: any, newNodeId: any) { //executed only when node is not root 
@@ -1620,59 +1683,134 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.onUpdateTree(null, tree);
     }
 
-    treeNodeSameLevelUp(tree: any, event: any) {
-
-        if (!tree.treeModel.getActiveNode()) {
-            
+    treeNodesSameLevelUp(tree: any) {
+        let node: any = tree.treeModel.getActiveNode();
+        if(!node) {
             alert('No active or selected Node!')
             return;
         }
-        let node: any = tree.treeModel.getActiveNode();
         if (node.isRoot == true) {
             alert("No allowed at root level");
             return;
         }
         let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
-        let previousSibling: any = node.findPreviousSibling()
+
+        let previousSibling: any = node.findPreviousSibling();
         if (!previousSibling) {
             alert('No previous Sibling available!');
             return;
         }
-        tree.treeModel.moveNode(node, {
-            dropOnNode: false,
-            index: previousSibling.index,
-            parent: parentNode
-        }, {
-            index: 0,
-            parent: parentNode
-        })
+
+        //Find the nonSelectedPreviousSibling
+        let nonSelectedPreviousSibling = this.findNonSelectedPreviousSiblingRecur(tree, previousSibling);
+        console.log("nonSelectedPreviousSibling");
+        console.log(nonSelectedPreviousSibling.data.name);
+
+        //Execute same level up on all selected nodes
+        this.execSameLevelUpOnAllSelectedNodes(tree, nonSelectedPreviousSibling ,parentNode);
+
+        tree.treeModel.update();
+        this.onUpdateTree(null, tree);
     }
 
-    treeNodeSameLevelDown(tree: any, event: any) {
+    findNonSelectedPreviousSiblingRecur(tree, previousSibling){
+        //Check if previousSibling is among the selectedNodes
+        let isInsideTheSelectedNodes = false;
+        tree.treeModel.activeNodes.forEach(node => {
+            if( previousSibling == node ) isInsideTheSelectedNodes = true;
+        });
 
-        if (!tree.treeModel.getActiveNode()) {
+        //If is Inside, don't move, Need to find the next step and check
+        if(isInsideTheSelectedNodes) {
+            previousSibling = previousSibling.findPreviousSibling();
+            if (!previousSibling) {
+                alert('No previous Sibling available!');
+                return;
+            }
+            this.findNonSelectedPreviousSiblingRecur(tree, previousSibling);
+        }
+        
+        return previousSibling;
+    }
+
+    execSameLevelUpOnAllSelectedNodes(tree, previousSibling, parentNode){
+        tree.treeModel.activeNodes.forEach(item => {
+            let node = tree.treeModel.getNodeById(item.id);
+            tree.treeModel.moveNode(node, {
+                dropOnNode: false,
+                index: previousSibling.index,
+                parent: parentNode
+            }, {
+                index: 0,
+                parent: parentNode
+            })
+        });
+        return;
+    }
+
+    treeNodesSameLevelDown(tree: any) {
+        let node: any = tree.treeModel.getActiveNode();
+        if(!node) {
             alert('No active or selected Node!')
             return;
         }
-        let node: any = tree.treeModel.getActiveNode();
         if (node.isRoot == true) {
             alert("No allowed at root level");
             return;
         }
         let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
-        let nextSibling: any = node.findNextSibling()
+
+        let nextSibling: any = node.findNextSibling();
         if (!nextSibling) {
-            alert('No next Sibling available!');
+            alert('No Next Sibling available!');
             return;
         }
-        tree.treeModel.moveNode(nextSibling, {
-            dropOnNode: false,
-            index: node.index,
-            parent: parentNode
-        }, {
-            index: 0,
-            parent: parentNode
-        })
+
+        //Find the nonSelectednextSibling
+        let nonSelectedNextSibling = this.findNonSelectedNextSiblingRecur(tree, nextSibling);
+        console.log("nonSelectedNextSibling");
+        console.log(nonSelectedNextSibling.data.name);
+
+        //Execute same level up on all selected nodes
+        this.execSameLevelUpOnAllSelectedNodes(tree, nonSelectedNextSibling ,parentNode);
+
+        tree.treeModel.update();
+        this.onUpdateTree(null, tree);
+    }
+
+    findNonSelectedNextSiblingRecur(tree, nextSibling){
+        //Check if nextSibling is among the selectedNodes
+        let isInsideTheSelectedNodes = false;
+        tree.treeModel.activeNodes.forEach(node => {
+            if( nextSibling == node ) isInsideTheSelectedNodes = true;
+        });
+
+        //If is Inside, don't move, Need to find the next step and check
+        if(isInsideTheSelectedNodes) {
+            nextSibling = nextSibling.findNextSibling();
+            if (!nextSibling) {
+                alert('No next Sibling available!');
+                return;
+            }
+            this.findNonSelectedNextSiblingRecur(tree, nextSibling);
+        }
+        
+        return nextSibling;
+    }
+
+    execSameLevelDownOnAllSelectedNodes(tree, nextSibling, parentNode){
+        tree.treeModel.activeNodes.forEach(item => {
+            let node = tree.treeModel.getNodeById(item.id);
+            tree.treeModel.moveNode(node, {
+                dropOnNode: false,
+                index: nextSibling.index,
+                parent: parentNode
+            }, {
+                index: 0,
+                parent: parentNode
+            })
+        });
+        return;
     }
 
     treeNodeOneLevelDown(tree: any, event: any) {
@@ -1883,7 +2021,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let c = 0
         if (node.data.children.length == 0 && node.data.name == '**Displacement**') {
             node = tree.treeModel.getNodeById(node.id);
-            this.deleteNode(tree);
+            this.deleteNodes(tree);
         } else {
             node.data.children.forEach((child) => {
                 child = tree.treeModel.getNodeById(child.id);
@@ -1907,7 +2045,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 if (c >= node.data.children.length - 1 || node.data.name == '**Displacement**') {
                     node = tree.treeModel.getNodeById(node.id);
                     // node.setActiveAndVisible();
-                    this.deleteNode(tree);
+                    this.deleteNodes(tree);
                 }
 
                 i = i + 1
@@ -2716,11 +2854,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
     }
 
-    openAddFunctionalRel(event, template) {  // open functional rel modal
+    updateTreeNodeCurrentFunctionalRelHash(){
         this.functionalrelsHash = {}
         this.treeNodeCurrent.data.functionalrels.forEach((item) => {
             this.functionalrelsHash[item.id] = true;
         })
+    }
+
+    openAddFunctionalRel(event, template) {  // open functional rel modal
+        this.updateTreeNodeCurrentFunctionalRelHash();
         event.preventDefault();
         this.modalWindow = this.modalService.open(template, {
             ariaLabelledBy: 'modal-basic-title',
@@ -2756,8 +2898,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.savePosition(this.positionCurrent, this.treeOrg);
 
         if (this.sheetSelected.ID != 0) {
-            setTimeout(() => { this.refreshSheetOnView(); }, 200)
+            setTimeout(() => { 
+                this.refreshSheetOnView(); 
+            }, 200)
         }
+        setTimeout(() => { 
+            alert("Succesfully deleted functional relationship.")
+        }, 1000)
     }
 
 
@@ -2883,11 +3030,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         newCell.attributes.tree_id = treeNodeRootForSheet.data.id;
                         newCells.cells.push(newCell.attributes);
                         sheet.Data = JSON.stringify(newCells);
-                        this.refreshSheetOnView();
                         this.generateSheetDataRecur(treeNodeRootForSheet, newCell.attributes, newCells, sheet);
                     } //  if treeNodeRootForSheet
                 } //  if rootSheetNode
-
+                this.refreshSheetOnView();
             }
         })
     }
@@ -2931,7 +3077,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     let newLink = this.paperView.getLinkDef(parentNew, newCell, child.data.is_displacement);
                     cells.cells.push(newLink.attributes);
                     sheet.Data = JSON.stringify(cells);
-                    this.refreshSheetOnView();
                     unitX = unitX + 1;
                     this.generateSheetDataRecur(child, newCell.attributes, cells, sheet)
                 }
@@ -2952,6 +3097,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     addFunctionalRel(functionalrel: any, tree: any) { //
         if (this.positionCurrent.ID == functionalrel.data.id) {
+            alert("Not Allowed to create Functional Relationship with self")
             return
         }
         let nodeCurrent = tree.treeModel.getNodeById(this.positionCurrent.ID);
@@ -2967,6 +3113,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return
         }
         if (this.functionalrelsHash[functionalrel.data.id]) { 
+            alert("Functional Relationship already exists")
             return 
         } 
         this.functionalrelsHash[functionalrel.data.id] = true 
@@ -2974,7 +3121,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
             name: functionalrel.data.name,
             id: functionalrel.data.id
         });
+        //console.log("this.treeNodeCurrent.data.functionalrels");
+        //console.log(this.treeNodeCurrent.data.functionalrels);
+        nodeCurrent.data.functionalrels = this.treeNodeCurrent.data.functionalrels;
         this.addFunctionalRelTreeNode(tree, nodeCurrent, functionalrel)
+
         this.savePosition(this.positionCurrent, tree);
         if (this.sheetSelected && this.sheetSelected.ID && this.sheetSelected.ID != 0) {
             if (this.activeId == this.sheetSelected.ID) {
