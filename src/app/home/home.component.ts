@@ -102,12 +102,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if(!node.isActive) TREE_ACTIONS.ACTIVATE(tree, node, $event);
             
             this.panelExpanded = false;
-            node.toggleExpanded();        
+            node.toggleExpanded();    
           },
           dragEnd: (tree, node, $event) => {
               //console.log("Dragged Node: " + node.data.name);
               //tree.setActiveNode(node, true);
               this.generateGraph(this.treeOrg);
+          },
+          drop: (tree, node, $event, { from, to }) => {
+            const activeNodes = tree.activeNodes;
+            if (activeNodes.length > 1) {
+                activeNodes.forEach(item => {
+                  const currentItem = tree.getNodeById(item.id);
+                  tree.moveNode(currentItem, to);
+                });
+              } else {
+                tree.moveNode(from, to);
+              }
           },
           /*
           mouseOver: (tree, node, $event) => {
