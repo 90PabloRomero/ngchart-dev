@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ɵCompiler_compileModuleSync__POST_R3__ } from '@angular/core';
 import { Position } from '../models/position';
 import { Sheet } from '../models/sheet';
 import { Project } from '../models/project';
@@ -1684,7 +1684,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     treeNodesSameLevelUp(tree: any) {
-        let node: any = tree.treeModel.getActiveNode();
+        this.findNonSelectedPreviousSibling(tree);
+    }
+
+    findNonSelectedPreviousSibling(tree){
+        let previousSibling: any;
+        let parentNode: any;
+
+        let node = tree.treeModel.getActiveNode();
         if(!node) {
             alert('No active or selected Node!')
             return;
@@ -1692,64 +1699,82 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (node.isRoot == true) {
             alert("No allowed at root level");
             return;
-        }
-        let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+        } 
 
-        let previousSibling: any = node.findPreviousSibling();
-        if (!previousSibling) {
-            alert('No previous Sibling available!');
-            return;
-        }
+        console.log("Iteration: start seeking")
+        tree.treeModel.activeNodes.forEach(node => {                      
 
-        //Find the nonSelectedPreviousSibling
-        let nonSelectedPreviousSibling = this.findNonSelectedPreviousSiblingRecur(tree, previousSibling);
-        console.log("nonSelectedPreviousSibling");
-        console.log(nonSelectedPreviousSibling.data.name);
-
-        //Execute same level up on all selected nodes
-        this.execSameLevelUpOnAllSelectedNodes(tree, nonSelectedPreviousSibling ,parentNode);
-
-        tree.treeModel.update();
-        this.onUpdateTree(null, tree);
-    }
-
-    findNonSelectedPreviousSiblingRecur(tree, previousSibling){
-        //Check if previousSibling is among the selectedNodes
-        let isInsideTheSelectedNodes = false;
-        tree.treeModel.activeNodes.forEach(node => {
-            if( previousSibling == node ) isInsideTheSelectedNodes = true;
-        });
-
-        //If is Inside, don't move, Need to find the next step and check
-        if(isInsideTheSelectedNodes) {
-            previousSibling = previousSibling.findPreviousSibling();
+            node = tree.treeModel.getNodeById(node.id);
+            previousSibling = node.findPreviousSibling();
             if (!previousSibling) {
-                alert('No previous Sibling available!');
+                alert('No Previous Sibling available!');
                 return;
             }
-            this.findNonSelectedPreviousSiblingRecur(tree, previousSibling);
-        }
+            //If previousSibling is not among the selectedNodes
+            let isAmongSelected = this.siblingIsAmongSelectedNodes(tree, previousSibling);
+            if(!isAmongSelected) {
+                console.log("Sibling is not selected, SWITCH")
+                //Calculate parent Node
+                parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+                console.log("Non selected previous sibling is: " + previousSibling.data.name);
+                //Execute same level up on all selected nodes
+                this.moveSameLevelUp(tree, previousSibling, parentNode);
+            } else {
+                //And if it is, try again because this one is selected       
+                console.log("Sibling is among selected nodes, iterate");
+            } 
+            
+        });
+
         
-        return previousSibling;
     }
 
-    execSameLevelUpOnAllSelectedNodes(tree, previousSibling, parentNode){
-        tree.treeModel.activeNodes.forEach(item => {
-            let node = tree.treeModel.getNodeById(item.id);
-            tree.treeModel.moveNode(node, {
-                dropOnNode: false,
-                index: previousSibling.index,
-                parent: parentNode
-            }, {
-                index: 0,
-                parent: parentNode
-            })
-        });
-        return;
+    moveSameLevelUp(tree, previousSibling, parentNode){    
+         
+        let node = previousSibling.findNextSibling();       
+        tree.treeModel.moveNode(node, {
+            dropOnNode: false,
+            index: previousSibling.index,
+            parent: parentNode
+        }, {
+            index: 0,
+            parent: parentNode
+        })  
+
+    }
+
+    moveSameLevelDown(tree, nextSibling, parentNode){
+        
+        let node = nextSibling.findPreviousSibling();   
+        tree.treeModel.moveNode(nextSibling, {
+            dropOnNode: false,
+            index: node.index,
+            parent: parentNode
+        }, {
+            index: 0,
+            parent: parentNode
+        })
+       
     }
 
     treeNodesSameLevelDown(tree: any) {
-        let node: any = tree.treeModel.getActiveNode();
+        this.findNonSelectedNextSibling(tree);
+    }
+
+    siblingIsAmongSelectedNodes(tree, sibling){
+        let isAmongTheSelectedNodes = false;
+            tree.treeModel.activeNodes.forEach(item => {                
+                //Check if nextSibling is among the selectedNodes
+                if( sibling == item ) isAmongTheSelectedNodes = true
+            });
+        return isAmongTheSelectedNodes;
+    }
+
+    findNonSelectedNextSibling(tree){
+        let nextSibling: any;
+        let parentNode: any;
+        
+        let node = tree.treeModel.getActiveNode()
         if(!node) {
             alert('No active or selected Node!')
             return;
@@ -1757,60 +1782,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (node.isRoot == true) {
             alert("No allowed at root level");
             return;
-        }
-        let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+        }   
 
-        let nextSibling: any = node.findNextSibling();
-        if (!nextSibling) {
-            alert('No Next Sibling available!');
-            return;
-        }
-
-        //Find the nonSelectednextSibling
-        let nonSelectedNextSibling = this.findNonSelectedNextSiblingRecur(tree, nextSibling);
-        console.log("nonSelectedNextSibling");
-        console.log(nonSelectedNextSibling.data.name);
-
-        //Execute same level up on all selected nodes
-        this.execSameLevelUpOnAllSelectedNodes(tree, nonSelectedNextSibling ,parentNode);
-
-        tree.treeModel.update();
-        this.onUpdateTree(null, tree);
-    }
-
-    findNonSelectedNextSiblingRecur(tree, nextSibling){
-        //Check if nextSibling is among the selectedNodes
-        let isInsideTheSelectedNodes = false;
-        tree.treeModel.activeNodes.forEach(node => {
-            if( nextSibling == node ) isInsideTheSelectedNodes = true;
-        });
-
-        //If is Inside, don't move, Need to find the next step and check
-        if(isInsideTheSelectedNodes) {
-            nextSibling = nextSibling.findNextSibling();
+        console.log("Iteration: start seeking")
+        
+        tree.treeModel.activeNodes.forEach(node => {     
+            node = tree.treeModel.getNodeById(node.id);
+            nextSibling = node.findNextSibling();
             if (!nextSibling) {
-                alert('No next Sibling available!');
+                alert('No Next Sibling available!');
                 return;
             }
-            this.findNonSelectedNextSiblingRecur(tree, nextSibling);
-        }
-        
-        return nextSibling;
-    }
-
-    execSameLevelDownOnAllSelectedNodes(tree, nextSibling, parentNode){
-        tree.treeModel.activeNodes.forEach(item => {
-            let node = tree.treeModel.getNodeById(item.id);
-            tree.treeModel.moveNode(node, {
-                dropOnNode: false,
-                index: nextSibling.index,
-                parent: parentNode
-            }, {
-                index: 0,
-                parent: parentNode
-            })
+            //If nextSibling is among the selectedNodes
+            let isAmongSelected = this.siblingIsAmongSelectedNodes(tree, nextSibling);
+            if(!isAmongSelected) {
+                console.log("Sibling is not selected, SWITCH");
+                //Calculate parent Node
+                parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+                console.log("Non selected next sibling is: " + nextSibling.data.name);
+                //Execute same level up on all selected nodes
+                this.moveSameLevelDown(tree, nextSibling, parentNode);
+            } else {
+                //And if it is, try again because this one is selected       
+                console.log("Sibling is among selected nodes, iterate");
+            }
+            
         });
-        return;
+
+        
     }
 
     treeNodeOneLevelDown(tree: any, event: any) {
