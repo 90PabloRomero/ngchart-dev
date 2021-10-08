@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ɵCompiler_compileModuleSync__POST_R3__ } from '@angular/core';
 import { Position } from '../models/position';
 import { Sheet } from '../models/sheet';
 import { Project } from '../models/project';
@@ -1687,17 +1687,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let previousSibling: any;
         let parentNode: any;
 
+        let node = tree.treeModel.getActiveNode();
+        if(!node) {
+            alert('No active or selected Node!')
+            return;
+        }
+        if (node.isRoot == true) {
+            alert("No allowed at root level");
+            return;
+        } 
+
         console.log("Iteration: start seeking")
-        
-        tree.treeModel.activeNodes.forEach(node => {
-            if(!node) {
-                alert('No active or selected Node!')
-                return;
-            }
-            if (node.isRoot == true) {
-                alert("No allowed at root level");
-                return;
-            }            
+        tree.treeModel.activeNodes.forEach(node => {                      
 
             node = tree.treeModel.getNodeById(node.id);
             previousSibling = node.findPreviousSibling();
@@ -1713,7 +1714,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
                 console.log("Non selected previous sibling is: " + previousSibling.data.name);
                 //Execute same level up on all selected nodes
-                this.moveSameLevelNodes(tree, previousSibling, parentNode);
+                this.moveSameLevelUp(tree, previousSibling, parentNode);
             } else {
                 //And if it is, try again because this one is selected       
                 console.log("Sibling is among selected nodes, iterate");
@@ -1724,19 +1725,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
         
     }
 
-    moveSameLevelNodes(tree, xSibling, parentNode){
-        tree.treeModel.activeNodes.forEach(item => {
-            let node = tree.treeModel.getNodeById(item.id);
-            let sibling = tree.treeModel.getNodeById(xSibling.id);
-            tree.treeModel.moveNode(node, {
-                dropOnNode: false,
-                index: sibling.index,
-                parent: parentNode
-            }, {
-                index: 0,
-                parent: parentNode
-            })
-        });
+    moveSameLevelUp(tree, previousSibling, parentNode){    
+         
+        let node = previousSibling.findNextSibling();       
+        tree.treeModel.moveNode(node, {
+            dropOnNode: false,
+            index: previousSibling.index,
+            parent: parentNode
+        }, {
+            index: 0,
+            parent: parentNode
+        })  
+
+    }
+
+    moveSameLevelDown(tree, nextSibling, parentNode){
+        
+        let node = nextSibling.findPreviousSibling();   
+        tree.treeModel.moveNode(nextSibling, {
+            dropOnNode: false,
+            index: node.index,
+            parent: parentNode
+        }, {
+            index: 0,
+            parent: parentNode
+        })
+       
     }
 
     treeNodesSameLevelDown(tree: any) {
@@ -1756,18 +1770,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let nextSibling: any;
         let parentNode: any;
         
+        let node = tree.treeModel.getActiveNode()
+        if(!node) {
+            alert('No active or selected Node!')
+            return;
+        }
+        if (node.isRoot == true) {
+            alert("No allowed at root level");
+            return;
+        }   
+
         console.log("Iteration: start seeking")
         
-        tree.treeModel.activeNodes.forEach(node => {
-            if(!node) {
-                alert('No active or selected Node!')
-                return;
-            }
-            if (node.isRoot == true) {
-                alert("No allowed at root level");
-                return;
-            }        
-
+        tree.treeModel.activeNodes.forEach(node => {     
             node = tree.treeModel.getNodeById(node.id);
             nextSibling = node.findNextSibling();
             if (!nextSibling) {
@@ -1782,7 +1797,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
                 console.log("Non selected next sibling is: " + nextSibling.data.name);
                 //Execute same level up on all selected nodes
-                this.moveSameLevelNodes(tree, nextSibling, parentNode);
+                this.moveSameLevelDown(tree, nextSibling, parentNode);
             } else {
                 //And if it is, try again because this one is selected       
                 console.log("Sibling is among selected nodes, iterate");
