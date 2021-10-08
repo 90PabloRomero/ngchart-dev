@@ -1824,20 +1824,52 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        let parentNode: any = node.realParent ? node.realParent : node.treeModel.virtualRoot;
-        let previousSibling: any = node.findPreviousSibling()
-        if (!previousSibling) {
-            alert('No previous Sibling available!')
-            return;
-        }
-        tree.treeModel.moveNode(node, {
-            dropOnNode: false,
-            index: 0,
-            parent: previousSibling
-        }, {
-            index: 0,
-            parent: parentNode
-        })
+        let parentNode: any;
+        let previousSibling: any;
+        let done = false;
+
+        console.log("Iteration: start seeking")
+        tree.treeModel.activeNodes.forEach(node => {                      
+            if(!done){
+                node = tree.treeModel.getNodeById(node.id);
+                previousSibling = node.findPreviousSibling();
+                if (!previousSibling) {
+                    alert('No Previous Sibling available!');
+                    return;
+                }
+                //If previousSibling is not among the selectedNodes
+                let isAmongSelected = this.siblingIsAmongSelectedNodes(tree, previousSibling);
+                if(!isAmongSelected) {
+                    console.log("Sibling is not selected, SWITCH")
+                    //Calculate parent Node
+                    parentNode = node.realParent ? node.realParent : node.treeModel.virtualRoot;
+                    console.log("Non selected previous sibling is: " + previousSibling.data.name);
+                    //Execute same level up on all selected nodes
+                    this.moveNodesOneLevelDown(tree, previousSibling, parentNode);
+                    done = true;
+                } else {
+                    //And if it is, try again because this one is selected       
+                    console.log("Sibling is among selected nodes, iterate");
+                } 
+            }           
+            
+        });
+
+    }
+
+    moveNodesOneLevelDown(tree, previousSibling, parentNode) {    
+        tree.treeModel.activeNodes.forEach(element => {
+            let currNode = tree.treeModel.getNodeById(element.id);
+            tree.treeModel.moveNode(currNode, {
+                dropOnNode: false,
+                index: 0,
+                parent: previousSibling
+            }, {
+                index: 0,
+                parent: parentNode
+            })
+        });
+
         setTimeout(() => {
             (tree.treeModel.getNodeById(previousSibling.id)).expand()
         }, 300)
@@ -1861,14 +1893,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         let grandParentNode: any = parentNode.realParent ? parentNode.realParent : parentNode.treeModel.virtualRoot;
 
-        tree.treeModel.moveNode(node, {
-            dropOnNode: false,
-            index: parentNode.index,
-            parent: grandParentNode
-        }, {
-            index: 0,
-            parent: parentNode
-        })
+        tree.treeModel.activeNodes.forEach(element => {
+            let currNode = tree.treeModel.getNodeById(element.id);
+            tree.treeModel.moveNode(currNode, {
+                dropOnNode: false,
+                index: parentNode.index,
+                parent: grandParentNode
+            }, {
+                index: 0,
+                parent: parentNode
+            })
+        });        
 
     }
 
