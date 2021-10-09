@@ -213,14 +213,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     onTreeEvent(event: any) {  // any event on tree component 
-        if (event.eventName == 'moveNode') { // if a tree node is moved updates all sheets and related data
-            this.updateAllSheetsFromTreeNode();
-            return
-        } else if (event.eventName == 'blur') { // if a tree node change focus
-            this.treeNodeCurrent = event.node.data;
-            this.updateAllSheetsFromTreeNode();
-            return
-        }
+        console.log("OnTreeEvent: "+ event.eventName)
+            if (event.eventName == 'moveNode') { // if a tree node is moved updates all sheets and related data
+                this.updateAllSheetsFromTreeNode();
+                return
+            } else if (event.eventName == 'blur') { // if a tree node change focus
+                this.treeNodeCurrent = event.node.data;
+                //this.updateAllSheetsFromTreeNode();
+                return
+            }
     }
 
     lastNodeSearchedId: any;
@@ -1242,6 +1243,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     onUpdateTree($event, tree) { // save project when tree is updated
+        console.log("OnUpdateTree")
         if (!this.projectSelected.ID) {
             return;
         }
@@ -2871,8 +2873,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.positionCurrent.PositionInmediateSuperior = node.data.name;
             this.treeOrg.treeModel.update();
             this.onUpdateTree(null, this.treeOrg);
-            this.treeOrg.treeModel.update();
-            this.onUpdateTree(null, this.treeOrg);
             setTimeout(() => { this.updateAllSheetsFromTreeNode(); }, 300)
         }
         modal.close()
@@ -3028,6 +3028,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     updateAllSheetsFromTreeNode() { //executed only when node is not root 
+        console.log("updateAllSheetsFromTreeNode")
         this.treeOrg.treeModel.update();
         let root = this.treeOrg.treeModel.getFirstRoot()
         this.updateNodesTreesParent(root.data);  // update parents if changed
@@ -3088,6 +3089,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     generateSheetDataRecur(activeNode: any, parentNew: any, cells: any, sheet: any) {
+        console.log("Generate sheet data recur")
         let positionType = 'position'
         if (activeNode.children.length > 0) {
             let unitX = -1;
