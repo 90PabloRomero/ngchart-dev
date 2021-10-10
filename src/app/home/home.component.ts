@@ -1814,7 +1814,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         
     }
 
-    treeNodeOneLevelDown(tree: any, event: any) {
+    treeNodeOneLevelDown(tree: any) {
 
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
@@ -1877,7 +1877,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }, 300)
     }
 
-    treeNodeOneLevelUp(tree: any, event: any) {
+    treeNodeOneLevelUp(tree: any) {
 
         if (!tree.treeModel.getActiveNode()) {
             alert('No active or selected Node!')
