@@ -414,8 +414,8 @@
                 </li>
             </ul>
             <div [ngbNavOutlet]="nav"></div>
-            <app-joint #paperView (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)">
-            </app-joint>
+                <app-joint #paperView (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)">
+                </app-joint>
             <div style="position: fixed; bottom: 1%;left: 25%">
                 <ul class="list-unstyled">
                     <li style="margin-bottom: 2px"><span class="badge" style="color: #ffffff;background-color: #3cd039;border-radius: 50%;filter: drop-shadow( 2px 2px 2px rgba(68, 255, 51, 0.7));">0</span> Supervised Positions</li>
