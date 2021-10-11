@@ -612,7 +612,7 @@
                                     <button type="button" class="btn btn-outline-dark btn-sm" (click)="openFileUpload($event,uploadTemplate)" ngbTooltip="Add Attachment">
                                         <i class="bi bi-plus-circle"></i>
                                     </button>
-                                    <table>
+                                    <table class="attachment-table-wrapper-scroll-y attachment-scrollbar">
                                         <tbody>
                                             <tr *ngFor="let attachment of treeNodeCurrent.data.attachments.sort(); index as i">
                                                 <td>
