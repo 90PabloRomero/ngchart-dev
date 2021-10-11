@@ -409,7 +409,7 @@
                 </li>
                 <li style="flex-grow:1;">
                     <a class="nav-link  text-right" style="border-bottom: 1px solid #dee2e6">
-                        <ui-switch (changeEvent)="onChangeEvent($event)" size="small" switchColor="#fff" color="#45d9d9" checked></ui-switch>
+                        <ui-switch (changeEvent)="onChangeEvent($event)" size="small" switchColor="#fff" color="#45d9d9" [(checked)]="!panelExpanded"></ui-switch>
                     </a>
                 </li>
             </ul>
