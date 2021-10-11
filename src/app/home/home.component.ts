@@ -297,15 +297,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
             var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == positionCurrent.ID);
             //treeNode.data.name = positionCurrent.PositionName.replace('(a) ','');
             //treeNode.data.name = positionCurrent.PositionName.replace('(t) ','');
+            console.log("Tree node data name: "+ treeNode.data.name )
+            console.log("positionCurrent.PositionName: "+ positionCurrent.PositionName )
             if(positionCurrent.DedicationRegime=='temporal'){
                //this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
-               this.paperView.configCell(sheetNode,positionCurrent.PositionName,'temporal')
+               //this.paperView.configCell(sheetNode,treeNode.data.name,'temporal')
                treeNode.data.name='(t) '+treeNode.data.name 
             }else{
-                this.paperView.configCell(sheetNode,positionCurrent.PositionName,'position')
+                //this.paperView.configCell(sheetNode,treeNode.data.name,'position')
                 treeNode.data.name = treeNode.data.name.replace('(t) ','');
                 //if(positionCurrent.AdvisingAuthority) treeNode.data.name='(a) '+positionCurrent.PositionName;            
             }
+            this.savePosition(positionCurrent, tree);
+            this.paperView.configCell(sheetNode,treeNode.data.name,positionCurrent.DedicationRegime);
             this.saveSheet(this.sheetSelected);
         } 
         
@@ -1385,6 +1389,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         })
         this.savePosition(position, tree)
+        let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
+        this.paperView.configCell(sheetNode,treeNode.data.name,position.DedicationRegime);
+        this.saveSheet(this.sheetSelected);
     }
 
     savePositionDisplacement(position: any, tree: any) {  // save displacements 
