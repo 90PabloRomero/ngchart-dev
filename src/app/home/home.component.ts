@@ -1337,13 +1337,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     changeAdvisingAuthorityPosition(position: any, tree: any) { // when position Is Advisor? change in details update on graph
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
-        
+        if (treeNode.isRoot) {
+            this.positionCurrent.AdvisingAuthority = false;
+            alert("Not allowed at root level");            
+            return;
+        } 
+
         if(position.AdvisingAuthority){
             treeNode.data.name='(a) '+treeNode.data.name
         } else {
             treeNode.data.name = treeNode.data.name.replace('(a) ','');
-        }
-        
+        }        
 
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item.attributes.tree_id == position.ID) {
