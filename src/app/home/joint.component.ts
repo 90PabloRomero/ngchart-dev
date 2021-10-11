@@ -262,6 +262,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             else if (idx.indexOf('move-left') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'left', event: evt });
             else if (idx.indexOf('move-right') >= 0) this.mouseDownGraphNodeEvent.emit({ action: 'right', event: evt });
         }
+        return;
     }
 
     updateSupervisedCounters() { //update all graph node counters for supervised positions
