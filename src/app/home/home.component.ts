@@ -295,14 +295,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (this.sheetSelected.ID != 0) {
             let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  positionCurrent.ID })
             var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == positionCurrent.ID);
-            treeNode.data.name = positionCurrent.PositionName.replace('(a) ','');
-            treeNode.data.name = positionCurrent.PositionName.replace('(t) ','');
+            //treeNode.data.name = positionCurrent.PositionName.replace('(a) ','');
+            //treeNode.data.name = positionCurrent.PositionName.replace('(t) ','');
             if(positionCurrent.DedicationRegime=='temporal'){
-               this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
-               treeNode.data.name='(t) '+positionCurrent.PositionName
+               //this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
+               this.paperView.configCell(sheetNode,positionCurrent.PositionName,'temporal')
+               treeNode.data.name='(t) '+treeNode.data.name 
             }else{
-                this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'position')
-                if(positionCurrent.AdvisingAuthority) treeNode.data.name='(a) '+positionCurrent.PositionName;            
+                this.paperView.configCell(sheetNode,positionCurrent.PositionName,'position')
+                treeNode.data.name = treeNode.data.name.replace('(t) ','');
+                //if(positionCurrent.AdvisingAuthority) treeNode.data.name='(a) '+positionCurrent.PositionName;            
             }
             this.saveSheet(this.sheetSelected);
         } 
@@ -1337,9 +1339,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
         
         if(position.AdvisingAuthority){
-            treeNode.data.name='(a) '+position.PositionName
+            treeNode.data.name='(a) '+treeNode.data.name
         } else {
-            treeNode.data.name = position.PositionName.replace('(a) ','');
+            treeNode.data.name = treeNode.data.name.replace('(a) ','');
         }
         
 
