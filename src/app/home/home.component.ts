@@ -219,7 +219,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 return
             } else if (event.eventName == 'blur') { // if a tree node change focus
                 this.treeNodeCurrent = event.node.data;
-                //this.updateAllSheetsFromTreeNode();
+                this.updateAllSheetsFromTreeNode();
                 return
             }
     }
