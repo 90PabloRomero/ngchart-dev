@@ -324,6 +324,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return event.attributes.tree_id == item.data.id });
+        if(!this.treeNodeCurrent.isActive) TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
         if (this.treeNodeCurrent) {
             this.positionCurrent = this.treeNodeCurrent.data.position;
             this.positionCurrent.ID = this.treeNodeCurrent.data.id;
