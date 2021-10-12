@@ -2930,9 +2930,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    functionalRelToDelete = {};
+    openConfirmDeleteFuncRel(event: any, functionalrel: any, confirmDeleteFuncRelTemplate: any) { // modal confirm delete node
+        this.functionalRelToDelete = functionalrel;        
+        
+        if (!functionalrel) {
+            return;
+        }
+        event.preventDefault();
+        
+        if(!this.modalService.hasOpenModals()){ //This check is made because the event triggers once per nodeToDelete, so, we open the modal only once
+            this.modalWindow = this.modalService.open(confirmDeleteFuncRelTemplate, {
+                ariaLabelledBy: 'modal-basic-title',
+                size: 'sm',
+                scrollable: false
+            });
+        }   
 
+    }
 
-    deleteFunctionalRel(functionalrel: any, tree: any) { 
+    deleteFunctionalRel(functionalrel: any) { 
         this.functionalrelsHash[functionalrel.id] = false 
         let treeNodeFunctionalRel = this.treeOrg.treeModel.getNodeBy((item) => {
             return item.data.functionalRelTargetId == this.positionCurrent.ID
