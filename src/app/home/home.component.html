@@ -469,7 +469,7 @@
 
                             <div class="col" style="padding-top:18px">
                                 <div class="form-check mt-1" id="advising-input-wrap">
-                                    <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" (change)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
+                                    <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" [disabled]="!this.positionCurrent.PositionInmediateSuperior" (change)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
                                     <label id="advising-input-label" class="form-check-label" for="AdvisingAuthorityCodeInput">
                                         Advising Authority
                                     </label>
