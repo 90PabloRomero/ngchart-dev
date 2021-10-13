@@ -2926,13 +2926,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     selectedFuncRels: any = [];
     onNodeSelectFunctionRel($event, tree: any, modal: any) { //set functional rel
         console.log('Active Nodes inside the method: ')
-        _.each(this.selectedFuncRels, (functionalRel)=>{
+        this.selectedFuncRels.forEach((functionalRel)=>{
             console.log(functionalRel.data.name);
-            // let funcRelCurrent = this.treeOrg.treeModel.getNodeById(functionalRel.data.id);
-            
-            setTimeout(() => { 
-                this.addFunctionalRel(functionalRel, this.treeOrg); 
-            }, 300)
+            let functionalRelNode = this.treeOrg.treeModel.getNodeById(functionalRel.data.id)
+            console.log("Functional Relation Node: ")
+            console.log(functionalRelNode.data.name)
+            this.addFunctionalRel(functionalRel, this.treeOrg); 
         }) 
 
         setTimeout(() => { 
@@ -2971,7 +2970,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
-    functionalRelToDelete = {};
+    functionalRelToDelete: any = {};
     openConfirmDeleteFuncRel(event: any, functionalrel: any, confirmDeleteFuncRelTemplate: any) { // modal confirm delete node
         this.functionalRelToDelete = functionalrel;        
         
