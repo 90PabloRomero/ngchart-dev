@@ -1418,13 +1418,13 @@
         <div class="col-12" style="background:#ffffff ">
             <h6 class="modal-title" id="modal-basic-title" style="color: #777777">
                 <div>Would you like to delete functional relationship with: </div>
-                <div> {{ functionalRelToDelete.name }} </div>
+                <div> {{ parentWithFunctionalRelToDelete.name }} </div>
             </h6>
         </div>
         <div class="col-12" style="background:#ffffff ">
         </div>
         <div class="modal-footer" style="    justify-content: center;">
-            <button class="btn btn-success" (click)="modal.dismiss('Cross click');deleteFunctionalRel(functionalRelToDelete)">Accept</button>
+            <button class="btn btn-success" (click)="modal.dismiss('Cross click');deleteFunctionalRel()">Accept</button>
             <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </div>

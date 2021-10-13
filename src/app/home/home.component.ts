@@ -2970,9 +2970,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
-    functionalRelToDelete: any = {};
+    parentWithFunctionalRelToDelete: any = {};
     openConfirmDeleteFuncRel(event: any, functionalrel: any, confirmDeleteFuncRelTemplate: any) { // modal confirm delete node
-        this.functionalRelToDelete = functionalrel;        
+        this.parentWithFunctionalRelToDelete = functionalrel;        
         
         if (!functionalrel) {
             return;
@@ -2989,16 +2989,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
-    deleteFunctionalRel(functionalrel: any) { 
-        this.functionalrelsHash[functionalrel.id] = false 
-        let treeNodeFunctionalRel = this.treeOrg.treeModel.getNodeBy((item) => {
-            return item.data.functionalRelTargetId == this.positionCurrent.ID
-        })
-        if (treeNodeFunctionalRel) {
-            this.deleteNodeById(this.treeOrg, treeNodeFunctionalRel)
-        }
+    deleteFunctionalRel() { 
+        let fToDelete;
+
+        console.log("Functional Relation object to delete: ")
+        console.log(this.parentWithFunctionalRelToDelete)
+
+        //this.functionalrelsHash[this.parentWithFunctionalRelToDelete.id] = false 
+        let treeNodeParentWithFunctionalRelToDelete = this.treeOrg.treeModel.getNodeById(this.parentWithFunctionalRelToDelete.id);
+        if (!treeNodeParentWithFunctionalRelToDelete) {
+            alert("Not found functional relationship...")
+            return;
+        }    
+        console.log("Eraser Node of functional relation: ")
+        console.log(this.treeNodeCurrent)
+        
+        treeNodeParentWithFunctionalRelToDelete.data.children.forEach(child => {
+            if(child.functionalRelTargetId==this.treeNodeCurrent.data.id) fToDelete = child;
+        });
+        console.log("(f) to delete: ")
+        console.log(fToDelete)
+
+        if(fToDelete) this.deleteNodeById(this.treeOrg, fToDelete);
+        else {
+            alert("Not found tree node <(f) "+ this.treeNodeCurrent.data.name + "> among "+ treeNodeParentWithFunctionalRelToDelete.data.name +"'s children")
+            return;
+        }                
+        
+        console.log("Relaciones funcionales de: "+ this.treeNodeCurrent.data.name )
+        console.log( this.treeNodeCurrent.data.functionalrels )
+
         _.remove(this.treeNodeCurrent.data.functionalrels, (item) => {
-            return item === functionalrel
+            return item === this.parentWithFunctionalRelToDelete
         })
         this.savePosition(this.positionCurrent, this.treeOrg);
 
