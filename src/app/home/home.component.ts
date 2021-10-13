@@ -158,6 +158,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
         nodeHeight: 23, //23
       };
 
+      treeModalActionMapping: IActionMapping = {
+        mouse: {
+            checkboxClick: (tree, node, $event) => {
+                TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
+                console.log('tree.activeNodes')
+                this.selectedFuncRels = tree.activeNodes;
+
+                //   _.each(tree.activeNodes, (item)=>{
+                //       console.log(item.data.name)
+                //   })                  
+            },
+        },
+        keys: {
+          [KEYS.ENTER]: (tree, node, $event) => {
+          }
+        }
+      };
+    
+      treeModalOptions: ITreeOptions = {
+        actionMapping: this.treeModalActionMapping,
+        useCheckbox: true,
+        useTriState: false,
+        levelPadding: 10, //20
+        animateExpand: true,
+        scrollOnActivate: true,
+        animateSpeed: 30,
+        animateAcceleration: 1.2,
+        nodeHeight: 23, //23
+      };
+
     activeTab = 1;
     textSearch = "";
     textSearch2 = "";
@@ -2893,11 +2923,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
     }
 
-
+    selectedFuncRels: any = [];
     onNodeSelectFunctionRel($event, tree: any, modal: any) { //set functional rel
-      
-        let functionalRelNode = tree.treeModel.getFocusedNode();
-        this.addFunctionalRel(functionalRelNode, tree)
+        console.log('Active Nodes inside the method: ')
+        _.each(this.selectedFuncRels, (functionalRel)=>{
+            console.log(functionalRel.data.name);
+            // let funcRelCurrent = this.treeOrg.treeModel.getNodeById(functionalRel.data.id);
+            
+            setTimeout(() => { 
+                this.addFunctionalRel(functionalRel, this.treeOrg); 
+            }, 300)
+        }) 
+
+        setTimeout(() => { 
+            this.selectedFuncRels = [];//Restablecer selectedFuncRels
+        }, 300)
+        
         modal.close()
         return;
     }
@@ -3180,7 +3221,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return
         }
         if (this.functionalrelsHash[functionalrel.data.id]) { 
-            alert("Functional Relationship already exists")
+            alert("Functional Relationship: <" + functionalrel.data.name + "> already exists")
             return 
         } 
         this.functionalrelsHash[functionalrel.data.id] = true 

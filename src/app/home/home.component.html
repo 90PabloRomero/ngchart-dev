@@ -1501,7 +1501,11 @@
         </div>
     </div>
     <div class="modal-body" style="padding: 20px;height: 250px">
-        <tree-root #treeModal [nodes]="nodes" (focus)="onNodeSelectFunctionRel($event,treeModal,modal)" [options]="options"></tree-root>
+        <tree-root #treeModal [nodes]="nodes" [options]="treeModalOptions"></tree-root>
+    </div>
+    <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-success" (click)="modal.dismiss('Cross click'); onNodeSelectFunctionRel($event, treeModal, modal)">Accept</button>
+        <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">Close</button>
     </div>
 </ng-template>
 <ng-template #setImendiateSuperiorTemplate let-modal>
