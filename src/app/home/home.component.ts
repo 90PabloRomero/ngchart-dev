@@ -411,6 +411,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.projects = any;
+                        console.log("Project Selected")
+                        console.log(this.projectSelected)
+                        if(this.projectSelected.ID){
+                            console.log("ProjectSelected.ID")
+                            console.log(this.projectSelected.ID)
+                        } else {
+                            this.projectSelected = this.projects[0]
+                            this.loadProject(this.projectSelected)
+                        }
+                        //if(this.projectSelected) this.loadProject(this.projectSelected)
                     }
                 },
                 err => {
