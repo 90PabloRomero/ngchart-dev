@@ -411,15 +411,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.projects = any;
-                        console.log("Project Selected")
+                        console.log("<projectSelected> has been initialized to: ")
                         console.log(this.projectSelected)
-                        if(this.projectSelected.ID){
-                            console.log("ProjectSelected.ID")
-                            console.log(this.projectSelected.ID)
+                        if(!this.projects[0]){
+                            console.log("No project found in DB")
                         } else {
-                            this.projectSelected = this.projects[0]
+                            if(this.projectSelected.ID){
+                                console.log("ProjectSelected.ID")
+                                console.log(this.projectSelected.ID)
+                            } else {
+                                this.projectSelected = this.projects[0]
+                            }
                             this.loadProject(this.projectSelected)
                         }
+                        
                         //if(this.projectSelected) this.loadProject(this.projectSelected)
                     }
                 },
@@ -959,7 +964,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 .subscribe(
                     (any) => {
                         if (any) {
-                            alert("Project Updated!");
+                            alert("Project "+ project.ProjectName +" Updated!");
                             this.getProjects();
                             return;
                         }
@@ -987,6 +992,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 .subscribe(
                     (any) => {
                         if (any) {
+                            alert("Project "+ project.ProjectName +" Created!");
                             this.getProjects();
                             return
                         }
