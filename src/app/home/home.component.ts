@@ -411,7 +411,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.projects = any;
-                        console.log("<projectSelected> has been initialized to: ")
+                        console.log("getProjects: <projectSelected> has been set to: ")
                         console.log(this.projectSelected)
                         if(!this.projects[0]){
                             console.log("No project found in DB")
@@ -530,6 +530,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                if(root)  { root.setActiveAndVisible();}
             },300)
         }
+        if(!this.paperView.graph) return
         this.paperView.graph.clear(); // instead of clearSheetSelected()
 
         this.getSheets(project);
@@ -3137,6 +3138,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     updateAllSheetsFromTreeNode() { //executed only when node is not root 
+        if(!this.projectSheets) return
+
         console.log("updateAllSheetsFromTreeNode")
         this.treeOrg.treeModel.update();
         let root = this.treeOrg.treeModel.getFirstRoot()
