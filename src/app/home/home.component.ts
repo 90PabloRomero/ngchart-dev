@@ -405,27 +405,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[changeEvent.panelId] = changeEvent.nextState;
     }
 
+    findProjectByName(projectName: string){
+        let projectFound: Project;
+        _.forEach(this.projects, (project: Project) => {
+            if(project.ProjectName == projectName) projectFound = project;
+        })
+        return projectFound;
+    }
+
     getProjects() {   //currently get all projects, TODO: need to filter by user, external  contacts api server were not defined yet
         this.http.get < any > (urlApi + '/project')
             .subscribe(
                 (any) => {
                     if (any) {
                         this.projects = any;
-                        console.log("getProjects: <projectSelected> has been set to: ")
-                        console.log(this.projectSelected)
+                        console.log("Project List Retrieved")
+                        console.log("ProjectSelected: ")
                         if(!this.projects[0]){
                             console.log("No project found in DB")
                         } else {
-                            if(this.projectSelected.ID){
-                                console.log("ProjectSelected.ID")
-                                console.log(this.projectSelected.ID)
-                            } else {
+                            if(this.projectToEdit){
+                                this.projectSelected = this.findProjectByName(this.projectToEdit.ProjectName);
+                            }else{
                                 this.projectSelected = this.projects[0]
                             }
-                            this.loadProject(this.projectSelected)
+                            //this.loadProject(this.projectSelected)
                         }
-                        
-                        //if(this.projectSelected) this.loadProject(this.projectSelected)
+                        console.log(this.projectSelected)
+                        if(this.projectSelected) this.loadProject(this.projectSelected)
                     }
                 },
                 err => {
@@ -512,7 +519,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.accordion.expand("2") //open accordeon tree to activate tree
         this.isProjectFisrtTreeUpdate = true;
         this.projectSelected = project;
-        console.log(this.projectSelected)
+        console.log("Load Project: Project Selected: "+ this.projectSelected.ProjectName)
         this.sheets = [];
         this.activeSheets = {};
         let allData = {
