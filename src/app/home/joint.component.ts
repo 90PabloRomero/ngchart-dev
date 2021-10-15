@@ -23,6 +23,7 @@ import { ContactRight } from '../models/contactright';
 
 })
 export class JointComponent implements OnInit, AfterViewInit {
+    @Output() clickPaperBlankAreaEvent = new EventEmitter < Position > ();    //graph position is clicked
     @Output() dblclickGraphNodeEvent = new EventEmitter < Position > ();    //graph position is clicked
     @Output() clickGraphNodeEvent = new EventEmitter < Position > ();    //graph position is clicked
     @Output() refreshSelectedSheetEvent = new EventEmitter < Sheet > ();  //send refresh sheet to main
@@ -202,7 +203,10 @@ export class JointComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         setTimeout(() => {
             this.doLayout();
-
+            this.paper.on('blank:pointerclick', (t, evt) => {
+                console.log('Paper blank area clicked');
+                this.clickPaperBlankAreaEvent.emit(t.model); //current position(node) from sheet to node tree details
+            });
             this.paper.on('cell:pointerdblclick', (t, evt) => {  // set current node on graph node clicked
                 this.click_actions(t, evt, false);
             });

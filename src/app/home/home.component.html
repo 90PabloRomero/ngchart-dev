@@ -414,7 +414,7 @@
                 </li>
             </ul>
             <div [ngbNavOutlet]="nav"></div>
-                <app-joint #paperView (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,tree)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)">
+                <app-joint #paperView (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,tree)" (clickPaperBlankAreaEvent)="saveNamePosition(positionCurrent,tree)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)">
                 </app-joint>
             <div style="position: fixed; bottom: 1%;left: 25%">
                 <ul class="list-unstyled">
