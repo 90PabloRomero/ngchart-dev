@@ -3045,10 +3045,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         console.log(fToDelete)
 
         if(fToDelete) this.deleteNodeById(this.treeOrg, fToDelete);
-        else {
-            alert("Not found tree node <(f) "+ this.treeNodeCurrent.data.name + "> among "+ treeNodeParentWithFunctionalRelToDelete.data.name +"'s children")
-            return;
-        }                
+        // else {
+        //     alert("Not found tree node <(f) "+ this.treeNodeCurrent.data.name + "> among "+ treeNodeParentWithFunctionalRelToDelete.data.name +"'s children")
+        // }                
         
         console.log("Relaciones funcionales de: "+ this.treeNodeCurrent.data.name )
         console.log( this.treeNodeCurrent.data.functionalrels )
