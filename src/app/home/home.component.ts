@@ -1475,6 +1475,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     savePosition(position: any, tree: any) {  // save position (node)
         let treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
         treeNodeCurrent.data.position = this.positionCurrent;
+        treeNodeCurrent.data.attachment = this.treeNodeCurrent.data.attachments
+        treeNodeCurrent.data.attachments = this.treeNodeCurrent.data.attachments
         this.nodes = tree.treeModel.nodes;
         let allData = {
             nodes: this.nodes,
@@ -2808,6 +2810,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         _.remove(this.treeNodeCurrent.data.attachments, (item) => {
             return item === attachment
         })
+        
         this.savePosition(this.positionCurrent, tree);
     }
 

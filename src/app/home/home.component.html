@@ -625,7 +625,7 @@
 
                                                     <ng-template #popTitle>Delete?</ng-template>
                                                     <ng-template #popContent>
-                                                    <button class="btn btn-sm btn-outline-danger " (click)="    deleteAttachment(attachment,tree)">Yes</button>
+                                                    <button class="btn btn-sm btn-outline-danger " (click)="    deleteAttachment(attachment,treeOrg)">Yes</button>
                                                                     <button class="btn btn-sm btn-outline-success">No</button>
                                                     </ng-template>
                                                         <button (click)="confirmDelete(p1)" triggers="manual" #p1="ngbPopover" placement="bottom-left" [ngbPopover]="popContent" [popoverTitle]="popTitle" type="button" class="btn btn-outline-dark btn-sm">
