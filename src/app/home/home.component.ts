@@ -543,10 +543,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                if(root)  { root.setActiveAndVisible();}
             },300)
         }
-        if(!this.paperView.graph) return
-        this.paperView.graph.clear(); // instead of clearSheetSelected()
+        if(this.paperView.graph) this.paperView.graph.clear(); // instead of clearSheetSelected()
 
         this.getSheets(project);
+        this.optionsChecked = []; //No selected or open sheets
         return;
     }
 
