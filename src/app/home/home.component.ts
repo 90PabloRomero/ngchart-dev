@@ -529,12 +529,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         if (this.projectSelected.Data != "") {
             allData = JSON.parse(this.projectSelected.Data);
+            console.log("Load project: All Data: ")
+            console.log(allData)
         }
         this.nodes = [];
         if (allData && allData.nodes) {
+            console.log("Supuestamente hay all data && alldata.nodes")
             this.nodes = allData.nodes;
             setTimeout(()=>{
                let root = this.treeOrg.treeModel.getFirstRoot();   
+               console.log("Load Project: let root = this.treeOrg.treeModel.getFirstRoot() ")
+               console.log(root)
                if(root)  { root.setActiveAndVisible();}
             },300)
         }
@@ -1471,7 +1476,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
         treeNodeCurrent.data.position = this.positionCurrent;
         let allData = {
-            nodes: this.nodes,
+            nodes: tree.treeModel.nodes,
             positions: {}
         }
         this.projectSelected.Data = JSON.stringify(allData);
