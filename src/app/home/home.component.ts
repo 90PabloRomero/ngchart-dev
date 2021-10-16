@@ -1475,10 +1475,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     savePosition(position: any, tree: any) {  // save position (node)
         let treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
         treeNodeCurrent.data.position = this.positionCurrent;
+        this.nodes = tree.treeModel.nodes;
         let allData = {
-            nodes: tree.treeModel.nodes,
+            nodes: this.nodes,
             positions: {}
-        }
+        }        
         this.projectSelected.Data = JSON.stringify(allData);
         //reloasd data
         allData = {
