@@ -2608,6 +2608,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                                     contactsException: []
                                 }
                             }
+                            this.saveActiveSheetShapesDefaults();
                         }
                     }
                 },
