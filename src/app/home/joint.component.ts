@@ -68,7 +68,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         height: 70,
         fill: {
             type: 'none',
-            color: 'rgba(255,255,255,0.1)',
+            color: 'rgba(255,255,255,1)',
             opacity: 1
         },
         textBox: {
@@ -387,7 +387,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             height: 70,
             fill: {
                 type: 'none',
-                color: 'rgba(255,255,255,0.1)',
+                color: 'rgba(255,255,255,1)',
                 opacity: 1
             },
             textBox: {
