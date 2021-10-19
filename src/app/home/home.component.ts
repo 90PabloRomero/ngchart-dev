@@ -1099,6 +1099,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     deleteProject(project: Project) { // delete project from db
+        this.panelExpanded = true;
         if (project.ID != 0) {
             this.http.delete < any > (urlApi + '/project/' + project.ID)
                 .subscribe(
