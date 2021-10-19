@@ -1472,6 +1472,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.savePosition(position, tree);
     }
 
+    savePositionAndExpandPanel(position: any, tree: any){
+        this.savePosition(position,tree);
+
+        if(!this.panelExpanded) this.panelExpanded = true;        
+    }
+
     savePosition(position: any, tree: any) {  // save position (node)
         let treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
         treeNodeCurrent.data.position = this.positionCurrent;

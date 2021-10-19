@@ -290,7 +290,7 @@
                                     <i class="bi bi-journals" style="position: absolute; left: -44px; top: 0px; color: rgb(69, 217, 217); font-size: 24px; border-right: 3px solid #45d9d9; padding: 24px 9px 24px 9px; background: linear-gradient(to right, rgba(220,245,245,0.10) 0%, rgba(190,250,239,0.55) 100%);" ></i>
                                 </ng-template>
                                 <ng-template ngbPanelContent>
-                                    <button class="btn btn-outline-dark mb-1" (click)="savePosition(positionCurrent,treeOrg);openProjectForm($event,projectTemplate,null)" ngbTooltip="Add Project">
+                                    <button class="btn btn-outline-dark mb-1" (click)="savePositionAndExpandPanel(positionCurrent,treeOrg);openProjectForm($event,projectTemplate,null)" ngbTooltip="Add Project">
                                         <i class="bi bi-plus-circle"></i>
                                     </button>
                                     <table class="table table-sm">
