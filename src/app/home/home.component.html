@@ -396,7 +396,7 @@
                     </div>
         </div>
 
-        <div id="sheetContainer" [ngClass]="panelExpanded?'col-9':'col-9'" [ngStyle]="{'background-color': (sheets.length>0?'rgba(224, 247, 250, 0.35)': '#ffffff') }" style="overflow: none;padding-left: 0;padding-right: 0;">
+        <div class="drag-boundary" id="sheetContainer" [ngClass]="panelExpanded?'col-9':'col-9'" [ngStyle]="{'background-color': (sheets.length>0?'rgba(224, 247, 250, 0.35)': '#ffffff') }" style="overflow: none;padding-left: 0;padding-right: 0;">
             <ul ngbNav [(activeId)]="activeId" #nav="ngbNav" class=" nav nav-pills nav-fill nav-tabs" style="background-color: #fff;border-top: 1px solid #dee2e6;border-bottom: 0" (navChange)="onNavChange($event)">
                 <li ngbNavItem class="nav-item" [ngbNavItem]="sheet.ID" *ngFor="let sheet of sheets; let i = index" style="border:none;flex-grow:0.2;margin-bottom:0">
                     <button type="button" class="close" aria-label="Close" [class.active-close]="sheet.ID == activeId" style="outline: none;color: #ccc;line-height:1.5;padding-right: 4px;" (click)="removeSheetFromView(sheet)">
@@ -426,7 +426,7 @@
         <!--</div>-->
         <!--<div [ngClass]="panelExpanded?'hidePanel':'col-3'" style="border: 1px solid #efefef">-->
             
-            <div class="details-box" [ngClass]="panelExpanded?'hidePanel':'div-panel-right'" cdkDrag>
+            <div class="details-box" [ngClass]="panelExpanded?'hidePanel':'div-panel-right'" cdkDragBoundary=".drag-boundary" cdkDrag>
                 <div class="details-handle" cdkDragHandle>
                     <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
