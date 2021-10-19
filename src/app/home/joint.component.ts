@@ -375,7 +375,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     resetFillColor() {
         if (this.shapeProperties.fill.type = 'none') {
-            this.shapeProperties.fill.color = 'rgba(255,255,255,0.1)'
+            this.shapeProperties.fill.color = 'rgba(255,255,255,1)'
         }
     }
 
@@ -937,13 +937,13 @@ export class JointComponent implements OnInit, AfterViewInit {
             cell.attr('.card/fill', this.shapeProperties.fill.color);
         }
         if (this.shapeProperties.fill.type == 'none') {
-            cell.attr('.card/fill', 'rgba(255,255,255,0.1)');
+            cell.attr('.card/fill', 'rgba(255,255,255,1)');
         }
         if (this.shapeProperties.line.type != 'none') {
             cell.attr('.card/stroke', this.shapeProperties.line.color);
         }
         if (this.shapeProperties.line.type == 'none') {
-            cell.attr('.card/stroke', 'rgba(255,255,255,0.1)');
+            cell.attr('.card/stroke', 'rgba(255,255,255,1)');
         }
         cell.attr('.card/stroke-width', this.shapeProperties.line.width);
         cell.attr('.rank/vertical-alligment', this.shapeProperties.textBox.verticalAlligment);
