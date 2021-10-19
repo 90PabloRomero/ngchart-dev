@@ -425,7 +425,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
             .subscribe(
                 (any) => {
                     if (any) {
-                        this.projects = any;
+                        this.projects = any.sort((a, b) => {
+                            let fa = a.ProjectName.toLowerCase(),
+                                fb = b.ProjectName.toLowerCase();
+                        
+                            if (fa < fb) {
+                                return -1;
+                            }
+                            if (fa > fb) {
+                                return 1;
+                            }
+                            return 0;
+                        });
                         console.log("Project List Retrieved")
                         console.log("ProjectSelected: ")
                         if(!this.projects[0]){
