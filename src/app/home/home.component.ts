@@ -1107,6 +1107,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             this.sheets = [];
                             this.projectSelected = new Project;
                             this.projectSelected.ProjectName = "Project"
+                            this.projectToEdit = null;
                             this.sheetSelected = new Sheet;
                             this.sheetSelected.SheetName = "Sheet"
                             this.clearSheetSelected()
