@@ -116,15 +116,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
               this.generateGraph(this.treeOrg);
           },
           drop: (tree, node, $event, { from, to }) => {
-            const activeNodes = tree.activeNodes;
-            if (activeNodes.length > 1) {
-                activeNodes.forEach(item => {
-                  const currentItem = tree.getNodeById(item.id);
-                  tree.moveNode(currentItem, to);
-                });
-              } else {
-                tree.moveNode(from, to);
-              }
+              if(to.parent.data.name){
+                const activeNodes = tree.activeNodes;
+                if (activeNodes.length > 1) {
+                    activeNodes.forEach(item => {
+                    const currentItem = tree.getNodeById(item.id);
+                    tree.moveNode(currentItem, to);
+                    });
+                } else {
+                    tree.moveNode(from, to);
+                }   
+              }            
           },
           /*
           mouseOver: (tree, node, $event) => {
