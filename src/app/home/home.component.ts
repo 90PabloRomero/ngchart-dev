@@ -92,17 +92,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
-            //$event.preventDefault();
-            //alert(`context menu for ${node.data.name}`);
+            $event.preventDefault();
+            alert(`context menu for ${node.data.name}`);
+          },
+          dblClick: (tree, node, $event) => {
+            console.log("DOUBLE CLICK")
+            this.panelExpanded = false;
           },
           click: (tree, node, $event) => {
             $event.shiftKey
               ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event)
               : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
             
-            if(!node.isActive) TREE_ACTIONS.ACTIVATE(tree, node, $event);
+            setTimeout(()=>{
+                if(!node.isActive) TREE_ACTIONS.ACTIVATE(tree, node, $event);
+            }, 300)            
             
-            this.panelExpanded = false;
             node.toggleExpanded();    
           },
           dragEnd: (tree, node, $event) => {
