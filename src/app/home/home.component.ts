@@ -2815,15 +2815,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    deleteAttachment(attachment: any, tree: any) { // delete position attachements
-        this.attachmentsHash[attachment.name] = false //
+    deleteAttachment() { // delete position attachements
+        this.attachmentsHash[this.attachmentToDelete.name] = false //
         _.remove(this.treeNodeCurrent.data.attachments, (item) => {
-            return item === attachment
+            return item === this.attachmentToDelete
         })
         
-        this.savePosition(this.positionCurrent, tree);
+        this.savePosition(this.positionCurrent, this.treeOrg);
+        this.attachmentToDelete = {}
     }
 
+    attachmentToDelete: any = {};
+    openConfirmDeleteAttachment(event: any, attachment: any, confirmDeleteAttachmentTemplate: any) { // modal confirm delete node
+        this.attachmentToDelete = attachment;
+
+        if (!attachment) {
+            return;
+        }
+        event.preventDefault();
+        
+        if(!this.modalService.hasOpenModals()){ //This check is made because the event triggers once per nodeToDelete, so, we open the modal only once
+            this.modalWindow = this.modalService.open(confirmDeleteAttachmentTemplate, {
+                ariaLabelledBy: 'modal-basic-title',
+                size: 'sm',
+                scrollable: false
+            });
+        }   
+
+    }
 
     fileToUpload: File [] = [];
     handleFileInput(files: FileList) {
