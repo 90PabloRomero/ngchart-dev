@@ -1473,9 +1473,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     savePositionAndExpandPanel(position: any, tree: any){
-        this.savePosition(position,tree);
-
-        if(!this.panelExpanded) this.panelExpanded = true;        
+        if(!this.panelExpanded) {
+            this.savePosition(position,tree);
+            this.panelExpanded = true;
+        }         
     }
 
     savePosition(position: any, tree: any) {  // save position (node)
