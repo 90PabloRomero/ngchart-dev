@@ -516,6 +516,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     loadProject(project: any) {  // load project
+        this.panelExpanded = true;
         this.positionCurrent = new Position;
         this.accordion.expand("2") //open accordeon tree to activate tree
         this.isProjectFisrtTreeUpdate = true;
