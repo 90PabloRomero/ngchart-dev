@@ -439,7 +439,7 @@
                         <div class="form-row">
                             <div class="col">
                                 <label for="PositionNameInput" class="label-input-panel">Name</label>
-                                <input type="text" class="form-control mt-1 input-panel" id="PositionNameInput" name="PositionNameInput" placeholder="Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" (change)="saveNamePosition(positionCurrent,tree)">
+                                <input type="text" class="form-control mt-1 input-panel" id="PositionNameInput" name="PositionNameInput" placeholder="Name" #PositionName="ngModel" [(ngModel)]="positionCurrent.PositionName" (change)="saveNamePosition(positionCurrent,treeOrg)">
                             </div>
                             
                             <div class="col">
@@ -469,7 +469,7 @@
 
                             <div class="col" style="padding-top:18px">
                                 <div class="form-check mt-1" id="advising-input-wrap">
-                                    <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" [disabled]="!this.positionCurrent.PositionInmediateSuperior" (change)="changeAdvisingAuthorityPosition(positionCurrent,tree)">
+                                    <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" [disabled]="!this.positionCurrent.PositionInmediateSuperior" (change)="changeAdvisingAuthorityPosition(positionCurrent,treeOrg)">
                                     <label id="advising-input-label" class="form-check-label" for="AdvisingAuthorityCodeInput">
                                         Advising Authority
                                     </label>
@@ -485,7 +485,7 @@
 
                             <div class="col">
                                 <label for="textBox.DedicationRegime" class="label-input-panel">Dedication Regime</label>
-                                <select (change)="changeDedicationRegime(positionCurrent,tree);" class="form-control input-panel label-select-panel" [(ngModel)]="positionCurrent.DedicationRegime" name="textBox.DedicationRegime">
+                                <select (change)="changeDedicationRegime(positionCurrent,treeOrg);" class="form-control input-panel label-select-panel" [(ngModel)]="positionCurrent.DedicationRegime" name="textBox.DedicationRegime">
                                     <option [ngValue]="'position'">Full</option>
                                     <option [ngValue]="'temporal'">Temporal</option>
                                 </select>
