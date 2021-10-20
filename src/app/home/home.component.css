@@ -46,6 +46,18 @@
   height: 1600px;
 }
 
+.active-project {   
+  padding: 24px 9px 24px 9px; 
+  background: linear-gradient(to right, rgba(220,245,245,0.10) 0%, rgba(190,250,239,0.55) 100%);
+  border-right: solid 4px #45d9d9;
+  border-bottom: 2px solid rgba(224, 247, 250, 0.35) !important;
+  color: rgb(69, 217, 217) !important;
+}
+
+.active {
+  background-color: #f7fcfc;
+  border-right: solid 4px #45d9d9;
+}
 ::host {
   display: flex;
   width: 100%;
@@ -428,10 +440,8 @@ input[type="number"]::-webkit-inner-spin-button {
     rgba(190, 250, 239, 0.55) 100%
   );
 }
-.active {   
-  padding: 24px 9px 24px 9px; 
-  background: linear-gradient(to right, rgba(220,245,245,0.10) 0%, rgba(190,250,239,0.55) 100%);
-  border-right: solid 4px #45d9d9;
+.active {
+  border: none !important;
   border-bottom: 2px solid rgba(224, 247, 250, 0.35) !important;
   color: rgb(69, 217, 217) !important;
 }

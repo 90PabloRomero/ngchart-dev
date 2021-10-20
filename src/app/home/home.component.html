@@ -295,7 +295,7 @@
                                     </button>
                                     <table class="table table-sm">
                                         <tbody>
-                                            <tr *ngFor="let project of projects; index as i" [class.active]="project.ID == projectSelected.ID" >
+                                            <tr *ngFor="let project of projects; index as i" [class.active-project]="project.ID == projectSelected.ID" >
                                                 <td style="width: 50%;overflow-x: hidden;">
                                                     {{ project.ProjectName }}
                                                 </td>
