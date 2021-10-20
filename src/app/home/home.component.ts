@@ -92,8 +92,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
-            $event.preventDefault();
-            alert(`context menu for ${node.data.name}`);
+            // $event.preventDefault();
+            // alert(`context menu for ${node.data.name}`);
           },
           dblClick: (tree, node, $event) => {
             console.log("DOUBLE CLICK")
