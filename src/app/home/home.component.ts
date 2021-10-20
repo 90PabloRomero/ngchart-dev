@@ -685,24 +685,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
-    addSelectedSheetsToView() {
+    addNewCheckedSheetsToView() {
         if(this.optionsChecked.length<1) {
             alert("No sheet selected")
             return;
         }
         this.optionsChecked.forEach( id => {
-            let sheet = this.projectSheets.find( v=> v.ID == id)
-            console.log(sheet)
-            if (!this.activeSheets[sheet.ID]) {
-                this.sheets.push(sheet);
-                this.activeSheets[sheet.ID] = true;
-                this.activeId = sheet.ID;
-                this.loadSheet(sheet);
-            } else {
-                this.activeId = sheet.ID;
-                this.loadSheet(sheet);
-            }
+            this.addSheetToView(id);
         })
+
+        this.optionsChecked = []
     }
 
     removeSheetFromView(sheet: Sheet) {
