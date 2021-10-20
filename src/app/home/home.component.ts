@@ -487,7 +487,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
             .subscribe(
                 (any) => {
                     if (any) {
-                        this.projectSheets = any;
+                        this.projectSheets = any.sort((a, b) => {
+                            let fa = a.SheetName.toLowerCase(),
+                                fb = b.SheetName.toLowerCase();
+                        
+                            if (fa < fb) {
+                                return -1;
+                            }
+                            if (fa > fb) {
+                                return 1;
+                            }
+                            return 0;
+                        });
                         this.activeSheets = {};
                     }
                 },
