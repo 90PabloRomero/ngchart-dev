@@ -663,6 +663,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     addSheetToViewByName(sheetName: any) {
+        if(!sheetName) alert("Sheet name required")
         this.projectSheets.forEach((sheet) => {
             if (sheet.SheetName == sheetName) {
                 this.addSheetToView([sheet.ID]);
@@ -671,7 +672,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
-    addSheetToView(checked: any) {
+    addSheetToView(sheetId){
+        let sheet = this.projectSheets.find( v=> v.ID == sheetId)
+        if (!this.activeSheets[sheet.ID]) {
+            this.sheets.push(sheet);
+            this.activeSheets[sheet.ID] = true;
+            this.activeId = sheet.ID;
+            this.loadSheet(sheet);
+        } else {
+            this.activeId = sheet.ID;
+            this.loadSheet(sheet);
+        }
+    }
+
+    addSelectedSheetsToView() {
+        if(this.optionsChecked.length<1) {
+            alert("No sheet selected")
+            return;
+        }
         this.optionsChecked.forEach( id => {
             let sheet = this.projectSheets.find( v=> v.ID == id)
             console.log(sheet)
@@ -685,7 +703,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.loadSheet(sheet);
             }
         })
-      
     }
 
     removeSheetFromView(sheet: Sheet) {
