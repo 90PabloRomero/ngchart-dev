@@ -919,6 +919,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             alert("Name can't be blank");
             return;
         }
+        if (newNodeName.includes('(t)')) positionType='temporal'
         let textMaxWidth = 130; // when element horizontal
         if (this.shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
 
