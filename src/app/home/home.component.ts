@@ -640,23 +640,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
-    setTemporaryTreeNodes(){
-        console.log("Find temporary nodes: ")
-        console.log(this.nodes)
-        
-        let tempNodes: any = [];
-        this.treeOrg.treeModel.doForAll((treeNode)=>{
-            console.log(treeNode.data.name)
-            if(treeNode.data.name.includes('(t)')) {
-                tempNodes.push(treeNode);
-                treeNode.data.position.DedicationRegime = 'temporal'
-                //this.changeDedicationRegime(this.positionCurrent, this.treeOrg)
-            }
-        })
-
-        console.log("Temporary: ")
-        console.log(tempNodes)
-    }
+    // setTemporaryTreeNodes(){
+    //     console.log("Find temporary nodes: ")
+    //     console.log(this.nodes)
+    //     let tempNodesData: any = [];
+    //     this.treeOrg.treeModel.doForAll((treeNode)=>{
+    //         let positionCurrent = treeNode.data.position;
+    //         if(treeNode.data.name.includes('(t)')) {
+    //             tempNodesData.push(treeNode.data.name);
+    //             positionCurrent.DedicationRegime = 'temporal'
+    //             this.savePosition(positionCurrent, this.treeOrg)
+    //             let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  positionCurrent.ID })
+    //             this.paperView.configCell(sheetNode,positionCurrent.PositionName,'temporal');
+    //             this.saveSheet(this.sheetSelected);
+    //         }
+    //     })
+    
+    //     console.log("Temporary: ")
+    //     console.log(tempNodesData)
+    // }
 
     loadSheet(sheet: any) { // load sheet 
         console.log("Load Sheet")
@@ -1544,8 +1546,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     savePosition(position: any, tree: any) {  // save position (node)
         let treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
         treeNodeCurrent.data.position = this.positionCurrent;
-        treeNodeCurrent.data.attachment = this.treeNodeCurrent.data.attachments
-        treeNodeCurrent.data.attachments = this.treeNodeCurrent.data.attachments
+        if(this.treeNodeCurrent.data.attachments){
+            treeNodeCurrent.data.attachment = this.treeNodeCurrent.data.attachments
+            treeNodeCurrent.data.attachments = this.treeNodeCurrent.data.attachments
+        }        
         this.nodes = tree.treeModel.nodes;
         let allData = {
             nodes: this.nodes,
