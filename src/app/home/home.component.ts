@@ -339,7 +339,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if(positionCurrent.DedicationRegime=='temporal'){
                //this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
                //this.paperView.configCell(sheetNode,treeNode.data.name,'temporal')
-               treeNode.data.name='(t) '+treeNode.data.name 
+               if(!treeNode.data.name.includes('(t)')) treeNode.data.name='(t) '+treeNode.data.name 
             }else{
                 //this.paperView.configCell(sheetNode,treeNode.data.name,'position')
                 treeNode.data.name = treeNode.data.name.replace('(t) ','');
@@ -640,7 +640,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
+    setTemporaryTreeNodes(){
+        console.log("Find temporary nodes: ")
+        console.log(this.nodes)
+        
+        let tempNodes: any = [];
+        this.treeOrg.treeModel.doForAll((treeNode)=>{
+            console.log(treeNode.data.name)
+            if(treeNode.data.name.includes('(t)')) {
+                tempNodes.push(treeNode);
+                treeNode.data.position.DedicationRegime = 'temporal'
+                //this.changeDedicationRegime(this.positionCurrent, this.treeOrg)
+            }
+        })
+
+        console.log("Temporary: ")
+        console.log(tempNodes)
+    }
+
     loadSheet(sheet: any) { // load sheet 
+        console.log("Load Sheet")
         this.sheetSelected = sheet;
         this.isSheetNodesTempView = false;
         this.getActiveSheetShapesDefaults();
@@ -669,6 +688,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } else {
             this.sheetSelected.Attrs = JSON.stringify({ w: 1000, h: 800 });
         }
+
+        //this.setTemporaryTreeNodes();
 
         return;
     }
