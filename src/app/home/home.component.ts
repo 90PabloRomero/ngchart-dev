@@ -669,7 +669,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             let cells = JSON.parse(this.sheetSelected.Data);
             _.forEach(cells.cells, cell => {
                 console.log("datos de cell: ")
-                if(cell.attrs['.rank']&&cell.attrs['.rank'].text.includes('(t)')) cell.position_type = 'temporal'
+                if(cell.attrs['.rank']&&cell.attrs['.rank'].text.includes('(t)')) {
+                    cell.position_type = 'temporal'
+                    if(cell.attrs['.card']) cell.attrs['.card'].strokeDasharray='5,10';
+                }
             });
             this.paperView.graph.fromJSON(cells)
             setTimeout(() => {
