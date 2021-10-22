@@ -1,9 +1,9 @@
   <nav class="navbar navbar-light bg-light">
     <div style="height: 100%;width: 40px;display: inline;float: left;">
     </div>
-    <span class="navbar-brand mb-0 h1">Organization Chart
-        <i class="bi bi-filter-left" style="margin-left:25px;font-size: 25px"></i>
-    </span>
+    <i class="bi bi-filter-left" style="position: absolute;left: 23px;top: 25px;font-size: 170%;"></i>
+    <img style="height:50px" src="assets/images/logo.png">
+    
     <div class="btn-toolbar ml-auto mr-auto" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group mr-2" role="group" aria-label="Second group">
             <!-- <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveSheet(sheetSelected)" ngbTooltip="Save Sheet" [disabled]="!sheetSelected.ID">
@@ -63,6 +63,9 @@
             <button type="button" class="btn btn-sm btn-outline-dark" (click)="expandAllSheetNodes()" ngbTooltip="Expand All">
                 <i class="bi bi-arrows-angle-expand"></i>
             </button>
+            <button type="button" class="btn btn-sm btn-outline-dark" (click)="expandAllSheetNodes()" ngbTooltip="Flag">
+                <i class="bi bi-flag"></i>
+            </button>
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" ngbTooltip="Scale">
                 <button class="btn btn-outline-dark btn-sm" ngbTooltip="Scale" ngbDropdownToggle>
                     <i class="bi bi-zoom-in"></i>
@@ -83,8 +86,8 @@
             <button type="button" class="btn btn-outline-dark btn-sm" (click)="clearGraphAndSheet()" ngbTooltip="Clear Graph">
                 <i class="bi bi-x-circle"></i>
             </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" ngbTooltip="Default config" (click)="openConfigDefaultShapeModal($event,configDefaultShapeTemplate)">
-                <i class="bi bi-gear"></i>
+            <button type="button" class="btn-tools btn btn-outline-dark btn-sm" ngbTooltip="Default config" (click)="openConfigDefaultShapeModal($event,configDefaultShapeTemplate)">
+                
             </button>
             <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="Graph from Element" (click)="generateGraph(treeOrg)">
                     <i class="bi bi-diagram-2"></i>
@@ -128,7 +131,7 @@
                                 <ng-template ngbPanelTitle style="position: relative;" class="card-line-accordion">
 
                                     <span *ngIf="!panelsIds[1]" style="position: absolute;top:33px;right: 10px">
-                                        <i class="bi bi-plus-square" style="color:#343a40"></i>
+                                        <i class="bi bi-caret-down-fill" style="color:#343a40"></i>
                                     </span>
                                     <span *ngIf="panelsIds[1]" style="position: absolute;top:33px;right: 10px">
                                         <i class="bi bi-dash-square" style="color:#343a40"></i>
@@ -150,6 +153,41 @@
                                             </div>
                                             <div class="col-3">
                                                 <div class="row">
+                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                        <img style="width:80%" src="assets/images/advisor.png">
+                                                    </div>
+                                                    <!-- 
+                                                    <div class="col-12" style="margin-top: 5px;" ngbTooltip="Advisor">
+                                                        <img style="width:100%;" src="assets/images/advisor.png">
+                                                    </div>
+            -->
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="row">
+                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                        <img style="width:80%" src="assets/images/esquina.png">
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="row">
+                                                    <div class="col-12" ngbTooltip="Functional Relationship">
+                                                        <img style="width:100%" src="assets/images/functionalrel.png">
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="row mt-4"> 
+                                            <div class="col-3">
+                                                <div class="row">
+                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                        <img style="width:80%" src="assets/images/temporal.png">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="row">
                                                     <div class="col-12" [cdkDragData]="{positionType:'external',sheetSelected:sheetSelected,treeOrg:treeOrg}" cdkDrag (cdkDragEnded)="paperView.drop($event)">
                                                         <img style="width:80%" src="assets/images/external.png">
                                                     </div>
@@ -164,38 +202,28 @@
                                             </div>
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
-                                                        <img style="width:80%" src="assets/images/temporal.png">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="col-3">
-                                                <div class="row">
-                                                    <div class="col-12" ngbTooltip="Functional Relationship">
-                                                        <img style="width:100%" src="assets/images/functionalrel.png">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="row">
                                                     <div class="col-12" ngbTooltip="Direct Relationship">
                                                         <img style="width:100%" src="assets/images/directrel.png">
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row mt-4"> 
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
-                                                        <img style="width:80%" src="assets/images/advisor.png">
+                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                        <img style="width:80%" src="assets/images/tree.png">
                                                     </div>
-                                                    <!-- 
-                                                    <div class="col-12" style="margin-top: 5px;" ngbTooltip="Advisor">
-                                                        <img style="width:100%;" src="assets/images/advisor.png">
-                                                    </div>
-            -->
                                                 </div>
+                                            </div>
+                                            <div class="col-3">
+
+                                            </div>
+                                            <div class="col-3">
+
+                                            </div>
+                                            <div class="col-3">
+
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +232,7 @@
                             <ngb-panel id="2">
                                 <ng-template ngbPanelTitle style="position: relative;">
                                     <span *ngIf="!panelsIds[2]" style="position: absolute;top:33px;right: 10px">
-                                        <i class="bi bi-plus-square" style="color:#343a40"></i>
+                                        <i class="bi bi-caret-down-fill" style="color:#343a40"></i>
                                     </span>
                                     <span *ngIf="panelsIds[2]" style="position: absolute;top:33px;right: 10px">
                                         <i class="bi bi-dash-square" style="color:#343a40"></i>
@@ -217,59 +245,69 @@
                                 <ng-template ngbPanelContent>
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="input-group" style="position: relative;">
-                                            <input #treenodesearchinput id="filter" #filter style="height: 26px;width: 60px" class="form-control" type="text" placeholder="" [(ngModel)]="textSearch" (keyup)="findTreeNodeByName(tree,filter.value) " />
+                                            <input #treenodesearchinput id="filter" #filter style="height: 32px;width: 71px" class="form-control" type="text" placeholder="" [(ngModel)]="textSearch" (keyup)="findTreeNodeByName(tree,filter.value) " />
                                             <button class="btn" id="btn-filter-graph">
                                                 <span *ngIf="textSearch.length>0" aria-hidden="true" (click)="filter.value='';findTreeNodeByName(tree,'');textSearch=''">&times;</span>
                                             </button>
-                                            <i class="bi bi-search" style="position: absolute;right: 1px;top:5px"></i>
+                                            <i class="bi bi-search" style="position: absolute;right:5px;top:8px"></i>
                                         </div>
-                                        <button style="padding-right:  0px" type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="focus Previous Node">
+                                        <button style="padding-right:  0px" type="button" class="org-chart btn btn-sm btn-outline-dark" ngbTooltip="focus Previous Node">
                                             <i class="bi bi-chevron-left" (click)="treeFocusPreviousNode()"></i>
                                         </button>
-                                        <button style="padding-left: 0px" type="button" class="btn btn-sm btn-outline-dark" (click)="treeFocusNextNode()" ngbTooltip="focus Next Node">
+                                        <button style="padding-left: 0px" type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="treeFocusNextNode()" ngbTooltip="focus Next Node">
                                             <i class="bi bi-chevron-right"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="openConfirmDeleteTreeNodes
+                                        <button style="padding-left: 0px" type="button" class="org-chart btn btn-sm btn-outline-dark btn-img" (click)="treeFocusNextNode()" ngbTooltip="focus Next Node"> 
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="treeNodeOneLevelUp(tree)" ngbTooltip="Move Level Up">
+                                            <i class="bi bi-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="treeNodeOneLevelDown(tree)" ngbTooltip="Move Level Down">
+                                            <i class="bi bi-arrow-down"></i>
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="treeNodesSameLevelUp(tree)" ngbTooltip="Move Left">
+                                            <i class="bi bi-arrow-left"></i>
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="treeNodesSameLevelDown(tree)" ngbTooltip="Move Rigth">
+                                            <i class="bi bi-arrow-Right"></i>
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="openConfirmDeleteTreeNodes
+            ($event,confirmDeleteTreeNodeTemplate,tree)" ngbTooltip="Delete Node">
+                                            <i class="bi bi-chevron-double-right"></i>
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="openConfirmDeleteTreeNodes
             ($event,confirmDeleteTreeNodeTemplate,tree)" ngbTooltip="Delete Node">
                                             <i class="bi bi-dash-circle"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="openAddTreeNodeTemplate($event,addTreeNodeTemplate,tree)" ngbTooltip="Add Child Node">
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="openAddTreeNodeTemplate($event,addTreeNodeTemplate,tree)" ngbTooltip="Add Child Node">
                                             <i class="bi bi-plus-circle"></i>
                                         </button>
                                         <div class="input-group" style="width: 60px;height: 15px">
-                                            <input id="filterlevel" #treefilterlevel type="number" min="0" style="height: 26px;padding-right: 0px" class="form-control" aria-label="Input group example" aria-describedby="btnGroupAddon" [(ngModel)]="treeLevelFilter" (keyup)="setTreeLevelFilter(tree,treefilterlevel.value)" (change)="setTreeLevelFilter(tree,treefilterlevel.value)">
+                                            <input id="filterlevel" #treefilterlevel type="number" min="0" style="height: 32px;width:71px;padding-right: 0px" class="form-control" aria-label="Input group example" aria-describedby="btnGroupAddon" [(ngModel)]="treeLevelFilter" (keyup)="setTreeLevelFilter(tree,treefilterlevel.value)" (change)="setTreeLevelFilter(tree,treefilterlevel.value)">
                                         </div>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="tree.treeModel.collapseAll()" ngbTooltip="Collapse All">
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="tree.treeModel.collapseAll()" ngbTooltip="Collapse All">
+                                            <i class="bi bi-caret-right"></i>
+                                        </button>
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="tree.treeModel.collapseAll()" ngbTooltip="Collapse All">
                                             <i class="bi bi-arrows-angle-contract"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="tree.treeModel.expandAll()" ngbTooltip="Expand All">
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="tree.treeModel.expandAll()" ngbTooltip="Expand All">
                                             <i class="bi bi-arrows-angle-expand"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="treeNodeOneLevelUp(tree)" ngbTooltip="Move Level Up">
-                                            <i class="bi bi-arrow-up"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="treeNodeOneLevelDown(tree)" ngbTooltip="Move Level Down">
-                                            <i class="bi bi-arrow-down"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="treeNodesSameLevelUp(tree)" ngbTooltip="Move Left">
-                                            <i class="bi bi-arrow-left"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="treeNodesSameLevelDown(tree)" ngbTooltip="Move Rigth">
-                                            <i class="bi bi-arrow-Right"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="removeNodeDisplacement(tree)" ngbTooltip="Remove Displacement">
+                                        
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="removeNodeDisplacement(tree)" ngbTooltip="Remove Displacement">
                                             <i class="bi bi-arrow-bar-up"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="addNodeDisplacement(tree)" ngbTooltip="Insert Displacement">
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="addNodeDisplacement(tree)" ngbTooltip="Insert Displacement">
                                             <i class="bi bi-arrow-bar-down"></i>
                                         </button>
             <!--                             <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="Graph from Element" (click)="generateGraph(tree)">
                                             <i class="bi bi-diagram-2"></i>
                                         </button> -->
-                                        <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="Export Tree Nodes" (click)="exportTreeNodes(tree)">
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" ngbTooltip="Export Tree Nodes" (click)="exportTreeNodes(tree)">
                                             <i class="bi bi-download"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-dark" (click)="openReporsWindow($event,reportsWindowTemplate)" ngbTooltip="Reports">
+                                        <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="openReporsWindow($event,reportsWindowTemplate)" ngbTooltip="Reports">
                                             <i class="bi bi-list"></i>
                                         </button>
                                     </div>
@@ -279,20 +317,20 @@
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel id="3">
-                                <ng-template ngbPanelTitle style="position: relative;">
+                                <ng-template ngbPanelTitle style="position: relative">
                                     <span *ngIf="!panelsIds[3]" style="position: absolute;top:33px;right: 10px">
-                                        <i class="bi bi-plus-square" style="color: #343a40"></i>
+                                        <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
                                     </span>
                                     <span *ngIf="panelsIds[3]" style="position: absolute;top:33px;right: 10px">
                                         <i class="bi bi-dash-square" style="color: #343a40"></i>
                                     </span>
                                     <span class="panel-title">Projects</span>
+                                    <button class="btn btn-outline-dark mb-1 float-right" style="position: absolute;top:26px;right: 32px" (click)="savePositionAndExpandPanel(positionCurrent,treeOrg);openProjectForm($event,projectTemplate,null)" ngbTooltip="Add Project">
+                                        <i class="bi bi-plus-circle"></i>
+                                    </button>
                                     <i class="bi bi-journals" style="position: absolute; left: -44px; top: 0px; color: rgb(69, 217, 217); font-size: 24px; border-right: 3px solid #45d9d9; padding: 24px 9px 24px 9px; background: linear-gradient(to right, rgba(220,245,245,0.10) 0%, rgba(190,250,239,0.55) 100%);" ></i>
                                 </ng-template>
                                 <ng-template ngbPanelContent>
-                                    <button class="btn btn-outline-dark mb-1" (click)="savePositionAndExpandPanel(positionCurrent,treeOrg);openProjectForm($event,projectTemplate,null)" ngbTooltip="Add Project">
-                                        <i class="bi bi-plus-circle"></i>
-                                    </button>
                                     <table class="table table-sm">
                                         <tbody>
                                             <tr *ngFor="let project of projects; index as i" [class.active-project]="project.ID == projectSelected.ID" >
@@ -338,7 +376,7 @@
                         <ngb-panel id="4">
                                 <ng-template ngbPanelTitle style="position: relative;">
                                     <span *ngIf="!panelsIds[4]" style="position: absolute;top:33px;right: 10px">
-                                        <i class="bi bi-plus-square" style="color: #343a40"></i>
+                                        <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
                                     </span>
                                     <span *ngIf="panelsIds[4]" style="position: absolute;top:33px;right: 10px">
                                         <i class="bi bi-dash-square" style="color: #343a40"></i>
@@ -452,7 +490,7 @@
                             <div class="col" style="position: relative;">
                                 <label for="PositionInmediateSuperiorInput" class="label-input-panel">Direct Supervisor</label>
                                 <input type="text" class="form-control mt-1 input-panel" id="PositionInmediateSuperiorInput" name="PositionInmediateSuperiorInput" placeholder="Direct Supervisor" #PositionInmediateSuperior="ngModel" [(ngModel)]="positionCurrent.PositionInmediateSuperior" (change)="savePosition(positionCurrent,tree)" disabled>
-                                <i *ngIf="this.positionCurrent.PositionInmediateSuperior" (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 14px;top:33px;" class="bi bi-search"></i>
+                                <i *ngIf="this.positionCurrent.PositionInmediateSuperior" (click)="openSetImendiateSuperior($event,setImendiateSuperiorTemplate)" style="position: absolute;right: 14px;top:30px;color:#45D9D9" class="bi bi-search"></i>
                             </div>
 
                             <div class="col">
@@ -469,11 +507,11 @@
 
                             <div class="col" style="padding-top:18px">
                                 <div class="form-check mt-1" id="advising-input-wrap">
-                                    <input class="form-check-input" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" [disabled]="!this.positionCurrent.PositionInmediateSuperior" (change)="changeAdvisingAuthorityPosition(positionCurrent,treeOrg)">
                                     <label id="advising-input-label" class="form-check-label" for="AdvisingAuthorityCodeInput">
-                                        Advising Authority
+                                        Advisory Authority
                                     </label>
-                             </div>
+                                    <input class="form-check-input" style="margin-left: 0.75rem;" type="checkbox" id="AdvisingAuthorityCodeInput" name="AdvisingAuthorityCodeInput" #AdvisingAuthority="ngModel" [(ngModel)]="positionCurrent.AdvisingAuthority" [disabled]="!this.positionCurrent.PositionInmediateSuperior" (change)="changeAdvisingAuthorityPosition(positionCurrent,treeOrg)">
+                                </div>
                             </div>
                         </div>
 

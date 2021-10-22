@@ -1,3 +1,33 @@
+input[type='checkbox']{
+  width: 15px !important;
+  height: 15px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  outline: 1px solid #dedede;
+  font-size: 0.8em;
+  text-align: center;
+  line-height: 1em;
+  background: rgb(255, 255, 255);
+  border-radius: 2px;
+}
+
+input[type='checkbox']:checked:after {
+  content: '✔';
+  color: white;
+  width: 100%;
+  background: #45d9d9;
+  display: inline-block;
+  height: 100%;
+  padding-top: 2px;
+  font-family: fantasy;
+  font-weight: bold;
+}
+::-webkit-calendar-picker-indicator {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2345d9d9" class="bi bi-calendar" viewBox="0 0 16 16">  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg>');
+}
+
 .attachment-scrollbar {
   position: relative;
   height: 190px;
@@ -156,9 +186,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 #advising-input-wrap {
-  padding: 22px 0px 0px 22px;
   font-size: 95%;
-  line-height: 100%;
+  margin-left: -60px;
 }
 
 .tab-title-small {
@@ -509,4 +538,32 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 ::ng-deep #div-panel-right-inner-3 .col-8 {
   padding-left: 0;
+}
+.org-chart{
+  margin-bottom: 20px;
+}
+.org-chart i{
+  font-size: 150%;
+}
+.btn-img{padding: 0;
+  width: 39px;
+  background-image: url('/assets/images/user-plus.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.btn-img:hover{
+  background-image: url('/assets/images/user-plus-hover.png');
+}
+.btn-tools{
+  padding: 0;
+  width: 39px;
+  background-image: url('/assets/images/tools.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size:60%;
+}
+.btn-tools:hover{
+  background-image: url('/assets/images/tools-hover.png');
 }
