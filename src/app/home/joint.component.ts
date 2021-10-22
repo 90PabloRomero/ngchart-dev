@@ -189,7 +189,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                     interactive: {
                         linkMove: true,
                         labelMove: true,
-                        arrowheadMove: true,
+                        arrowheadMove: false,
                         vertexMove: true,
                         vertexAdd: true,
                         vertexRemove: true,
