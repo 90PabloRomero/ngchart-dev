@@ -1299,6 +1299,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.generateGraphRecur(activeNode, baseRoot);
             } 
         }
+
+        this.saveSheet(this.sheetSelected,false);
+        this.loadSheet(this.sheetSelected);
        return; 
     }
 
