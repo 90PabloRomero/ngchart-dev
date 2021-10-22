@@ -1559,7 +1559,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if(this.treeNodeCurrent.data.attachments){
             treeNodeCurrent.data.attachment = this.treeNodeCurrent.data.attachments
             treeNodeCurrent.data.attachments = this.treeNodeCurrent.data.attachments
-        }        
+        }     
+        if(this.treeNodeCurrent.data.functionalrels) treeNodeCurrent.data.functionalrels = this.treeNodeCurrent.data.functionalrels 
         this.nodes = tree.treeModel.nodes;
         let allData = {
             nodes: this.nodes,
