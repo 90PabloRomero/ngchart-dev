@@ -499,7 +499,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             }
                             return 0;
                         });
-                        this.activeSheets = {};
+                        //this.activeSheets = {};
                     }
                 },
                 err => {
