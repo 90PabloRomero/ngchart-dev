@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 if(!node.isActive) TREE_ACTIONS.ACTIVATE(tree, node, $event);
             }, 300)            
             
-            node.toggleExpanded();    
+            //node.toggleExpanded();    
           },
           dragEnd: (tree, node, $event) => {
               //console.log("Dragged Node: " + node.data.name);
@@ -1420,11 +1420,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     onNodeFocus($event, tree) { // set data when tree node is focused
         console.log("______________")
         let nodeCurrent = tree.treeModel.getFocusedNode();
-        console.log("tree.treeModel.activeNodes");
+        console.log("tree.treeModel.activeNodes: ");
         tree.treeModel.activeNodes.forEach(element => {
-            console.log(element.data)
+            console.log(element.data.name)
         });
-        console.log(nodeCurrent)
+        console.log("NodeCurrent: "+ nodeCurrent.data.name)
         if ((nodeCurrent.data.is_displacement && nodeCurrent.data.is_displacement == true) ||
             (nodeCurrent.data.isfunctionalrel && nodeCurrent.data.isfunctionalrel == true)) {
             this.positionCurrent = new Position;
