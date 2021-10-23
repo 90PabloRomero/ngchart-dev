@@ -1483,7 +1483,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } 
 
         if(position.AdvisingAuthority){
-            treeNode.data.name='(a) '+treeNode.data.name
+            if(!position.PositionName.includes('(a)')) treeNode.data.name='(a) '+treeNode.data.name
         } else {
             treeNode.data.name = treeNode.data.name.replace('(a) ','');
         }        
