@@ -660,6 +660,45 @@ export class HomeComponent implements OnInit, AfterViewInit {
     //     console.log(tempNodesData)
     // }
 
+    tempNames: string[] = [];
+    getTemporalNodes(node){
+        if(node.name.includes('(t)')) {
+            //console.log(node.name+": es temporal")
+            //Remove '(a) ' and '(t) '
+            let nodeName = node.name.replace('(a) ','');
+            nodeName = nodeName.replace('(t) ','');
+            this.tempNames.push(nodeName);
+        }
+
+        if(node.children.length>0){
+            node.children.forEach(childNode => {
+                this.getTemporalNodes(childNode);
+            });
+        }
+    }
+
+    updateTempNodesLook(cells){
+        //Get temporal nodes
+        this.getTemporalNodes(this.nodes[0]);
+
+        //Update temporal nodes look
+        this.tempNames.forEach(tempName=>{
+            _.forEach(cells.cells, cell => {
+                if(cell.attrs['.rank']){
+                    let cellName = cell.attrs['.rank'].text.replace('(a) ','');
+                    cellName = cellName.replace('(t) ','');
+                    //si encuentro un nodo cell cuyo nombre esta entre los nodos temporal
+                    //Hacer esa cell lucir temporal
+                    if(cellName==tempName) {
+                        cell.position_type = 'temporal'
+                        if(cell.attrs['.card']) cell.attrs['.card'].strokeDasharray='5,10';
+                    }
+                }
+            });
+        })
+        return cells;
+    }
+
     loadSheet(sheet: any) { // load sheet 
         console.log("Load Sheet")
         this.sheetSelected = sheet;
@@ -667,13 +706,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.getActiveSheetShapesDefaults();
         if (this.sheetSelected.Data != "") {
             let cells = JSON.parse(this.sheetSelected.Data);
-            _.forEach(cells.cells, cell => {
-                console.log("datos de cell: ")
-                if(cell.attrs['.rank']&&cell.attrs['.rank'].text.includes('(t)')) {
-                    cell.position_type = 'temporal'
-                    if(cell.attrs['.card']) cell.attrs['.card'].strokeDasharray='5,10';
-                }
-            });
+            cells = this.updateTempNodesLook(cells);
             this.paperView.graph.fromJSON(cells)
             setTimeout(() => {
                 if (cells.cells && cells.cells.length > 0) {
