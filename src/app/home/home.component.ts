@@ -1309,13 +1309,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(()=>{this.saveSheet(this.sheetSelected)},1000) 
         
 
-
+        let activeNodeName = activeNode.data.name.replace('(a) ', '');
+        activeNodeName = activeNodeName.replace('(t) ', '');
         if (this.paperView.graph.getElements().length<=0){ // if sheet empty
                 let newCell = this.paperView.memberDef(null,
                     350,
                     50,
-                    activeNode.data.name.replace('(a) ', ''),
-                    activeNode.data.name.replace('(a) ', ''),
+                    activeNodeName,
+                    activeNodeName,
                     activeNode.data.id,
                     'male.png',
                     '#ffffff',
@@ -1360,13 +1361,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         //    parentNew.attributes.type = 'org.Member3';
                         //else
                         //    parentNew.attributes.type = 'org.Member2';
-                        
+                        let childDataName = child.data.name.replace('(a) ', '');
+                        childDataName = childDataName.replace('(t) ', '');
                         let newCell = this.paperView.memberDef(
                             parentNew.attributes,
                             parentNew.attributes.position.x + (200 * unitX),
                             parentNew.attributes.position.y + (130),
-                            child.data.name.replace('(a) ', ''),
-                            child.data.name.replace('(a) ', ''),
+                            childDataName,
+                            childDataName,
                             child.data.id,
                             'male.png',
                             '#ffffff',
