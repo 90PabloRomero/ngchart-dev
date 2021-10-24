@@ -657,8 +657,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if(node.name.includes('(t)')) {
             //console.log(node.name+": es temporal")
             //Remove '(a) ' and '(t) '
-            let nodeName = node.name.replace('(a) ','');
-            nodeName = nodeName.replace('(t) ','');
+            let nodeName = this.removeAandTfromName(node.name); 
             this.tempNames.push(nodeName);
         }
 
@@ -677,8 +676,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.tempNames.forEach(tempName=>{
             _.forEach(cells.cells, cell => {
                 if(cell.attrs['.rank']){
-                    let cellName = cell.attrs['.rank'].text.replace('(a) ','');
-                    cellName = cellName.replace('(t) ','');
+                    let cellName = this.removeAandTfromName(cell.attrs['.rank'].text);
                     //si encuentro un nodo cell cuyo nombre esta entre los nodos temporal
                     //Hacer esa cell lucir temporal
                     if(cellName==tempName) {
@@ -1303,8 +1301,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(()=>{this.saveSheet(this.sheetSelected)},1000) 
         
 
-        let activeNodeName = activeNode.data.name.replace('(a) ', '');
-        activeNodeName = activeNodeName.replace('(t) ', '');
+        let activeNodeName = this.removeAandTfromName(activeNode.data.name);
         if (this.paperView.graph.getElements().length<=0){ // if sheet empty
                 let newCell = this.paperView.memberDef(null,
                     350,
@@ -1355,8 +1352,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         //    parentNew.attributes.type = 'org.Member3';
                         //else
                         //    parentNew.attributes.type = 'org.Member2';
-                        let childDataName = child.data.name.replace('(a) ', '');
-                        childDataName = childDataName.replace('(t) ', '');
+                        let childDataName = this.removeAandTfromName(child.data.name);
                         let newCell = this.paperView.memberDef(
                             parentNew.attributes,
                             parentNew.attributes.position.x + (200 * unitX),
@@ -1488,8 +1484,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     setAandTWhenNeeded(position){
-        let treeNodeName = position.PositionName.replace('(a) ','');
-        treeNodeName = treeNodeName.replace('(t) ','');
+        let treeNodeName = this.removeAandTfromName(position.PositionName);
 
         if(position.DedicationRegime=='temporal'){
             treeNodeName = '(t) '+treeNodeName;
@@ -2783,8 +2778,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return item.data.id == event.tree_id
         })
         if (treeNode) {
-            treeNode.data.name = event.name.replace('(a) ','');
-            treeNode.data.position.PositionName = event.name.replace('(a) ','');
+            if(treeNode.data.name.includes('(a)')&&treeNode.data.name.includes('(t)')) treeNode.data.name = '(a) (t) ' + event.name;
+            if(treeNode.data.name.includes('(a)')&&!treeNode.data.name.includes('(t)')) treeNode.data.name = '(a) ' + event.name;
+            if((!treeNode.data.name.includes('(a)'))&&treeNode.data.name.includes('(t)')) treeNode.data.name = '(t) ' + event.name;
+            treeNode.data.position.PositionName = this.removeAandTfromName(event.name);
         }
         this.positionCurrent = treeNode.data.position;
         this.treeOrg.treeModel.update();
@@ -3322,12 +3319,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         console.log("updateAllSheetsFromTreeNode", "!treeNodeRootForSheet", sheet.SheetName)
                     }
                     if (treeNodeRootForSheet) {
+                        let treeNodeRootForSheetDataName = this.removeAandTfromName(treeNodeRootForSheet.data.name);
                         let newCell = this.paperView.memberDef(
                             null,
                             (350),
                             (50),
-                            treeNodeRootForSheet.data.name.replace('(a) ', ''),
-                            treeNodeRootForSheet.data.name.replace('(a) ', ''),
+                            treeNodeRootForSheetDataName,
+                            treeNodeRootForSheetDataName,
                             treeNodeRootForSheet.data.id,
                             'male.png',
                             '#ffffff',
@@ -3368,12 +3366,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
             let unitX = -1;
             activeNode.children.forEach((child) => {
                 if (child.data.isfunctionalrel == true) {} else {
+                    let childDataName = this.removeAandTfromName(child.data.name);
                     let newCell = this.paperView.memberDef(
                         parentNew,
                         parentNew.position.x + (200 * unitX),
                         parentNew.position.y + (130),
-                        child.data.name.replace('(a) ', ''),
-                        child.data.name.replace('(a) ', ''),
+                        childDataName,
+                        childDataName,
                         child.data.id,
                         'male.png',
                         '#ffffff',
