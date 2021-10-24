@@ -1493,14 +1493,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
     }
 
+    setAandTWhenNeeded(position){
+        let treeNodeName = position.PositionName.replace('(a) ','');
+        treeNodeName = treeNodeName.replace('(t) ','');
+
+        if(position.DedicationRegime=='temporal'){
+            treeNodeName = '(t) '+treeNodeName;
+        }
+        if(position.AdvisingAuthority){
+            treeNodeName = '(a) '+treeNodeName;
+        }
+        return treeNodeName;
+    }
 
     saveNamePosition(position: any, tree: any) { // when position name change in details update name on graph
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
-        treeNode.data.name = position.PositionName.replace('(a) ','');
-        if(position.AdvisingAuthority){
-            treeNode.data.name='(a) '+position.PositionName
-        }
-
+        
+        treeNode.data.name = this.setAandTWhenNeeded(position);
+        
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item.attributes.tree_id == position.ID) {
                 item.attr('.rank/text', position.PositionName);
