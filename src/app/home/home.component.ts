@@ -692,6 +692,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     if(cellName==tempName) {
                         cell.position_type = 'temporal'
                         if(cell.attrs['.card']) cell.attrs['.card'].strokeDasharray='5,10';
+                        cell.attrs['.rank'].text = cellName;
                     }
                 }
             });
