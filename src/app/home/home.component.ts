@@ -1528,11 +1528,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return;
         } 
 
-        if(position.AdvisingAuthority){
-            if(!position.PositionName.includes('(a)')) treeNode.data.name='(a) '+treeNode.data.name
-        } else {
-            treeNode.data.name = treeNode.data.name.replace('(a) ','');
-        }        
+        treeNode.data.name = this.setAandTWhenNeeded(position);      
 
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item.attributes.tree_id == position.ID) {
@@ -1570,8 +1566,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         })
         this.savePosition(position, tree)
-        let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
-        this.paperView.configCell(sheetNode,treeNode.data.name,position.DedicationRegime);
+        // let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
+        // this.paperView.configCell(sheetNode,treeNode.data.name,position.DedicationRegime);
         this.saveSheet(this.sheetSelected);
     }
 
