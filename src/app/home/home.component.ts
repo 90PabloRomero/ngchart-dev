@@ -397,6 +397,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     onNavChange(changeEvent: NgbNavChangeEvent) {  // when selecting sheet tab 
+        this.updateAllSheetsFromTreeNode();
         this.loadSheetByID(changeEvent.nextId);
     }
 
