@@ -355,7 +355,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.positionCurrent = this.treeNodeCurrent.data.position;
             this.positionCurrent.ID = this.treeNodeCurrent.data.id;
             this.positionCurrent.DedicationRegime='position';
-            this.positionCurrent.PositionInmediateSuperior=this.treeNodeCurrent.parent.data.name;
+            this.positionCurrent.PositionInmediateSuperior=this.removeAandTfromName(this.treeNodeCurrent.parent.data.name);
 
             //console.log(this.positionCurrent.PositionInmediateSuperior);
             
@@ -1839,6 +1839,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
+    removeAandTfromName(name){
+        name = name.replace('(a) ','')
+        
+        return name.replace('(t) ','');
+    }
+
     addNode(tree: any, nodeName: any, nodePositionCode: any) {  // add tree node
         if (nodeName == undefined || nodeName == '') {
             alert("Node Name can't be empty");
@@ -1852,7 +1858,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (tree.treeModel.nodes.length > 0) {
             parent = tree.treeModel.getActiveNode();
 
-            nodePosition.PositionInmediateSuperior = parent.data.name;
+            nodePosition.PositionInmediateSuperior = this.removeAandTfromName(parent.data.name);
             parent.data.children.push({
                 name: nodeName,
                 position: nodePosition,
@@ -2305,7 +2311,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
             parent = selectedNode.parent;
 
-            nodePosition.PositionInmediateSuperior = parent.data.name;
+            nodePosition.PositionInmediateSuperior = this.removeAandTfromName(parent.data.name);
             parent.data.children.push({
                 name: nodeName,
                 position: nodePosition,
@@ -2796,7 +2802,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     let nodePosition: Position = new Position;
                     nodePosition.PositionName = gEl.attributes.attrs[".rank"].text;
                     nodePosition.PositionCode = gEl.attributes.id; // temp after creation set blank
-                    nodePosition.PositionInmediateSuperior = treeNodeParent.data.name;
+                    nodePosition.PositionInmediateSuperior = this.removeAandTfromName(treeNodeParent.data.name);
                     nodePosition.DedicationRegime='position';
                     if (gEl.attributes.position_type=="temporal"){                   
                          nodePosition.DedicationRegime='temporal';
@@ -3083,7 +3089,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     index: 0,
                     parent: parentNode
                 });
-            this.positionCurrent.PositionInmediateSuperior = node.data.name;
+            this.positionCurrent.PositionInmediateSuperior = this.removeAandTfromName(node.data.name);
             this.treeOrg.treeModel.update();
             this.onUpdateTree(null, this.treeOrg);
             setTimeout(() => { this.updateAllSheetsFromTreeNode(); }, 300)
@@ -3344,7 +3350,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     updateNodesTreesParent(activeNode: any) {
         if (activeNode.children&&activeNode.children.length > 0) {
             activeNode.children.forEach((child) => {
-                    child.position.PositionInmediateSuperior = activeNode.name;
+                    child.position.PositionInmediateSuperior = this.removeAandTfromName(activeNode.name);
                     this.treeOrg.treeModel.update();
                     this.updateNodesTreesParent(child);
            })
