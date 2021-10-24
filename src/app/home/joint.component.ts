@@ -966,7 +966,11 @@ export class JointComponent implements OnInit, AfterViewInit {
         } else {
             textDirection = '1,0,0,1'
         }
-        cell.size(this.shapeProperties.width, this.shapeProperties.height);
+        //cell.size(this.shapeProperties.width, this.shapeProperties.height);
+        cell.attributes.size = {
+                width: this.shapeProperties.width,
+                height: this.shapeProperties.height,
+        }
         cell.attr('.rank/transform', 'matrix(' + textDirection + ',' + verticalAlligment + ')');
         if (positionType == 'position') {
             cell.attr('.card/strokeDasharray', null);
