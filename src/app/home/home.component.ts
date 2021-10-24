@@ -689,6 +689,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 }
             });
         })
+        this.tempNames = [];
         return cells;
     }
 
