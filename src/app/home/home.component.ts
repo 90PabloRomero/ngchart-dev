@@ -328,28 +328,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
-   changeDedicationRegime(positionCurrent:any,tree:any){  // change position dedication regime
+   changeDedicationRegime(position:any,tree:any){  // change position dedication regime
         if (this.sheetSelected.ID != 0) {
-            let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  positionCurrent.ID })
-            var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == positionCurrent.ID);
-            //treeNode.data.name = positionCurrent.PositionName.replace('(a) ','');
-            //treeNode.data.name = positionCurrent.PositionName.replace('(t) ','');
-            console.log("Tree node data name: "+ treeNode.data.name )
-            console.log("positionCurrent.PositionName: "+ positionCurrent.PositionName )
-            if(positionCurrent.DedicationRegime=='temporal'){
-               //this.paperView.configCell(sheetNode,positionCurrent.PositionName.replace('(a) ',''),'temporal')
-               //this.paperView.configCell(sheetNode,treeNode.data.name,'temporal')
-               if(!treeNode.data.name.includes('(t)')) treeNode.data.name='(t) '+treeNode.data.name 
-            }else{
-                //this.paperView.configCell(sheetNode,treeNode.data.name,'position')
-                treeNode.data.name = treeNode.data.name.replace('(t) ','');
-                //if(positionCurrent.AdvisingAuthority) treeNode.data.name='(a) '+positionCurrent.PositionName;            
-            }
-            this.savePosition(positionCurrent, tree);
-            this.paperView.configCell(sheetNode,treeNode.data.name,positionCurrent.DedicationRegime);
+            let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
+            var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
+         
+            treeNode.data.name = this.setAandTWhenNeeded(position);
+
+            this.savePosition(position, tree);
+            this.paperView.configCell(sheetNode,position.PositionName,position.DedicationRegime);
             this.saveSheet(this.sheetSelected);
         } 
-        
    }
 
     mouseDownGraphNode(event: any) {
