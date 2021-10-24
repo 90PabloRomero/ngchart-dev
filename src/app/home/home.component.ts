@@ -355,7 +355,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.positionCurrent = this.treeNodeCurrent.data.position;
             this.positionCurrent.ID = this.treeNodeCurrent.data.id;
             this.positionCurrent.DedicationRegime='position';
-            this.positionCurrent.PositionInmediateSuperior=this.removeAandTfromName(this.treeNodeCurrent.parent.data.name);
+            if(this.treeNodeCurrent.parent){
+                this.positionCurrent.PositionInmediateSuperior=this.removeAandTfromName(this.treeNodeCurrent.parent.data.name);
+            }
+            
 
             //console.log(this.positionCurrent.PositionInmediateSuperior);
             
