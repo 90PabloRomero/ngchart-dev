@@ -42,6 +42,10 @@ export class JointComponent implements OnInit, AfterViewInit {
     urlApi: any;
 
     paper: any;
+    paperDimensions: any = {
+        width: 1440,
+        heigth: 1150
+    }
     timer: any = null;
     graph: any;
     scale: number = 1;
@@ -175,8 +179,8 @@ export class JointComponent implements OnInit, AfterViewInit {
             this.paper = new joint.dia.Paper({
                     el: this.paperElement.nativeElement,
                     model: this.graph,
-                    width: 1000,
-                    height: 800,
+                    width: this.paperDimensions.width,
+                    height: this.paperDimensions.heigth,
                     gridSize: 10,
                     drawGrid: {
                         name: 'dot',
@@ -458,8 +462,8 @@ export class JointComponent implements OnInit, AfterViewInit {
     paperCurrentSizeX: any;
     paperCurrentSizeY: any;
     openConfigPaperModal(event, inputFormTemplate) {  //modal for sheet resize
-        this.paperCurrentSizeX = this.paperElement.nativeElement.offsetWidth;
-        this.paperCurrentSizeY = this.paperElement.nativeElement.offsetHeight;
+        this.paperCurrentSizeX = this.paperDimensions.width;
+        this.paperCurrentSizeY = this.paperDimensions.heigth;
         event.preventDefault();
         this.modalWindow = this.modalService.open(inputFormTemplate, {
             ariaLabelledBy: 'modal-basic-title',
@@ -469,7 +473,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     savePaperDimentions() {
-        if ((this.paperCurrentSizeX < 1000) || (this.paperCurrentSizeY < 800)) {
+        if ((this.paperCurrentSizeX < this.paperDimensions.width) || (this.paperCurrentSizeY < this.paperDimensions.height)) {
             return
         }
         this.paper.setDimensions(this.paperCurrentSizeX, this.paperCurrentSizeY);  //change jointjs paper size

@@ -73,7 +73,7 @@ input[type='checkbox']:checked:after {
 
 .drag-boundary {
   width: 100%;
-  height: 1600px;
+  height: 100%;
 }
 
 .active-project {   

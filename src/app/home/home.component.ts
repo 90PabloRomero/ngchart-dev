@@ -62,6 +62,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     projects: Project[];
     contactToEdit: Contact;
     // contacts: Contact[];
+    paperDimensions: any = {
+        width: 1440,
+        heigth: 900
+    }
     sheets: Sheet[]; //active sheets non view
     projectSheets: Sheet[]; //all sheets from project
     sheetSelected: Sheet;
@@ -721,7 +725,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.paperView.paper.setDimensions(dim.w, dim.h);
             }
         } else {
-            this.sheetSelected.Attrs = JSON.stringify({ w: 1000, h: 800 });
+            this.sheetSelected.Attrs = JSON.stringify({ w: this.paperDimensions.width, h: this.paperDimensions.heigth });
         }
 
         //this.setTemporaryTreeNodes();
