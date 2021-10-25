@@ -3319,8 +3319,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.treeOrg.treeModel.update();
         let root = this.treeOrg.treeModel.getFirstRoot()
         this.updateNodesTreesParent(root.data);  // update parents if changed
-        setTimeout(() => { this.onUpdateTree(null, this.treeOrg); }, 1000)
-
+        //setTimeout(() => { this.onUpdateTree(null, this.treeOrg); }, 1000)
+        //Si va a esperar un segundo a que termine de actualizar los parents, mejor llama el metodo desde el final de aquel metodo, y no introduzcas ninguna espera.
 
         this.projectSheets.forEach((sheet) => {
             if (sheet.Data != "") {
@@ -3374,6 +3374,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     this.updateNodesTreesParent(child);
            })
         }
+        this.onUpdateTree(null, this.treeOrg);
     }
 
     generateSheetDataRecur(activeNode: any, parentNew: any, cells: any, sheet: any) {
