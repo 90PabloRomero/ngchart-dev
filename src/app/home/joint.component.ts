@@ -1255,11 +1255,18 @@ export class JointComponent implements OnInit, AfterViewInit {
 
                 }
             });
+
+
+            cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+            cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         } else {
             var cell = new joint.shapes.org.Arrow({
                 source: { id: source.id, },
                 target: { id: target.id, }
             });
+
+            cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+            cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         }
 
 
