@@ -1535,6 +1535,8 @@ export class JointComponent implements OnInit, AfterViewInit {
         });
         cell.attr(".connection/")
         cell.attr('.connection/stroke', '#45d9d9');
+        cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+        cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         if (!isNotFunctional) {
             cell.attr('.connection/strokeDasharray', '5,10');
         }
