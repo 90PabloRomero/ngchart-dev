@@ -66,7 +66,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     isDeleteCellConfirm = false;
     currentXPaperContextMenu: any;
     currentYPaperContextMenu: any;
-    active2: any = 1;
+    active2: any = 2;
     shapeProperties: any = {  //  shape extra properties
         width: 180,
         height: 70,
@@ -166,6 +166,23 @@ export class JointComponent implements OnInit, AfterViewInit {
         markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="card"><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="10"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="10"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="10"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
     showSelectorNode = true;
+
+    myHighlighter1 = {
+        highlighter: {
+          name: 'addClass',
+          options: {
+            className: 'highlighted'
+          }
+        }
+    }
+    myUnHighlighter1 = {
+        highlighter: {
+          name: 'addClass',
+          options: {
+            className: 'unhighlighted'
+          }
+        }
+    }
 
     constructor(
         private modalService: NgbModal,
@@ -1047,31 +1064,35 @@ export class JointComponent implements OnInit, AfterViewInit {
         var cells = this.graph.getElements();
         cells.forEach((cell) => {
             var cellView = this.paper.findViewByModel(cell);
-            cellView.unhighlight()
+            cellView.unhighlight();
+            const elements = document.getElementsByClassName("highlighted");
+            for (let i = 0; i < elements.length; i++) {
+                elements[i] ? elements[i].classList.remove("highlighted"):false;
+            }
         })
     }
 
-    getNextCellByCurrentSearch() {  // get next node by current search
+    async getNextCellByCurrentSearch() {  // get next node by current search
         if (this.searchGraphNodesResultIndex + 1 > this.searchGraphNodesResult.length - 1) {
             return
         }
-        this.unhighlightAll();
+        await this.unhighlightAll();
         this.searchGraphNodesResultIndex = this.searchGraphNodesResultIndex + 1;
         var cellView = this.paper.findViewByModel(this.searchGraphNodesResult[this.searchGraphNodesResultIndex]);
-        cellView.highlight();
+        cellView.highlight(null, this.myHighlighter1);
     }
-    getPreviousCellByCurrentSearch() { // get Previous node by current search
+    async getPreviousCellByCurrentSearch() { // get Previous node by current search
         if (this.searchGraphNodesResultIndex - 1 < 0 || this.searchGraphNodesResult.length < 1) {
             return
         }
-        this.unhighlightAll();
+        await this.unhighlightAll();
         this.searchGraphNodesResultIndex = this.searchGraphNodesResultIndex - 1;
         var cellView = this.paper.findViewByModel(this.searchGraphNodesResult[this.searchGraphNodesResultIndex]);
-        cellView.highlight();
+        cellView.highlight(null, this.myHighlighter1);
     }
 
-    getCellsByText(text) {  // find and highlight  graph nodes by text  
-        this.unhighlightAll();
+    async getCellsByText(text) {  // find and highlight  graph nodes by text  
+        await this.unhighlightAll();
         if (text.length < 1) {
             return
         }
@@ -1091,7 +1112,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.searchGraphNodesResult = result;
                 if (result.length > 0) {
                     var cellView = this.paper.findViewByModel(result[0]);
-                    cellView.highlight()
+                    cellView.highlight(null, this.myHighlighter1);
                 }
             }
             i = i + 1

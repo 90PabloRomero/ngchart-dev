@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     @ViewChild('selectContactComp') selectContactComp;  // autocomplete for contacts
     @ViewChild('treenodesearchinput') treeNodeSearchInput;
     @ViewChild('errorTemplate') errorTemplate;
+    @ViewChild('alertContact') alertContact;
     @ViewChild('paperView', { // jointjs paper 
         static: true
     }) paperView: JointComponent;
@@ -92,7 +93,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     nodes = [];
     positions = {};
     optionsChecked = [];
-   
+    txtSearchAditional = '';
+    
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
@@ -917,6 +919,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
     }
     
+    openNewContactAlert() {
+        this.modalService.open(this.alertContact, {ariaLabelledBy: 'modal-basic-title', size: 'sm'}).result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
     refreshSelectedSheetAfterDelete(sheet: Sheet) { //refresh selected sheet after tree deleting  
         this.positionCurrent = new Position;
         if (!this.sheetSelected.ID) {
@@ -1168,6 +1178,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 .subscribe(
                     (any) => {
                         if (any) {
+                            this.openNewContactAlert();
                             this.getContacts();
                             return
                         }
@@ -1232,7 +1243,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 .subscribe(
                     (any) => {
                      console.log(any)
-                     this.getContacts();
+                        this.getContacts();
+                        
                     },
                     err => {
                         if (err.error && err.error.message) {

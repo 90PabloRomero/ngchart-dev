@@ -14,3 +14,18 @@
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1
 }
+
+.innerModalConfig{
+    height: 550px;
+    width: 900px;
+}
+.btn-shape{
+    width:90px;
+    font-size: 90%;
+    color:#fff;
+    margin-left:6px;
+}
+.btn-shape:hover{
+    background-color: #45d9d9 !important;
+    color:#fff !important;
+}

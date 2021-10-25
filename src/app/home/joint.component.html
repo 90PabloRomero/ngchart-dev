@@ -2,7 +2,8 @@
 <ng-template #paperMenu>
     <section class="cell-menu">
         <ul class="list-unstyled contex-menu">
-            <li><a class="btn btn-light btn-sm" (click)="openConfigPaperModal($event,sheetTemplate)">Resize Sheet</a></li>
+            <li><a class="btn btn-light btn-sm" (click)="openConfigPaperModal($event,sheetTemplate)">Resize Sheet</a>
+            </li>
             <li><a class="btn btn-light btn-sm" (click)="reorderPaperGraph()">Reorder Sheet Elements</a></li>
         </ul>
     </section>
@@ -10,10 +11,14 @@
 <ng-template #cellMenu let-cell>
     <section class="cell-menu">
         <ul class="list-unstyled contex-menu">
-            <li><a class="btn btn-light btn-sm" (click)="openConfigNodeModal($event,configNodeTemplate,cell)">Edit {{cell.model.attributes.attrs['.rank'].text}}</a></li>
-            <li><a class="btn btn-light btn-sm" (click)="openAddNodeModal($event,addNodeTemplate,cell)">Add Child</a></li>
-            <li><a class="btn btn-light btn-sm" (click)="openAddNodeModalSibling($event,addNodeTemplateSibling,cell)">Add Sibling</a></li>
-            <li><a class="btn btn-light btn-sm" (click)="deleteCell(cell)">Delete {{cell.model.attributes.attrs['.rank'].text}}</a></li>
+            <li><a class="btn btn-light btn-sm" (click)="openConfigNodeModal($event,configNodeTemplate,cell)">Edit
+                    {{cell.model.attributes.attrs['.rank'].text}}</a></li>
+            <li><a class="btn btn-light btn-sm" (click)="openAddNodeModal($event,addNodeTemplate,cell)">Add Child</a>
+            </li>
+            <li><a class="btn btn-light btn-sm"
+                    (click)="openAddNodeModalSibling($event,addNodeTemplateSibling,cell)">Add Sibling</a></li>
+            <li><a class="btn btn-light btn-sm" (click)="deleteCell(cell)">Delete
+                    {{cell.model.attributes.attrs['.rank'].text}}</a></li>
         </ul>
     </section>
 </ng-template>
@@ -22,7 +27,8 @@
         <h4 class="modal-title" id="modal-basic-title" style="color: #45d9d9">
             Add Child to <span style="color:#ee9f06">{{nodeGraphCurrent.attributes.attrs[".rank"].text}}</span>
         </h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="outline: none;color: #ffffff">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
+            style="outline: none;color: #ffffff">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -31,22 +37,29 @@
             <form>
                 <div class="form-group row">
                     <div class="col">
-                        <input type="text" class="form-control" id="newNodeName" name="newNodeName" placeholder="Node Name" [(ngModel)]="newNodeName">
+                        <input type="text" class="form-control" id="newNodeName" name="newNodeName"
+                            placeholder="Node Name" [(ngModel)]="newNodeName">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="positionType" class="col-12 col-form-label text-info" style="padding-right:5px;">Position Type: <span style="color:#ee9f06">{{positionType}}</span> </label>
+                    <label for="positionType" class="col-12 col-form-label text-info"
+                        style="padding-right:5px;">Position Type: <span style="color:#ee9f06">{{positionType}}</span>
+                    </label>
                     <div class="col-12">
-                        <button class="btn btn-light" (click)="positionType='position'" style="float: left;" ngbTooltip="Position">
+                        <button class="btn btn-light" (click)="positionType='position'" style="float: left;"
+                            ngbTooltip="Position">
                             <img style="width:70px" src="assets/images/position.png">
                         </button>
-                        <button class="btn btn-light" (click)="positionType='external'" style="float: left;" ngbTooltip="External">
+                        <button class="btn btn-light" (click)="positionType='external'" style="float: left;"
+                            ngbTooltip="External">
                             <img style="width:70px" src="assets/images/external.png">
                         </button>
-                        <button class="btn btn-light" (click)="positionType='vacant'" style="float: left;" ngbTooltip="Vacant">
+                        <button class="btn btn-light" (click)="positionType='vacant'" style="float: left;"
+                            ngbTooltip="Vacant">
                             <img style="width:70px" src="assets/images/vacant.png">
                         </button>
-                        <button class="btn btn-light" (click)="positionType='temporal'" style="float: left;" ngbTooltip="Temporal">
+                        <button class="btn btn-light" (click)="positionType='temporal'" style="float: left;"
+                            ngbTooltip="Temporal">
                             <img style="width:70px" src="assets/images/temporal.png">
                         </button>
                     </div>
@@ -56,12 +69,16 @@
                         Node layout <span *ngIf="!isAdvisor" style="color:#ee9f06"> children</span>
                         <span *ngIf="isAdvisor" style="color:#ee9f06">Advisor</span></label>
                     <div class="col-12">
-                        <button class="btn btn-light" (click)="childrenLayout=3;isAdvisor=false" style="float: left;" ngbTooltip="3 children">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
+                        <button class="btn btn-light" (click)="childrenLayout=3;isAdvisor=false" style="float: left;"
+                            ngbTooltip="3 children">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                class="bi bi-diagram-3" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
                             </svg>
                         </button>
-                        <button class="btn btn-light" (click)="isAdvisor=true" style="float: left;" ngbTooltip=" Advisor">
+                        <button class="btn btn-light" (click)="isAdvisor=true" style="float: left;"
+                            ngbTooltip=" Advisor">
                             <img style="height: 50px" src="assets/images/advisor.png">
                         </button>
                     </div>
@@ -70,7 +87,9 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger" (click)="modal.dismiss('Cross click')" style="float: left;">Close</button>
-            <button class="btn btn-success" (click)="addGraphNode(nodeGraphCurrent,unitX,unitY,newNodeName,newNodeCode,positionType,modal)" style="float: right;">add node</button>
+            <button class="btn btn-success"
+                (click)="addGraphNode(nodeGraphCurrent,unitX,unitY,newNodeName,newNodeCode,positionType,modal)"
+                style="float: right;">add node</button>
         </div>
     </div>
 </ng-template>
@@ -79,7 +98,8 @@
         <h4 class="modal-title" id="modal-basic-title" style="color: #45d9d9">
             Add Sibling to <span style="color:#ee9f06">{{nodeGraphCurrent.attributes.attrs[".rank"].text}}</span>
         </h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="outline: none;color: #ffffff">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
+            style="outline: none;color: #ffffff">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -88,33 +108,43 @@
             <form>
                 <div class="form-group row">
                     <div class="col">
-                        <input type="text" class="form-control" id="newNodeName" name="newNodeName" placeholder="Node Name" [(ngModel)]="newNodeName">
+                        <input type="text" class="form-control" id="newNodeName" name="newNodeName"
+                            placeholder="Node Name" [(ngModel)]="newNodeName">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="positionType" class="col-12 col-form-label text-info" style="padding-right:5px;">Position Type: <span style="color:#ee9f06">{{positionType}}</span> </label>
+                    <label for="positionType" class="col-12 col-form-label text-info"
+                        style="padding-right:5px;">Position Type: <span style="color:#ee9f06">{{positionType}}</span>
+                    </label>
                     <div class="col-12">
-                        <button class="btn btn-light" (click)="positionType='position'" style="float: left;" ngbTooltip="Position">
+                        <button class="btn btn-light" (click)="positionType='position'" style="float: left;"
+                            ngbTooltip="Position">
                             <img style="width:70px" src="assets/images/position.png">
                         </button>
-                        <button class="btn btn-light" (click)="positionType='external'" style="float: left;" ngbTooltip="External">
+                        <button class="btn btn-light" (click)="positionType='external'" style="float: left;"
+                            ngbTooltip="External">
                             <img style="width:70px" src="assets/images/external.png">
                         </button>
-                        <button class="btn btn-light" (click)="positionType='vacant'" style="float: left;" ngbTooltip="Vacant">
+                        <button class="btn btn-light" (click)="positionType='vacant'" style="float: left;"
+                            ngbTooltip="Vacant">
                             <img style="width:70px" src="assets/images/vacant.png">
                         </button>
-                        <button class="btn btn-light" (click)="positionType='temporal'" style="float: left;" ngbTooltip="Temporal">
+                        <button class="btn btn-light" (click)="positionType='temporal'" style="float: left;"
+                            ngbTooltip="Temporal">
                             <img style="width:70px" src="assets/images/temporal.png">
                         </button>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="positionType" class="col-12 col-form-label text-info" style="padding-right:5px;">Sibling side {{siblingSide}}</label>
+                    <label for="positionType" class="col-12 col-form-label text-info" style="padding-right:5px;">Sibling
+                        side {{siblingSide}}</label>
                     <div class="col-12">
-                        <button class="btn btn-light" (click)="siblingSide='left'" style="float: left;" ngbTooltip="Left">
+                        <button class="btn btn-light" (click)="siblingSide='left'" style="float: left;"
+                            ngbTooltip="Left">
                             <span style="color: #3cd039">Left </span>
                         </button>
-                        <button class="btn btn-light" (click)="siblingSide='right'" style="float: left;" ngbTooltip="Right">
+                        <button class="btn btn-light" (click)="siblingSide='right'" style="float: left;"
+                            ngbTooltip="Right">
                             <span style="color: #3977d4">Right </span>
                         </button>
                     </div>
@@ -123,7 +153,9 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger" (click)="modal.dismiss('Cross click')" style="float: left;">Close</button>
-            <button class="btn btn-success" (click)="addGraphNodeSibling(nodeGraphCurrent,unitX,unitY,newNodeName,newNodeCode,positionType,siblingSide,modal)" style="float: right;">add node</button>
+            <button class="btn btn-success"
+                (click)="addGraphNodeSibling(nodeGraphCurrent,unitX,unitY,newNodeName,newNodeCode,positionType,siblingSide,modal)"
+                style="float: right;">add node</button>
         </div>
     </div>
 </ng-template>
@@ -135,230 +167,433 @@
     </span>
 </ng-template>
 <ng-template #configNodeTemplate let-modal>
-    <div class="modal-header" style="  background-color: #ffffff;">
-        <h4 class="modal-title" id="modal-basic-title" style="color: #45d9d9">
-            Config Node <span style="color:#ee9f06">{{nodeGraphCurrent.attributes.attrs[".rank"].text}}</span>
-        </h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="outline: none;color: #ffffff">
+    <div class="innerModalConfig">
+        <!--
+        <div class="modal-header" style="  background-color: #ffffff;">
+            <h4 class="modal-title" id="modal-basic-title" style="color: #45d9d9">
+                Config Node <span style="color:#ee9f06">{{nodeGraphCurrent.attributes.attrs[".rank"].text}}</span>
+            </h4>
+        </div>
+        -->
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
+            style="outline: none;color: #ffffff">
             <span aria-hidden="true">&times;</span>
         </button>
-    </div>
-    <div class="modal-body" style="padding: 1px;">
-        <div class="col-12" style="background:#ffffff;min-height:300px; ">
-            <ul ngbNav #nav2="ngbNav" [(activeId)]="active2" class="nav-pills">
-                <li [ngbNavItem]="1">
-                    <a ngbNavLink>
-                        <span class="tab-title-small">Edit Position</span></a>
-                    <ng-template ngbNavContent>
-                        <form>
-                            <div class="form-group row">
-                                <div class="col">
-                                    <input type="text" class="form-control" id="newNodeName" name="newNodeName" placeholder="Node Name" [(ngModel)]="newNodeName">
+        <div class="modal-body" style="padding: 1px;">
+            <div class="col-12" style="background:#ffffff;min-height:300px;width:100%;">
+                <ul ngbNav #nav2="ngbNav" [(activeId)]="active2" class="nav-pills">
+                    <!--
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>
+                            <span class="tab-title-small">Edit Position</span></a>
+                        <ng-template ngbNavContent>
+                            <form>
+                                <div class="form-group row">
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="newNodeName" name="newNodeName" placeholder="Node Name" [(ngModel)]="newNodeName">
+                                    </div>
                                 </div>
-                            </div>
-                             <!-- <div class="form-group row">
-                                <label for="positionType" class="col-12 col-form-label text-info" style="padding-right:5px;">Position Type: <span style="color:#ee9f06">{{positionType}}</span> </label>
-                                <div class="col-12">
-                                    <button class="btn btn-light" (click)="positionType='position'" style="float: left;" ngbTooltip="Position">
-                                        <img style="width:70px" src="assets/images/position.png">
-                                    </button>
-                                    <button class="btn btn-light" (click)="positionType='external'" style="float: left;" ngbTooltip="External">
-                                        <img style="width:70px" src="assets/images/external.png">
-                                    </button>
-                                    <button class="btn btn-light" (click)="positionType='vacant'" style="float: left;" ngbTooltip="Vacant">
-                                        <img style="width:70px" src="assets/images/vacant.png">
-                                    </button>
-                                    <button class="btn btn-light" (click)="positionType='temporal'" style="float: left;" ngbTooltip="Temporal">
-                                        <img style="width:70px" src="assets/images/temporal.png">
-                                    </button>
+                                <div class="form-group row">
+                                    <label for="positionType" class="col-12 col-form-label text-info" style="padding-right:5px;">Position Type: <span style="color:#ee9f06">{{positionType}}</span> </label>
+                                    <div class="col-12">
+                                        <button class="btn btn-light" (click)="positionType='position'" style="float: left;" ngbTooltip="Position">
+                                            <img style="width:70px" src="assets/images/position.png">
+                                        </button>
+                                        <button class="btn btn-light" (click)="positionType='external'" style="float: left;" ngbTooltip="External">
+                                            <img style="width:70px" src="assets/images/external.png">
+                                        </button>
+                                        <button class="btn btn-light" (click)="positionType='vacant'" style="float: left;" ngbTooltip="Vacant">
+                                            <img style="width:70px" src="assets/images/vacant.png">
+                                        </button>
+                                        <button class="btn btn-light" (click)="positionType='temporal'" style="float: left;" ngbTooltip="Temporal">
+                                            <img style="width:70px" src="assets/images/temporal.png">
+                                        </button>
+                                    </div>
+                                </div>  
+                            </form>
+                        </ng-template>
+                    </li>
+                    -->
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink><span class="tab-title-small">Shape</span></a>
+                        <ng-template ngbNavContent>
+                            <form>
+                                <div class="row" style="width:100%">
+                                    <div class="col-md-4">
+                                        <label style="padding-left: 50px;color:#777">
+                                            Fill
+                                        </label>
+
+                                        <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                            for="customRadio1">
+                                            <input type="radio" [value]="'no-fill'"
+                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio1"
+                                                name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                            No fill
+                                        </label>
+
+                                        <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                            for="customRadio2">
+                                            <input type="radio" [value]="'solid'"
+                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio2"
+                                                name="shapeProperties.fill.type">
+                                            Solid fill
+                                        </label>
+                                        <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                            for="customRadio3">
+                                            <input type="radio" [value]="'gradient'"
+                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio3"
+                                                name="shapeProperties.fill.type">
+                                            Gradient fill
+                                        </label>
+                                        <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                            for="customRadio4">
+                                            <input type="radio" [value]="'texture'"
+                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio4"
+                                                name="shapeProperties.fill.type">
+                                            Image/Texture fill
+                                        </label>
+                                        <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                            for="customRadio5">
+                                            <input type="radio" [value]="'pattern'"
+                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio5"
+                                                name="shapeProperties.fill.type">
+                                            Pattern fill
+                                        </label>
+
+
+                                        <div class="col-12" style="font-size: 90%;margin-top: 20px;">
+                                            <span style="float: left;margin-right: 20px;color:#777;width: 60%"
+                                                class="radio-shapes">Color/Opacity</span>
+                                            <input readonly="readonly"
+                                                style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
+                                                name="shapeProperties.fill.color" [cpOutputFormat]="'rgba'"
+                                                [(colorPicker)]="shapeProperties.fill.color"
+                                                [style.background]="shapeProperties.fill.color" [cpOKButton]="true"
+                                                [cpSaveClickOutside]="false"
+                                                [cpOKButtonClass]="'btn btn-primary btn-xs'" />
+                                        </div>
+                                        <div class="col-12" style="font-size: 90%;margin-top:20px">
+                                            <span style="float: left;margin-right: 20px;color:#777;width: 60%"
+                                                class="radio-shapes">Transparency</span>
+                                            <input readonly="readonly" type="number" placeholder="0%"
+                                                style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
+                                                name="shapeProperties.fill.color" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <label style="padding-left: 50px;color:#777">
+                                            Text Box
+                                        </label>
+                                        <div class="form-group row" style="font-size: 90%;margin-bottom:5px">
+                                            <label for="nodeType" class="col-6 col-form-label radio-shapes"
+                                                style="padding-right:5px;font-size: 90%;color:#777">Verticall
+                                                Alignment</label>
+                                            <div class="col-6">
+                                                <select class="form-control"
+                                                    [(ngModel)]="shapeProperties.textBox.verticalAlligment"
+                                                    name="textBox.verticalAlligment" style="font-size: 90%" disable>
+                                                    <!--0,18,28-->
+                                                    <option [ngValue]="'top'">Top</option>
+                                                    <option [ngValue]="'middle'">Middle</option>
+                                                    <option [ngValue]="'bottom'">Bottom</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="font-size: 90%;margin-bottom:5px">
+                                            <label for="nodeType" class="col-6 col-form-label radio-shapes"
+                                                style="padding-right:5px;font-size: 90%;color:#777">Text
+                                                Direction</label>
+                                            <div class="col-6">
+                                                <select class="form-control"
+                                                    [(ngModel)]="shapeProperties.textBox.textDirection"
+                                                    name="textBox.textDirection" style="font-size: 90%" disable>
+                                                    <option [ngValue]="'horizontal'">Horizontal</option>
+                                                    <option [ngValue]="'vertical'">Vertical</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="font-size: 90%;margin-bottom:5px">
+                                            <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
+                                                for="customRadio10">
+                                                <input type="radio" [value]="'no-auto-adjustment'"
+                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio10"
+                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                No auto adjustment
+                                            </label>
+
+                                            <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
+                                                for="customRadio11">
+                                                <input type="radio" [value]="'compress'"
+                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio11"
+                                                    name="shapeProperties.fill.type">
+                                                Compress text after overflow
+                                            </label>
+                                            <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
+                                                for="customRadio12">
+                                                <input type="radio" [value]="'shape-size'"
+                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio12"
+                                                    name="shapeProperties.fill.type">
+                                                Adjust shape size to text
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="row" style="width: 100%;">
+                                                <div class="col-12">
+                                                    <!--
+                                                                                                <label style="display: inline;width: 80px;margin-right: 5px;"
+                                                                                                    class="form-control col-6 radio-shapes"
+                                                                                                    for="shapeProperties.width">Width</label>
+                                                                                                <input style="display: inline;width: 70px"
+                                                                                                    class="form-control col-6" type="number"
+                                                                                                    [(ngModel)]="shapeProperties.width"
+                                                                                                    name="shapeProperties.width">
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <label style="display: inline;width: 50%"
+                                                                                                    class="form-control col-6 radio-shapes"
+                                                                                                    for="shapeProperties.height">Height</label>
+                                                                                                <input style="display: inline;width: 70px"
+                                                                                                    class="form-control col-6" type="number"
+                                                                                                    [(ngModel)]="shapeProperties.height"
+                                                                                                    name="shapeProperties.height">
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <button class="btn btn-sm btn-success ml-2 mt-2"
+                                                                                                    (click)="shapeProperties.width=180;shapeProperties.height=70">Reset
+                                                                                                    Size</button>
+                                                                                            </div>
+                                                                                            -->
+                                                    <div class="col-12" style="font-size: 90%;margin-top:2px">
+                                                        <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Left margin</span>
+                                                        <input readonly="readonly" type="number" placeholder="0%"
+                                                            style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
+                                                            name="shapeProperties.fill.color" />
+                                                    </div>
+                                                    <div class="col-12" style="font-size: 90%;margin-top:2px">
+                                                        <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Right margin</span>
+                                                        <input readonly="readonly" type="number" placeholder="0%"
+                                                            style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
+                                                            name="shapeProperties.fill.color" />
+                                                    </div>
+                                                    <div class="col-12" style="font-size: 90%;margin-top:2px">
+                                                        <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Superior
+                                                            margin</span>
+                                                        <input readonly="readonly" type="number" placeholder="0%"
+                                                            style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
+                                                            name="shapeProperties.fill.color" />
+                                                    </div>
+                                                    <div class="col-12" style="font-size: 90%;margin-top:2px">
+                                                        <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Inferior
+                                                            margin</span>
+                                                        <input readonly="readonly" type="number" placeholder="0%"
+                                                            style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
+                                                            name="shapeProperties.fill.color" />
+                                                    </div>
+                                                    <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
+                                                        for="customCheckBox1">
+                                                        <input type="checkbox" [value]="'shape-size-shape'"
+                                                            [(ngModel)]="shapeProperties.fill.type" id="customCheckBox1"
+                                                            name="shapeProperties.fill.type">
+                                                        Adjust text in shape
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="nodeType" class="col-4 col-form-label"
+                                            style="padding-left:0px;">Line</label>
+                                        <div class="form-group row">
+                                            <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                                for="customRadio30">
+                                                <input type="radio" [value]="'no-line-1'"
+                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio30"
+                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    No line
+                                            </label>
+
+                                            <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                                for="customRadio31">
+                                                <input type="radio" [value]="'solid-line-1'"
+                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio31"
+                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    Solid line
+                                            </label>
+
+                                            <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
+                                                for="customRadio32">
+                                                <input type="radio" [value]="'no-fill-1'"
+                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio32"
+                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    Gradient line
+                                            </label>
+                                        </div>
+
+                                        <div class="col-12" style="font-size: 90%;margin-top:20px">
+                                            <span style="float: left;margin-right: 20px;color:#777;width: 60%"
+                                                class="radio-shapes">Color/Opacity</span>
+                                            <input readonly="readonly" style="width: 20%"
+                                                name="shapeProperties.line.color" [cpOutputFormat]="'rgba'"
+                                                style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
+                                                [(colorPicker)]="shapeProperties.line.color"
+                                                [style.background]="shapeProperties.line.color" [cpOKButton]="true"
+                                                [cpSaveClickOutside]="false"
+                                                [cpOKButtonClass]="'btn btn-primary btn-xs'" />
+                                        </div>
+
+                                        <div class="col-12" style="font-size: 90%;margin-top:20px">
+                                            <span style="float: left;margin-right: 20px;color:#777;width: 60%"
+                                                class="radio-shapes">Transparency</span>
+                                            <input readonly="readonly" type="number" placeholder="0%"
+                                                style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
+                                                name="shapeProperties.fill.color" />
+                                        </div>
+
+                                        <div class="col-12" style="font-size: 90%;margin-top:20px">
+                                            <span style="float: left;margin-right: 20px;color:#777;width: 60%"
+                                                class="radio-shapes"
+                                                for="shapeProperties.line.width">
+                                                Width
+                                        </span>
+                                            <input class="col-8" type="number"
+                                            style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
+                                                [(ngModel)]="shapeProperties.line.width"
+                                                name="shapeProperties.line.width">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>  -->
-                        </form>
-                    </ng-template>
-                </li>
-                <li [ngbNavItem]="2">
-                    <a ngbNavLink><span class="tab-title-small">Shape</span></a>
-                    <ng-template ngbNavContent>
-                        <form>
+                            </form>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink><span class="tab-title-small">Privacy</span></a>
+                        <ng-template ngbNavContent>
                             <div class="row">
-                                <div class="col-3">
-                                    <label for="nodeType" class="col-4 col-form-label" style="padding-right:5px;">Fill</label>
-                                    <label class="form-control radio-shapes" for="customRadio">
-                                        <input type="radio" [value]="'none'" [(ngModel)]="shapeProperties.fill.type" id="customRadio1" name="shapeProperties.fill.type" (change)="resetFillColor()">
-                                        No fill
-                                    </label>
-                                    <label class="form-control radio-shapes" for="customRadio">
-                                        <input type="radio" [value]="'solid'" [(ngModel)]="shapeProperties.fill.type" id="customRadio2" name="shapeProperties.fill.type">
-                                        Solid fill
-                                    </label>
-                                    <div class="col-12">
-                                        <span style="float: left;margin-right: 20px;margin-right:#45d9d9;width: 60%" class="radio-shapes">Color/Opacity</span>
-                                        <input readonly="readonly" style="width: 20%" name="shapeProperties.fill.color" [cpOutputFormat]="'rgba'" [(colorPicker)]="shapeProperties.fill.color" [style.background]="shapeProperties.fill.color" [cpOKButton]="true" [cpSaveClickOutside]="false" [cpOKButtonClass]="'btn btn-primary btn-xs'" />
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <label for="nodeType" class="col-4 col-form-label" style="padding-left:0px;">Text Box</label>
-                                    <div class="form-group row">
-                                        <label for="nodeType" class="col-6 col-form-label radio-shapes" style="padding-right:5px;">Verticall Alignment</label>
-                                        <div class="col-6">
-                                            <select class="form-control" [(ngModel)]="shapeProperties.textBox.verticalAlligment" name="textBox.verticalAlligment" disable>
-                                                <!--0,18,28-->
-                                                <option [ngValue]="'top'">Top</option>
-                                                <option [ngValue]="'middle'">Middle</option>
-                                                <option [ngValue]="'bottom'">Bottom</option>
-                                            </select>
+                                <div class="col-12" style="min-height: 140px">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form style="margin-bottom: 0px;height: 15px;">
+                                                <label class="form-control" for="enableAditional" style="border:none">
+                                                    <input type="checkbox" name="enableAditional"
+                                                        [(ngModel)]="shapeProperties.privacy.enableAditional">
+                                                    <small style="margin-left: 10px;">Aditional</small>
+                                                </label>
+                                            </form>
+                                        </div>
+                                        <div class="col-12">
+                                            <app-select-contact *ngIf="shapeProperties.privacy.enableAditional"
+                                                #selectContactComp (contactsAdded)="addAditionalShape($event)">
+                                            </app-select-contact>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="nodeType" class="col-6 col-form-label radio-shapes" style="padding-right:5px;">Text Direction</label>
-                                        <div class="col-6">
-                                            <select class="form-control" [(ngModel)]="shapeProperties.textBox.textDirection" name="textBox.textDirection" disable>
-                                                <option [ngValue]="'horizontal'">Horizontal</option>
-                                                <option [ngValue]="'vertical'">Vertical</option>
-                                            </select>
+                                    <table class="table table-sm" *ngIf="shapeProperties.privacy.enableAditional"
+                                        style="margin-bottom: 0px;">
+                                        <tbody>
+                                            <tr>
+                                                <th> </th>
+                                                <th> <small>Name</small> </th>
+                                                <th> <small>See</small> </th>
+                                                <th> <small>Modify</small> </th>
+                                                <th> <small>Delete</small> </th>
+                                            </tr>
+                                            <tr *ngFor="let contact of shapeProperties.privacy.contactsAditional">
+                                                <td>
+                                                    <button class="btn" (click)="deleteAditionalShape(contact,tree)">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </td>
+                                                <td> {{contact.name}} </td>
+                                                <td class="pt-2"><input (change)="updateAditionalShape(contact)"
+                                                        type="checkbox" name="{{contact.see}}"
+                                                        [(ngModel)]="contact.see">
+                                                </td>
+                                                <td class="pt-2"><input (change)="updateAditionalShape(contact)"
+                                                        type="checkbox" name="{{contact.modify}}"
+                                                        [(ngModel)]="contact.modify">
+                                                </td>
+                                                <td class="pt-2"> <input (change)="updateAditionalShape(contact)"
+                                                        type="checkbox" name="{{contact.delete}}"
+                                                        [(ngModel)]="contact.delete"> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12" style="min-height: 140px">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form style="margin-bottom: 0px;height: 15px;">
+                                                <label class="form-control" for="enableException" style="border:none">
+                                                    <input type="checkbox" name="enableException"
+                                                        [(ngModel)]="shapeProperties.privacy.enableException">
+                                                    <small style="margin-left: 10px;">Exception</small>
+                                                </label>
+                                            </form>
+                                        </div>
+                                        <div class="col-12">
+                                            <app-select-contact *ngIf="shapeProperties.privacy.enableException"
+                                                #selectContactComp (contactsAdded)="addExceptionShape($event)">
+                                            </app-select-contact>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="nodeType" class="col-12 col-form-label radio-shapes" style="padding-right:5px;">Shape Size</label>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <label style="display: inline;width: 80px;margin-right: 5px;" class="form-control col-6 radio-shapes" for="shapeProperties.width">Width</label>
-                                                <input style="display: inline;width: 70px" class="form-control col-6" type="number" [(ngModel)]="shapeProperties.width" name="shapeProperties.width">
-                                            </div>
-                                            <div class="col-12">
-                                                <label style="display: inline;width: 50%" class="form-control col-6 radio-shapes" for="shapeProperties.height">Height</label>
-                                                <input style="display: inline;width: 70px" class="form-control col-6" type="number" [(ngModel)]="shapeProperties.height" name="shapeProperties.height">
-                                            </div>
-                                            <div class="col-12">
-                                                <button class="btn btn-sm btn-success ml-2 mt-2" (click)="shapeProperties.width=180;shapeProperties.height=70">Reset Size</button>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="col-4">
-                                    <label for="nodeType" class="col-4 col-form-label" style="padding-left:0px;">Line</label>
-                                    <div class="form-group row">
-                                        <label class="form-control radio-shapes" for="customRadio21">
-                                            <input type="radio" [value]="'none'" [(ngModel)]="shapeProperties.line.type" id="customRadio10" name="line.type">
-                                            No line
-                                        </label>
-                                        <label class="form-control radio-shapes" for="customRadio22">
-                                            <input type="radio" [value]="'solid'" [(ngModel)]="shapeProperties.line.type" id="customRadio11" name="line.type">
-                                            Solid line
-                                        </label>
-                                    </div>
-                                    <div class="col-12" style="padding-left: 0px;">
-                                        <span style="float: left;margin-right: 20px;margin-right:#45d9d9" class="radio-shapes">Color/Opacity</span>
-                                        <input readonly="readonly" style="width: 20%" name="shapeProperties.line.color" [cpOutputFormat]="'rgba'" [(colorPicker)]="shapeProperties.line.color" [style.background]="shapeProperties.line.color" [cpOKButton]="true" [cpSaveClickOutside]="false" [cpOKButtonClass]="'btn btn-primary btn-xs'" />
-                                    </div>
-                                    <div class="form-row mt-2">
-                                        <label class="form-control radio-shapes col-4" for="shapeProperties.line.width">
-                                            Width
-                                        </label>
-                                        <input class="form-control col-8" type="number" [(ngModel)]="shapeProperties.line.width" name="shapeProperties.line.width">
-                                    </div>
+                                    <table *ngIf="shapeProperties.privacy.enableException" class="table table-sm"
+                                        style="margin-bottom: 0px;">
+                                        <tbody>
+                                            <tr>
+                                                <th></th>
+                                                <th> <small>Name</small> </th>
+                                                <th> <small>See</small> </th>
+                                                <th> <small>Modify</small> </th>
+                                                <th> <small>Delete</small> </th>
+                                            </tr>
+                                            <tr *ngFor="let contact of shapeProperties.privacy.contactsException">
+                                                <td> <button class="btn" (click)="deleteExceptionShape(contact,tree)">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </td>
+                                                <td> {{contact.name}} </td>
+                                                <td class="pt-2"><input (change)="updateExceptionShape(contact)"
+                                                        type="checkbox" name="{{contact.see}}"
+                                                        [(ngModel)]="contact.see"> </td>
+                                                <td class="pt-2"><input (change)="updateExceptionShape(contact)"
+                                                        type="checkbox" name="{{contact.modify}}"
+                                                        [(ngModel)]="contact.modify"></td>
+                                                <td class="pt-2"> <input (change)="updateExceptionShape(contact)"
+                                                        type="checkbox" name="{{contact.delete}}"
+                                                        [(ngModel)]="contact.delete"> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </form>
-                    </ng-template>
-                </li>
-                <li [ngbNavItem]="3">
-                    <a ngbNavLink><span class="tab-title-small">Privacy</span></a>
-                    <ng-template ngbNavContent>
-                        <div class="row">
-                            <div class="col-12" style="min-height: 140px">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <form style="margin-bottom: 0px;height: 15px;">
-                                            <label class="form-control" for="enableAditional" style="border:none">
-                                                <input type="checkbox" name="enableAditional" [(ngModel)]="shapeProperties.privacy.enableAditional">
-                                                <small style="margin-left: 10px;">Aditional</small>
-                                            </label>
-                                        </form>
-                                    </div>
-                                    <div class="col-12">
-                                        <app-select-contact *ngIf="shapeProperties.privacy.enableAditional" #selectContactComp (contactsAdded)="addAditionalShape($event)"></app-select-contact>
-                                    </div>
-                                </div>
-                                <table class="table table-sm" *ngIf="shapeProperties.privacy.enableAditional" style="margin-bottom: 0px;">
-                                    <tbody>
-                                        <tr>
-                                            <th> </th>
-                                            <th> <small>Name</small> </th>
-                                            <th> <small>See</small> </th>
-                                            <th> <small>Modify</small> </th>
-                                            <th> <small>Delete</small> </th>
-                                        </tr>
-                                        <tr *ngFor="let contact of shapeProperties.privacy.contactsAditional">
-                                            <td>
-                                                <button class="btn" (click)="deleteAditionalShape(contact,tree)">
-                                                    <i class="bi bi-x-circle"></i>
-                                                </button>
-                                            </td>
-                                            <td> {{contact.name}} </td>
-                                            <td class="pt-2"><input (change)="updateAditionalShape(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see">
-                                            </td>
-                                            <td class="pt-2"><input (change)="updateAditionalShape(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify">
-                                            </td>
-                                            <td class="pt-2"> <input (change)="updateAditionalShape(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-12" style="min-height: 140px">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <form style="margin-bottom: 0px;height: 15px;">
-                                            <label class="form-control" for="enableException" style="border:none">
-                                                <input type="checkbox" name="enableException" [(ngModel)]="shapeProperties.privacy.enableException">
-                                                <small style="margin-left: 10px;">Exception</small>
-                                            </label>
-                                        </form>
-                                    </div>
-                                    <div class="col-12">
-                                        <app-select-contact *ngIf="shapeProperties.privacy.enableException" #selectContactComp (contactsAdded)="addExceptionShape($event)"></app-select-contact>
-                                    </div>
-                                </div>
-                                <table *ngIf="shapeProperties.privacy.enableException" class="table table-sm" style="margin-bottom: 0px;">
-                                    <tbody>
-                                        <tr>
-                                            <th></th>
-                                            <th> <small>Name</small> </th>
-                                            <th> <small>See</small> </th>
-                                            <th> <small>Modify</small> </th>
-                                            <th> <small>Delete</small> </th>
-                                        </tr>
-                                        <tr *ngFor="let contact of shapeProperties.privacy.contactsException">
-                                            <td> <button class="btn" (click)="deleteExceptionShape(contact,tree)">
-                                                    <i class="bi bi-x-circle"></i>
-                                                </button>
-                                            </td>
-                                            <td> {{contact.name}} </td>
-                                            <td class="pt-2"><input (change)="updateExceptionShape(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see"> </td>
-                                            <td class="pt-2"><input (change)="updateExceptionShape(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify"></td>
-                                            <td class="pt-2"> <input (change)="updateExceptionShape(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </ng-template>
-                </li>
-            </ul>
-            <div [ngbNavOutlet]="nav2" class="mt-2"></div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" (click)="modal.dismiss('Cross click')" style="float: left;">Close</button>
-            <button class="btn btn-success" (click)="configCell(nodeGraphCurrent,newNodeName,positionType);modal.dismiss('Cross click')" style="float: right;">Save</button>
+                        </ng-template>
+                    </li>
+                </ul>
+                <div [ngbNavOutlet]="nav2" class="mt-2"></div>
+            </div>
+            <div class="modal-footer" style="border: 0;">
+                <div style="margin:0 auto">
+                <button class="btn btn-shape"
+                    style="background-color: #45d9d9;border: 0">Apply</button>
+                <button class="btn btn-shape" (click)="modal.dismiss('Cross click')"
+                    style="border-color: #45d9d9;background-color: #fff;color:#45d9d9">Accept</button>
+                <button class="btn btn-shape"
+                    (click)="configCell(nodeGraphCurrent,newNodeName,positionType);modal.dismiss('Cross click')"
+                    style="background-color: #c6fafa;border: 0;color:#0d7575">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>
+
 <ng-template #sheetTemplate let-modal>
     <div class="modal-header" style="  background-color: #ffffff;">
         <h4 class="modal-title" id="modal-basic-title" style="color: #45d9d9">
             <span>Set active Sheet size</span>
         </h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="   outline: none;color: #ffffff">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
+            style="   outline: none;color: #ffffff">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -370,20 +605,23 @@
                 <div class="form-group row">
                     <label for="Address" class="col-4 col-form-label" style="padding-right:5px;">Width</label>
                     <div class="col-8">
-                        <input type="number" class="form-control" id="paperCurrentSizeX" name="paperCurrentSizeX" placeholder="Width" [(ngModel)]="paperCurrentSizeX" required>
+                        <input type="number" class="form-control" id="paperCurrentSizeX" name="paperCurrentSizeX"
+                            placeholder="Width" [(ngModel)]="paperCurrentSizeX" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="Address" class="col-4 col-form-label" style="padding-right:5px;">Height</label>
                     <div class="col-8">
-                        <input type="number" class="form-control" id="paperCurrentSizeY" name="paperCurrentSizeY" placeholder="Height" [(ngModel)]="paperCurrentSizeY" required>
+                        <input type="number" class="form-control" id="paperCurrentSizeY" name="paperCurrentSizeY"
+                            placeholder="Height" [(ngModel)]="paperCurrentSizeY" required>
                     </div>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger" (click)="modal.dismiss('Cross click')" style="float: left;">Close</button>
-            <button class="btn btn-success" style="float: right;" (click)="savePaperDimentions();modal.dismiss('Cross click')">Save</button>
+            <button class="btn btn-success" style="float: right;"
+                (click)="savePaperDimentions();modal.dismiss('Cross click')">Save</button>
         </div>
     </div>
 </ng-template>
