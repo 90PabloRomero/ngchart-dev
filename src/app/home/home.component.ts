@@ -3322,6 +3322,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 return item.id === functionalRelTarget.idSource
             })
             //      this.savePosition(this.positionCurrent, tree);
+            let fToDelete = {
+                functionalRelSourceId: functionalRelTarget.idSource,
+                functionalRelTargetId: functionalRelTarget.id
+            }
+            this.removeLinkFromSheet(fToDelete);
+
+            if (this.sheetSelected.ID != 0) {
+                setTimeout(() => { 
+                    this.updateAllSheetsFromTreeNode();  
+                    this.refreshSheetOnView(); 
+                }, 200)
+            }
         }
         return
     }
