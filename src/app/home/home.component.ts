@@ -3170,8 +3170,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => { 
             this.selectedFuncRels = [];//Restablecer selectedFuncRels
         }, 300)
-        
+        this.saveSheet(this.sheetSelected);
         modal.close()
+        
         return;
     }
 
