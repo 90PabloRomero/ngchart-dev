@@ -260,14 +260,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (event.eventName == 'moveNode') { // if a tree node is moved updates all sheets and related data
                 this.updateAllSheetsFromTreeNode();
                 return
-            } else if (event.eventName == 'blur') { // if a tree node change focus
-                this.treeNodeCurrent = event.node.data;
-                //this.updateAllSheetsFromTreeNode();
+            } else if (event.eventName == 'activate') { // if a tree node change focus
+                if (this.sheetSelected.ID&&this.sheetSelected.ID != 0) {
+                    let node = this.treeOrg.treeModel.getNodeBy(node=>{ 
+                        return node.data.id == event.node.data.id;
+                    });
+                    this.simulateGraphNodeClickEvent(node);
+                }
                 return
             }
     }
 
+    simulateGraphNodeClickEvent(node){
+        let event = {
+            attributes: { 
+                tree_id: ''
+            }
+        }
+        event.attributes.tree_id = node.data.id
+        this.selectGraphNode(event, this.treeOrg)
+    }
+
     selectGraphNode($event:any,tree:any){
+        console.log("Select Graph Node: ")
         if (this.sheetSelected.ID != 0) {
              //Deseleccionar todos los graph nodes, que son posibles seleccionados
              _.each(this.paperView.graph.getElements(), (cell) => { 
