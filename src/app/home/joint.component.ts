@@ -1167,6 +1167,57 @@ export class JointComponent implements OnInit, AfterViewInit {
         })
     }
 
+    //Create selected node, doen't matter if is root.
+    member3Def(cell){
+        if(cell.attributes.type == 'org.Member3') return
+        let org_parent: any = cell.attributes.org_parent;
+        let org_parent_id: any = cell.attributes.org_parent_id;
+        let org_level: any = cell.attributes.org_level;
+        var newCell = new this.Member3({
+            "attrs": cell.attributes.attrs,
+            "id": cell.attributes.id,    
+            "is_advisor": cell.attributes.isAdvisor,   
+            "n1": 0,
+            "n2": 0,
+            "n3": 0,    
+            "org_level": org_level, 
+            "org_parent": org_parent,
+            "org_parent_id": org_parent_id,
+            "position": cell.attributes.position,
+            "position_type": cell.attributes.position_type,
+            "tree_id": cell.attributes.tree_id,
+        });
+        cell.attributes = newCell.attributes;
+        //this.nodeGraphNameChangeEvent.emit({ name: cell.attrs['.rank'].text, tree_id: cell.attributes.tree_id }) // update tree node name on graph node change
+                                                                                                        // nodeGraphNameChange() on home.component.ts
+        return;
+    }
+
+    member2Def(cell){
+        if(cell.attributes.type == 'org.Member2') return
+        let org_parent: any = cell.attributes.org_parent;
+        let org_parent_id: any = cell.attributes.org_parent_id;
+        let org_level: any = cell.attributes.org_level;
+        var newCell = new this.Member2({
+            "attrs": cell.attributes.attrs,
+            "id": cell.attributes.id,    
+            "is_advisor": cell.attributes.isAdvisor,   
+            "n1": 0,
+            "n2": 0,
+            "n3": 0,    
+            "org_level": org_level, 
+            "org_parent": org_parent,
+            "org_parent_id": org_parent_id,
+            "position": cell.attributes.position,
+            "position_type": cell.attributes.position_type,
+            "tree_id": cell.attributes.tree_id,
+        });
+        cell.attributes = newCell.attributes;
+        //this.nodeGraphNameChangeEvent.emit({ name: cell.attrs['.rank'].text, tree_id: cell.attributes.tree_id }) // update tree node name on graph node change
+                                                                                                        // nodeGraphNameChange() on home.component.ts
+        return;
+    }
+
     //define and return a graph element without adding to graph. Used on tree node and sheets sync 
     memberDef(parent: any, x: any, y: any, rank: any, name: any, id: any, image: any, background: any, textColor: any, isAdvisor: any, currentNode: any) {
         let org_parent: any = 'root';

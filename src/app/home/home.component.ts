@@ -262,9 +262,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 return
             } else if (event.eventName == 'blur') { // if a tree node change focus
                 this.treeNodeCurrent = event.node.data;
-                this.updateAllSheetsFromTreeNode();
+                //this.updateAllSheetsFromTreeNode();
                 return
             }
+    }
+
+    selectGraphNode($event:any,tree:any){
+        if (this.sheetSelected.ID != 0) {
+             //Deseleccionar todos los graph nodes, que son posibles seleccionados
+             _.each(this.paperView.graph.getElements(), (cell) => { 
+                if(cell&&cell.attributes.type.includes('org.Member')){
+                    if(cell.attributes.tree_id !=  $event.attributes.tree_id) {
+                        if(cell.attributes.type == 'org.Member3') {
+                            this.paperView.member2Def(cell);
+                            this.paperView.configCell(cell,cell.attributes.attrs['.rank'].text,cell.attributes.attrs.position_type);
+                        }
+                    }
+                }
+                
+            })
+
+            //Seleccionar el nodo que genera el evento
+            let toSelectCell = _.find(this.paperView.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  $event.attributes.tree_id })
+            this.paperView.member3Def(toSelectCell);
+
+            this.saveSheet(this.sheetSelected);
+            setTimeout(()=>{this.refreshSheetOnView();},1000) 
+        }
     }
 
     lastNodeSearchedId: any;
@@ -356,7 +380,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return event.attributes.tree_id == item.data.id });
-        if(!this.treeNodeCurrent.isActive) TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
+        TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
         if (this.treeNodeCurrent) {
             this.positionCurrent = this.treeNodeCurrent.data.position;
             this.positionCurrent.ID = this.treeNodeCurrent.data.id;
@@ -661,14 +685,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     tempNames: string[] = [];
     getTemporalNodes(node){
-        if(node.name.includes('(t)')) {
+        if(node&&node.name.includes('(t)')) {
             //console.log(node.name+": es temporal")
             //Remove '(a) ' and '(t) '
             let nodeName = this.removeAandTfromName(node.name); 
             this.tempNames.push(nodeName);
         }
 
-        if(node.children.length>0){
+        if(node&&node.children&&node.children.length>0){
             node.children.forEach(childNode => {
                 this.getTemporalNodes(childNode);
             });
