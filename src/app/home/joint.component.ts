@@ -1169,6 +1169,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     //Create selected node, doen't matter if is root.
     member3Def(cell){
+        if(!cell||!cell.attributes) return;
         if(cell.attributes.type == 'org.Member3') return
         let org_parent: any = cell.attributes.org_parent;
         let org_parent_id: any = cell.attributes.org_parent_id;
@@ -1194,6 +1195,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     member2Def(cell){
+        if(!cell||!cell.attributes) return;
         if(cell.attributes.type == 'org.Member2') return
         let org_parent: any = cell.attributes.org_parent;
         let org_parent_id: any = cell.attributes.org_parent_id;
