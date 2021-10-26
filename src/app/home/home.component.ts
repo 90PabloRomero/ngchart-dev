@@ -303,7 +303,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //this.paperView.configCell(toSelectCell,toSelectCell.attributes.attrs['.rank'].text,toSelectCell.attributes.position_type);
             
             this.saveSheet(this.sheetSelected);
-            setTimeout(()=>{this.refreshSheetOnView();},1000) 
+            //setTimeout(()=>{this.refreshSheetOnView();},1000) 
         }
     }
 
@@ -1056,7 +1056,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                                     this.sheets.forEach((s)=>{
                                         if(s.ID==sh.ID){
                                             s.SheetName=sh.SheetName;
-
+                                            this.refreshSheetOnView();
                                         }  
                                     })
                                 }) 
@@ -1068,7 +1068,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                                 alert("Sheet name exists!");
                                 this.refreshSelectedSheetCB(sheet, (sh)=>{
                                             sheet.SheetName=sh.SheetName;
-                              
+                                            this.refreshSheetOnView();
                                 }) 
 
                             }
