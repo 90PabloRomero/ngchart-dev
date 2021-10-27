@@ -307,6 +307,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    onDeleteGraphNodeEvent($event){
+        let cell = $event.model.attributes;
+        let treeNode = this.treeOrg.treeModel.getNodeBy(node => node.id==cell.tree_id);
+        TREE_ACTIONS.ACTIVATE(this.treeOrg,treeNode,event);
+        
+        setTimeout(()=>{this.deleteNodesConfirmedByUser(treeNode);},1000);
+        
+    }
+
     lastNodeSearchedId: any;
     lastNodeSearchedKeyword: any;
     findTreeNodeByName(tree: any, search: any) {

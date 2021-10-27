@@ -31,6 +31,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() nodeGraphNameChangeEvent = new EventEmitter();  // change name graph node
     @Output() graphNodeAddedEvent = new EventEmitter(); // graph node elemente added 
     @Output() mouseDownGraphNodeEvent = new EventEmitter(); // used to fire on circle actions
+    @Output() deleteGraphNodeEvent = new EventEmitter(); // delete graph node elemente 
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -757,10 +758,12 @@ export class JointComponent implements OnInit, AfterViewInit {
                     })
                     cell.remove();
                     cell.model.remove();
+                    this.deleteGraphNodeEvent.emit(cell); // graph node elemente added 
                 }
             })
         }
         this.close();
+
     }
     editCell(cell) {
         this.close();
