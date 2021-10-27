@@ -451,6 +451,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     saveBeforeLeaving(){
         this.panelExpanded = true;
+        
+        let someSheetActive = false;
+        _.each(this.activeSheets, (sheet)=>{
+            if(sheet) someSheetActive = true;
+        });
+
+        if(!someSheetActive) return;
+
         this.saveNamePosition(this.positionCurrent,this.treeOrg);
         this.saveSheet(this.sheetSelected);
         this.updateAllSheetsFromTreeNode();
@@ -598,6 +606,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     loadProject(project: any) {  // load project
+        this.saveBeforeLeaving();
         this.panelExpanded = true;
         this.positionCurrent = new Position;
         this.accordion.expand("2") //open accordeon tree to activate tree
