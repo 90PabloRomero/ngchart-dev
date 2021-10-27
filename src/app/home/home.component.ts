@@ -313,7 +313,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         TREE_ACTIONS.ACTIVATE(this.treeOrg,treeNode,event);
         
         setTimeout(()=>{this.deleteNodesConfirmedByUser(treeNode);},1000);
-        
     }
 
     lastNodeSearchedId: any;
