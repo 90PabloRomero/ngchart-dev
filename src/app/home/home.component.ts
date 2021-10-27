@@ -449,9 +449,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    clearFiltersOrSearchInputs(){
+        this.textSearch = '';
+        this.textSearch2 = '';
+        this.nodeGraphLevelSelected = '';
+        this.treeLevelFilter = '';
+        return
+    }
+
     saveBeforeLeaving(){
+        //clear every search input or filter input
+        this.clearFiltersOrSearchInputs();
+
         this.panelExpanded = true;
-        
+
         let someSheetActive = false;
         _.each(this.activeSheets, (sheet)=>{
             if(sheet) someSheetActive = true;
