@@ -3170,8 +3170,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => { 
             this.selectedFuncRels = [];//Restablecer selectedFuncRels
         }, 300)
-        
+        this.saveSheet(this.sheetSelected);
         modal.close()
+        
         return;
     }
 
@@ -3222,6 +3223,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
+    removeLinkFromSheet(fToDelete){
+        console.log("Delete functional relation link: ")
+        if (this.sheetSelected.ID != 0) {
+            //Encontrar el nodo en el lienzo que representa al link
+            let cells = JSON.parse(this.sheetSelected.Data);
+
+             let source = _.find(cells.cells, (cell) => { 
+                return fToDelete.functionalRelSourceId == cell.tree_id;
+            })
+           
+            let target = _.find(cells.cells, (cell) => { 
+                return fToDelete.functionalRelTargetId == cell.tree_id;
+            })
+
+            _.each(cells.cells, (cell) => { 
+                if(cell&&cell.type&&cell.type=='org.Arrow'){
+                    if(cell.source.id==source.id&&cell.target.id==target.id) {
+                        _.remove(cells.cells, cell);
+                    }
+                }
+            })
+
+            this.saveSheet(this.sheetSelected);
+        }
+    }
+
     deleteFunctionalRel() { 
         let fToDelete;
 
@@ -3254,10 +3281,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         _.remove(this.treeNodeCurrent.data.functionalrels, (item) => {
             return item === this.parentWithFunctionalRelToDelete
         })
+
+        if(fToDelete) this.removeLinkFromSheet(fToDelete);
+
         this.savePosition(this.positionCurrent, this.treeOrg);
+
 
         if (this.sheetSelected.ID != 0) {
             setTimeout(() => { 
+                this.updateAllSheetsFromTreeNode();  
                 this.refreshSheetOnView(); 
             }, 200)
         }
@@ -3290,6 +3322,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 return item.id === functionalRelTarget.idSource
             })
             //      this.savePosition(this.positionCurrent, tree);
+            let fToDelete = {
+                functionalRelSourceId: functionalRelTarget.idSource,
+                functionalRelTargetId: functionalRelTarget.id
+            }
+            this.removeLinkFromSheet(fToDelete);
+
+            if (this.sheetSelected.ID != 0) {
+                setTimeout(() => { 
+                    this.updateAllSheetsFromTreeNode();  
+                    this.refreshSheetOnView(); 
+                }, 200)
+            }
         }
         return
     }

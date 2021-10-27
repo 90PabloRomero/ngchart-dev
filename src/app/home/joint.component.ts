@@ -1600,10 +1600,10 @@ export class JointComponent implements OnInit, AfterViewInit {
     addFunctionalRel(sourceName: any, targetName: any) { // add functional relantionship
         var cells = this.graph.getElements();
         let source = _.find(cells, function(el: any) {
-            return sourceName == el.attributes.attrs['.rank'].text && el.attributes.type == "org.Member2";
+            return sourceName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
         });
         let target = _.find(cells, function(el: any) {
-            return targetName == el.attributes.attrs['.rank'].text && el.attributes.type == "org.Member2";
+            return targetName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
         });
         if (source && target) {
             this.addFunctionalRelLink(source, target)
