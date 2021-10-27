@@ -301,6 +301,8 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (cell.attributes.type == "org.Arrow") { return }
 
         this.graphNodeAddedEvent.emit(cell);
+
+        this.reorderPaperGraph();
     }
 
     drop(event: { source: CdkDrag < any > }) {   // when dropping from left bar position shapes  
