@@ -397,15 +397,15 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     resetFillColor() {
-        if (this.shapeProperties.fill.type = 'none') {
-            this.shapeProperties.fill.color = 'rgba(255,255,255,1)'
+        if (this.newShapeProperties.fill.type = 'none') {
+            this.newShapeProperties.fill.color = 'rgba(255,255,255,1)'
         }
     }
 
-
+    newShapeProperties: any = {};
     openConfigNodeModal(event, inputFormTemplate, cell) {  // open node config modal 
         //get custom shape value for init values 
-        this.shapeProperties = {
+        this.newShapeProperties = {
             width: 180,
             height: 70,
             fill: {
@@ -437,26 +437,26 @@ export class JointComponent implements OnInit, AfterViewInit {
 
         }
 
-        this.shapeProperties.fill.color = cell.model.attr('.card/fill');
-        this.shapeProperties.fill.type = 'none';
-        if (this.shapeProperties.fill.color != 'rgba(255,255,255,0.1)') {
-            this.shapeProperties.fill.type = 'solid';
+        this.newShapeProperties.fill.color = cell.model.attr('.card/fill');
+        this.newShapeProperties.fill.type = 'none';
+        if (this.newShapeProperties.fill.color != 'rgba(255,255,255,0.1)') {
+            this.newShapeProperties.fill.type = 'solid';
         }
-        this.shapeProperties.line.color = cell.model.attr('.card/stroke');
-        this.shapeProperties.line.type = 'none';
-        if (this.shapeProperties.line.color != 'rgba(255,255,255,0.1)') {
-            this.shapeProperties.line.type = 'solid';
+        this.newShapeProperties.line.color = cell.model.attr('.card/stroke');
+        this.newShapeProperties.line.type = 'none';
+        if (this.newShapeProperties.line.color != 'rgba(255,255,255,0.1)') {
+            this.newShapeProperties.line.type = 'solid';
         }
-        this.shapeProperties.line.width = cell.model.attr('.card/stroke-width');
-        this.shapeProperties.textBox.verticalAlligment = cell.model.attr('.rank/vertical-alligment');
-        this.shapeProperties.textBox.textDirection = cell.model.attr('.rank/text-direction');
+        this.newShapeProperties.line.width = cell.model.attr('.card/stroke-width');
+        this.newShapeProperties.textBox.verticalAlligment = cell.model.attr('.rank/vertical-alligment');
+        this.newShapeProperties.textBox.textDirection = cell.model.attr('.rank/text-direction');
         this.contactsAditionalHash = {} //borrar
         this.contactsExceptionHash = {} //borrar
         this.newNodeName = "";
         this.newNodeName = cell.model.attributes.attrs[".rank"].text;
         let cellSize = cell.model.size()
-        this.shapeProperties.width = cellSize.width;
-        this.shapeProperties.height = cellSize.height;
+        this.newShapeProperties.width = cellSize.width;
+        this.newShapeProperties.height = cellSize.height;
 
         if (!cell.model.attributes.privacy) {
             cell.model.attributes.privacy = {
@@ -466,7 +466,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 contactsException: []
             }
         } else {
-            this.shapeProperties.privacy = cell.model.attributes.privacy;
+            this.newShapeProperties.privacy = cell.model.attributes.privacy;
         }
 
         event.preventDefault();
@@ -475,6 +475,13 @@ export class JointComponent implements OnInit, AfterViewInit {
             size: 'lg',
             scrollable: false
         });
+    }
+
+    applyNewShapeProperties(){
+        //this.configCell(this.nodeGraphCurrent,this.newNodeName,this.positionType);
+        
+        //Clear newShapeProperties
+        this.newShapeProperties = {};
     }
 
 
@@ -523,7 +530,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         let contactsSelected = event;
         contactsSelected.forEach((item, i) => {
             this.contactsAditionalHash[item.name] = true //borrar
-            this.shapeProperties.privacy.contactsAditional.push({
+            this.newShapeProperties.privacy.contactsAditional.push({
                 name: item.name,
                 see: false,
                 modify: false,
@@ -548,19 +555,19 @@ export class JointComponent implements OnInit, AfterViewInit {
 
 
     deleteAditionalShape(item: any, tree) { //borrar
-        _.remove(this.shapeProperties.privacy.contactsAditional, (contact) => {
+        _.remove(this.newShapeProperties.privacy.contactsAditional, (contact) => {
             return contact === item;
         });
 
     }
     deleteExceptionShape(item: any, tree) { //borrar
-        _.remove(this.shapeProperties.privacy.contactsException, (contact) => {
+        _.remove(this.newShapeProperties.privacy.contactsException, (contact) => {
             return contact === item;
         });
 
     }
     updateAditionalShape(item: any) { //borrar
-        _.each(this.shapeProperties.privacy.contactsAditional, (contact) => {
+        _.each(this.newShapeProperties.privacy.contactsAditional, (contact) => {
             if (contact === item) {
                 contact.see = item.see;
                 contact.modify = item.modify;
@@ -570,7 +577,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     updateExceptionShape(item: any) { //borrar
-        _.each(this.shapeProperties.privacy.contactsException, (contact) => {
+        _.each(this.newShapeProperties.privacy.contactsException, (contact) => {
             if (contact === item) {
                 contact.see = item.see;
                 contact.modify = item.modify;

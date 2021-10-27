@@ -227,37 +227,37 @@
                                         <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                             for="customRadio1">
                                             <input type="radio" [value]="'no-fill'"
-                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio1"
-                                                name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                [(ngModel)]="newShapeProperties.fill.type" id="customRadio1"
+                                                name="newShapeProperties.fill.type" (change)="resetFillColor()">
                                             No fill
                                         </label>
 
                                         <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                             for="customRadio2">
                                             <input type="radio" [value]="'solid'"
-                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio2"
-                                                name="shapeProperties.fill.type">
+                                                [(ngModel)]="newShapeProperties.fill.type" id="customRadio2"
+                                                name="newShapeProperties.fill.type">
                                             Solid fill
                                         </label>
                                         <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                             for="customRadio3">
                                             <input type="radio" [value]="'gradient'"
-                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio3"
-                                                name="shapeProperties.fill.type">
+                                                [(ngModel)]="newShapeProperties.fill.type" id="customRadio3"
+                                                name="newShapeProperties.fill.type">
                                             Gradient fill
                                         </label>
                                         <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                             for="customRadio4">
                                             <input type="radio" [value]="'texture'"
-                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio4"
-                                                name="shapeProperties.fill.type">
+                                                [(ngModel)]="newShapeProperties.fill.type" id="customRadio4"
+                                                name="newShapeProperties.fill.type">
                                             Image/Texture fill
                                         </label>
                                         <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                             for="customRadio5">
                                             <input type="radio" [value]="'pattern'"
-                                                [(ngModel)]="shapeProperties.fill.type" id="customRadio5"
-                                                name="shapeProperties.fill.type">
+                                                [(ngModel)]="newShapeProperties.fill.type" id="customRadio5"
+                                                name="newShapeProperties.fill.type">
                                             Pattern fill
                                         </label>
 
@@ -267,9 +267,9 @@
                                                 class="radio-shapes">Color/Opacity</span>
                                             <input readonly="readonly"
                                                 style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
-                                                name="shapeProperties.fill.color" [cpOutputFormat]="'rgba'"
-                                                [(colorPicker)]="shapeProperties.fill.color"
-                                                [style.background]="shapeProperties.fill.color" [cpOKButton]="true"
+                                                name="newShapeProperties.fill.color" [cpOutputFormat]="'rgba'"
+                                                [(colorPicker)]="newShapeProperties.fill.color"
+                                                [style.background]="newShapeProperties.fill.color" [cpOKButton]="true"
                                                 [cpSaveClickOutside]="false"
                                                 [cpOKButtonClass]="'btn btn-primary btn-xs'" />
                                         </div>
@@ -278,7 +278,7 @@
                                                 class="radio-shapes">Transparency</span>
                                             <input readonly="readonly" type="number" placeholder="0%"
                                                 style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
-                                                name="shapeProperties.fill.color" />
+                                                name="newShapeProperties.fill.color" />
                                         </div>
                                     </div>
                                     <div class="col-4">
@@ -291,7 +291,7 @@
                                                 Alignment</label>
                                             <div class="col-6">
                                                 <select class="form-control"
-                                                    [(ngModel)]="shapeProperties.textBox.verticalAlligment"
+                                                    [(ngModel)]="newShapeProperties.textBox.verticalAlligment"
                                                     name="textBox.verticalAlligment" style="font-size: 90%" disable>
                                                     <!--0,18,28-->
                                                     <option [ngValue]="'top'">Top</option>
@@ -306,7 +306,7 @@
                                                 Direction</label>
                                             <div class="col-6">
                                                 <select class="form-control"
-                                                    [(ngModel)]="shapeProperties.textBox.textDirection"
+                                                    [(ngModel)]="newShapeProperties.textBox.textDirection"
                                                     name="textBox.textDirection" style="font-size: 90%" disable>
                                                     <option [ngValue]="'horizontal'">Horizontal</option>
                                                     <option [ngValue]="'vertical'">Vertical</option>
@@ -317,23 +317,23 @@
                                             <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
                                                 for="customRadio10">
                                                 <input type="radio" [value]="'no-auto-adjustment'"
-                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio10"
-                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    [(ngModel)]="newShapeProperties.fill.type" id="customRadio10"
+                                                    name="newShapeProperties.fill.type" (change)="resetFillColor()">
                                                 No auto adjustment
                                             </label>
 
                                             <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
                                                 for="customRadio11">
                                                 <input type="radio" [value]="'compress'"
-                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio11"
-                                                    name="shapeProperties.fill.type">
+                                                    [(ngModel)]="newShapeProperties.fill.type" id="customRadio11"
+                                                    name="newShapeProperties.fill.type">
                                                 Compress text after overflow
                                             </label>
                                             <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
                                                 for="customRadio12">
                                                 <input type="radio" [value]="'shape-size'"
-                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio12"
-                                                    name="shapeProperties.fill.type">
+                                                    [(ngModel)]="newShapeProperties.fill.type" id="customRadio12"
+                                                    name="newShapeProperties.fill.type">
                                                 Adjust shape size to text
                                             </label>
                                         </div>
@@ -344,24 +344,24 @@
                                                     <!--
                                                                                                 <label style="display: inline;width: 80px;margin-right: 5px;"
                                                                                                     class="form-control col-6 radio-shapes"
-                                                                                                    for="shapeProperties.width">Width</label>
+                                                                                                    for="newShapeProperties.width">Width</label>
                                                                                                 <input style="display: inline;width: 70px"
                                                                                                     class="form-control col-6" type="number"
-                                                                                                    [(ngModel)]="shapeProperties.width"
-                                                                                                    name="shapeProperties.width">
+                                                                                                    [(ngModel)]="newShapeProperties.width"
+                                                                                                    name="newShapeProperties.width">
                                                                                             </div>
                                                                                             <div class="col-12">
                                                                                                 <label style="display: inline;width: 50%"
                                                                                                     class="form-control col-6 radio-shapes"
-                                                                                                    for="shapeProperties.height">Height</label>
+                                                                                                    for="newShapeProperties.height">Height</label>
                                                                                                 <input style="display: inline;width: 70px"
                                                                                                     class="form-control col-6" type="number"
-                                                                                                    [(ngModel)]="shapeProperties.height"
-                                                                                                    name="shapeProperties.height">
+                                                                                                    [(ngModel)]="newShapeProperties.height"
+                                                                                                    name="newShapeProperties.height">
                                                                                             </div>
                                                                                             <div class="col-12">
                                                                                                 <button class="btn btn-sm btn-success ml-2 mt-2"
-                                                                                                    (click)="shapeProperties.width=180;shapeProperties.height=70">Reset
+                                                                                                    (click)="newShapeProperties.width=180;newShapeProperties.height=70">Reset
                                                                                                     Size</button>
                                                                                             </div>
                                                                                             -->
@@ -369,33 +369,33 @@
                                                         <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Left margin</span>
                                                         <input readonly="readonly" type="number" placeholder="0%"
                                                             style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
-                                                            name="shapeProperties.fill.color" />
+                                                            name="newShapeProperties.fill.color" />
                                                     </div>
                                                     <div class="col-12" style="font-size: 90%;margin-top:2px">
                                                         <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Right margin</span>
                                                         <input readonly="readonly" type="number" placeholder="0%"
                                                             style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
-                                                            name="shapeProperties.fill.color" />
+                                                            name="newShapeProperties.fill.color" />
                                                     </div>
                                                     <div class="col-12" style="font-size: 90%;margin-top:2px">
                                                         <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Superior
                                                             margin</span>
                                                         <input readonly="readonly" type="number" placeholder="0%"
                                                             style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
-                                                            name="shapeProperties.fill.color" />
+                                                            name="newShapeProperties.fill.color" />
                                                     </div>
                                                     <div class="col-12" style="font-size: 90%;margin-top:2px">
                                                         <span style="float: left;margin-right: 20px;color:#777;width: 65%" class="radio-shapes">Inferior
                                                             margin</span>
                                                         <input readonly="readonly" type="number" placeholder="0%"
                                                             style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px;"
-                                                            name="shapeProperties.fill.color" />
+                                                            name="newShapeProperties.fill.color" />
                                                     </div>
                                                     <label style="font-size: 90%;color:#777;margin-bottom:0" class="form-control radio-shapes"
                                                         for="customCheckBox1">
                                                         <input type="checkbox" [value]="'shape-size-shape'"
-                                                            [(ngModel)]="shapeProperties.fill.type" id="customCheckBox1"
-                                                            name="shapeProperties.fill.type">
+                                                            [(ngModel)]="newShapeProperties.fill.type" id="customCheckBox1"
+                                                            name="newShapeProperties.fill.type">
                                                         Adjust text in shape
                                                     </label>
                                                 </div>
@@ -409,24 +409,24 @@
                                             <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                                 for="customRadio30">
                                                 <input type="radio" [value]="'no-line-1'"
-                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio30"
-                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    [(ngModel)]="newShapeProperties.fill.type" id="customRadio30"
+                                                    name="newShapeProperties.fill.type" (change)="resetFillColor()">
                                                     No line
                                             </label>
 
                                             <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                                 for="customRadio31">
                                                 <input type="radio" [value]="'solid-line-1'"
-                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio31"
-                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    [(ngModel)]="newShapeProperties.fill.type" id="customRadio31"
+                                                    name="newShapeProperties.fill.type" (change)="resetFillColor()">
                                                     Solid line
                                             </label>
 
                                             <label style="font-size: 90%;color:#777" class="form-control radio-shapes"
                                                 for="customRadio32">
                                                 <input type="radio" [value]="'no-fill-1'"
-                                                    [(ngModel)]="shapeProperties.fill.type" id="customRadio32"
-                                                    name="shapeProperties.fill.type" (change)="resetFillColor()">
+                                                    [(ngModel)]="newShapeProperties.fill.type" id="customRadio32"
+                                                    name="newShapeProperties.fill.type" (change)="resetFillColor()">
                                                     Gradient line
                                             </label>
                                         </div>
@@ -435,10 +435,10 @@
                                             <span style="float: left;margin-right: 20px;color:#777;width: 60%"
                                                 class="radio-shapes">Color/Opacity</span>
                                             <input readonly="readonly" style="width: 20%"
-                                                name="shapeProperties.line.color" [cpOutputFormat]="'rgba'"
+                                                name="newShapeProperties.line.color" [cpOutputFormat]="'rgba'"
                                                 style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
-                                                [(colorPicker)]="shapeProperties.line.color"
-                                                [style.background]="shapeProperties.line.color" [cpOKButton]="true"
+                                                [(colorPicker)]="newShapeProperties.line.color"
+                                                [style.background]="newShapeProperties.line.color" [cpOKButton]="true"
                                                 [cpSaveClickOutside]="false"
                                                 [cpOKButtonClass]="'btn btn-primary btn-xs'" />
                                         </div>
@@ -448,19 +448,19 @@
                                                 class="radio-shapes">Transparency</span>
                                             <input readonly="readonly" type="number" placeholder="0%"
                                                 style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
-                                                name="shapeProperties.fill.color" />
+                                                name="newShapeProperties.fill.color" />
                                         </div>
 
                                         <div class="col-12" style="font-size: 90%;margin-top:20px">
                                             <span style="float: left;margin-right: 20px;color:#777;width: 60%"
                                                 class="radio-shapes"
-                                                for="shapeProperties.line.width">
+                                                for="newShapeProperties.line.width">
                                                 Width
                                         </span>
                                             <input class="col-8" type="number"
                                             style="width: 20%;border: 1px solid rgb(189, 189, 189);border-radius:4px;padding:3px 7px;width:60px"
-                                                [(ngModel)]="shapeProperties.line.width"
-                                                name="shapeProperties.line.width">
+                                                [(ngModel)]="newShapeProperties.line.width"
+                                                name="newShapeProperties.line.width">
                                         </div>
                                     </div>
                                 </div>
@@ -477,18 +477,18 @@
                                             <form style="margin-bottom: 0px;height: 15px;">
                                                 <label class="form-control" for="enableAditional" style="border:none">
                                                     <input type="checkbox" name="enableAditional"
-                                                        [(ngModel)]="shapeProperties.privacy.enableAditional">
+                                                        [(ngModel)]="newShapeProperties.privacy.enableAditional">
                                                     <small style="margin-left: 10px;">Aditional</small>
                                                 </label>
                                             </form>
                                         </div>
                                         <div class="col-12">
-                                            <app-select-contact *ngIf="shapeProperties.privacy.enableAditional"
+                                            <app-select-contact *ngIf="newShapeProperties.privacy.enableAditional"
                                                 #selectContactComp (contactsAdded)="addAditionalShape($event)">
                                             </app-select-contact>
                                         </div>
                                     </div>
-                                    <table class="table table-sm" *ngIf="shapeProperties.privacy.enableAditional"
+                                    <table class="table table-sm" *ngIf="newShapeProperties.privacy.enableAditional"
                                         style="margin-bottom: 0px;">
                                         <tbody>
                                             <tr>
@@ -498,7 +498,7 @@
                                                 <th> <small>Modify</small> </th>
                                                 <th> <small>Delete</small> </th>
                                             </tr>
-                                            <tr *ngFor="let contact of shapeProperties.privacy.contactsAditional">
+                                            <tr *ngFor="let contact of newShapeProperties.privacy.contactsAditional">
                                                 <td>
                                                     <button class="btn" (click)="deleteAditionalShape(contact,tree)">
                                                         <i class="bi bi-x-circle"></i>
@@ -526,18 +526,18 @@
                                             <form style="margin-bottom: 0px;height: 15px;">
                                                 <label class="form-control" for="enableException" style="border:none">
                                                     <input type="checkbox" name="enableException"
-                                                        [(ngModel)]="shapeProperties.privacy.enableException">
+                                                        [(ngModel)]="newShapeProperties.privacy.enableException">
                                                     <small style="margin-left: 10px;">Exception</small>
                                                 </label>
                                             </form>
                                         </div>
                                         <div class="col-12">
-                                            <app-select-contact *ngIf="shapeProperties.privacy.enableException"
+                                            <app-select-contact *ngIf="newShapeProperties.privacy.enableException"
                                                 #selectContactComp (contactsAdded)="addExceptionShape($event)">
                                             </app-select-contact>
                                         </div>
                                     </div>
-                                    <table *ngIf="shapeProperties.privacy.enableException" class="table table-sm"
+                                    <table *ngIf="newShapeProperties.privacy.enableException" class="table table-sm"
                                         style="margin-bottom: 0px;">
                                         <tbody>
                                             <tr>
@@ -547,7 +547,7 @@
                                                 <th> <small>Modify</small> </th>
                                                 <th> <small>Delete</small> </th>
                                             </tr>
-                                            <tr *ngFor="let contact of shapeProperties.privacy.contactsException">
+                                            <tr *ngFor="let contact of newShapeProperties.privacy.contactsException">
                                                 <td> <button class="btn" (click)="deleteExceptionShape(contact,tree)">
                                                         <i class="bi bi-x-circle"></i>
                                                     </button>
@@ -575,11 +575,12 @@
             <div class="modal-footer" style="border: 0;">
                 <div style="margin:0 auto">
                 <button class="btn btn-shape"
+                    (click)="applyNewShapeProperties();"
                     style="background-color: #45d9d9;border: 0">Apply</button>
-                <button class="btn btn-shape" (click)="modal.dismiss('Cross click')"
-                    style="border-color: #45d9d9;background-color: #fff;color:#45d9d9">Accept</button>
                 <button class="btn btn-shape"
-                    (click)="configCell(nodeGraphCurrent,newNodeName,positionType);modal.dismiss('Cross click')"
+                    (click)="applyNewShapeProperties();modal.dismiss('Cross click')"
+                    style="border-color: #45d9d9;background-color: #fff;color:#45d9d9">Accept</button>
+                <button class="btn btn-shape" (click)="modal.dismiss('Cross click')"
                     style="background-color: #c6fafa;border: 0;color:#0d7575">Cancel</button>
                 </div>
             </div>
