@@ -449,10 +449,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    saveBeforeLeaving(){
+        this.panelExpanded = true;
+        this.saveNamePosition(this.positionCurrent,this.treeOrg);
+        this.saveSheet(this.sheetSelected);
+        this.updateAllSheetsFromTreeNode();
+    }
 
     onNavChange(changeEvent: NgbNavChangeEvent) {  // when selecting sheet tab 
-        this.saveNamePosition(this.positionCurrent,this.treeOrg);
-        this.updateAllSheetsFromTreeNode();
+        this.saveBeforeLeaving();
         this.loadSheetByID(changeEvent.nextId);
     }
 
