@@ -1706,7 +1706,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
             })
             .subscribe(
                 (any) => {
-                    if (any) {}
+                    if (any) {
+                        this.getActiveSheetShapesDefaults();
+                    }
                 },
                 err => {
                     if (err.error && err.error.message) {
@@ -2738,9 +2740,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     saveActiveSheetShapesDefaults() {
         this.saveConfig('sheet' + this.sheetSelected.ID, JSON.stringify(this.paperView.shapeProperties))
-        setTimeout(() => {
-            this.getActiveSheetShapesDefaults()
-        }, 3000);
     }
 
     getActiveSheetShapesDefaults() { // get defaults foe active sheet
