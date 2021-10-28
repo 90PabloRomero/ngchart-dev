@@ -147,6 +147,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             rect: { width: 170, height: 60 },
             '.card': { fill: '#FFFFFF', stroke: '#000000', 'stroke-width': 2, 'pointer-events': 'visiblePainted', rx: 10, ry: 10 },
             '.curr': { fill: '#FFFFFF', stroke: '#45d9d9', 'stroke-width': 2, 'pointer-events': 'visiblePainted', rx: 10, ry: 10 },
+            '.sibling': { visibility: 'visible' },
             '.rank': { 'text-decoration': 'none', ref: '.card', 'ref-x': 0.5, 'ref-y': 0.2, 'font-family': 'Courier New', 'font-size': 14, 'font-weight': 900, 'text-anchor': 'middle', 'vertical-alligment': 'middle', 'text-direction': 'horizontal' },
             '.c1': { ref: '.card', 'ref-x': 0.33, 'ref-y': 0.76, },
             '.c2': { ref: '.card', 'ref-x': 0.48, 'ref-y': 0.76, },
@@ -165,7 +166,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         "position_type": 'position',
         "tree_id": 0,
     }, {
-        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="curr"><circle id="circle-move-down" name="circle-move-down" cx="85" cy="80" r="5"></circle><circle id="circle-move-left" name="circle-move-left" cx="-20" cy="30" r="5"></circle><circle id="circle-move-right" name="circle-move-right" cx="190" cy="30" r="5"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
+        markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="curr"><circle id="circle-move-down" name="circle-move-down" cx="85" cy="68" r="5"></circle><circle id="circle-move-left" name="circle-move-left" cx="-10" cy="30" r="5" class="sibling"></circle><circle id="circle-move-right" name="circle-move-right" cx="180" cy="30" r="5" class="sibling"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
     showSelectorNode = true;
 
@@ -301,6 +302,8 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (cell.attributes.type == "org.Arrow") { return }
 
         this.graphNodeAddedEvent.emit(cell);
+
+        this.reorderPaperGraph();
     }
 
     drop(event: { source: CdkDrag < any > }) {   // when dropping from left bar position shapes  
@@ -861,7 +864,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         this.getElementChildren(elem, (children) => {
             children.forEach((child) => {
                 let elXY = elem.position()
-                child.position(elXY.x + (200 * unitX), elXY.y + (130));
+                child.position(elXY.x + (250 * unitX), elXY.y + (140));
                 let newLink = this.getLinkDef(elem, child);
                 this.graph.addCell(newLink);
                 this.reorderPaperGraphRecur(elem, child);

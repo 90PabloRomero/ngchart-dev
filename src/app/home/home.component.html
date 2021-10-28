@@ -26,7 +26,7 @@
                 </span>
             </button> -->
 
-            <button ngbTooltip="Delete Sheet" (click)="openConfirmDeleteAny($event,confirmDeleteAnyTemplate,sheetSelected.SheetName,deleteCurrentSheet,null)"  type="button" class="btn btn-outline-dark btn-sm">
+            <button ngbTooltip="Delete Sheet" (click)="openConfirmDeleteAny($event,confirmDeleteAnyTemplate,sheetSelected.SheetName,deleteCurrentSheet,null)"  type="button" class="btn btn-outline-dark btn-sm" [disabled]="!activeSheets[sheetSelected.ID]">
                 <i class="bi bi-dash-circle"></i>
             </button>
             <div class="btn-group-sm mr-1" role="group" aria-label="First group" style="height: 26px">
@@ -82,8 +82,8 @@
                 <i class="bi bi-pen"></i>
             </button>
 
-            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" ngbTooltip="Scale">
-                <button class="btn btn-outline-dark btn-sm" ngbTooltip="Scale" ngbDropdownToggle>
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" ngbTooltip="Scale" placement="right" >
+                <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle>
                     <i class="bi bi-zoom-in"></i>
                     ({{paperView.scale}})</button>
                 <div class="dropdown-menu" ngbDropdownMenu>
@@ -1116,7 +1116,7 @@
                     <div class="col-8">
                         <select class="form-control" [(ngModel)]="nodeType" name="nodeType" (change)="setNodeNameDisplacement(nodeType)">
                             <option [ngValue]="'child'">Child</option>
-                            <option [ngValue]="'sibling'">Sibling</option>
+                            <option [ngValue]="'sibling'" [hidden]="treeNodeCurrent.isRoot">Sibling</option>
                         </select>
                     </div>
                 </div>

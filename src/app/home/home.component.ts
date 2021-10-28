@@ -300,6 +300,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //Seleccionar el nodo que genera el evento
             let toSelectCell = _.find(this.paperView.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  $event.attributes.tree_id })
             this.paperView.member3Def(toSelectCell);
+
+            toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
             //this.paperView.configCell(toSelectCell,toSelectCell.attributes.attrs['.rank'].text,toSelectCell.attributes.position_type);
             
             this.saveSheet(this.sheetSelected);
@@ -449,9 +451,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    clearFiltersOrSearchInputs(){
+        this.textSearch = '';
+        this.textSearch2 = '';
+        this.nodeGraphLevelSelected = '';
+        this.treeLevelFilter = '';
+        return
+    }
+
+    saveBeforeLeaving(){
+        //clear every search input or filter input
+        this.clearFiltersOrSearchInputs();
+
+        this.panelExpanded = true;
+
+        let someSheetActive = false;
+        _.each(this.activeSheets, (sheet)=>{
+            if(sheet) someSheetActive = true;
+        });
+
+        if(!someSheetActive) return;
+
+        this.saveNamePosition(this.positionCurrent,this.treeOrg);
+        this.saveSheet(this.sheetSelected);
+        this.updateAllSheetsFromTreeNode();
+    }
 
     onNavChange(changeEvent: NgbNavChangeEvent) {  // when selecting sheet tab 
-        this.updateAllSheetsFromTreeNode();
+        this.saveBeforeLeaving();
         this.loadSheetByID(changeEvent.nextId);
     }
 
@@ -592,6 +619,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
     loadProject(project: any) {  // load project
+        this.saveBeforeLeaving();
         this.panelExpanded = true;
         this.positionCurrent = new Position;
         this.accordion.expand("2") //open accordeon tree to activate tree
@@ -819,6 +847,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     removeSheetFromView(sheet: Sheet) {
+        this.saveBeforeLeaving(); //Save every savable thing
+        
         let tempSheets: Sheet[] = this.sheets;
         let i = tempSheets.length;
         this.sheets = [];
