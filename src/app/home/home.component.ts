@@ -300,6 +300,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //Seleccionar el nodo que genera el evento
             let toSelectCell = _.find(this.paperView.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  $event.attributes.tree_id })
             this.paperView.member3Def(toSelectCell);
+
+            toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
             //this.paperView.configCell(toSelectCell,toSelectCell.attributes.attrs['.rank'].text,toSelectCell.attributes.position_type);
             
             this.saveSheet(this.sheetSelected);
