@@ -384,13 +384,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
    changeDedicationRegime(position:any,tree:any){  // change position dedication regime
         if (this.sheetSelected.ID != 0) {
-            let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
+            let cell = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
             var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
          
             treeNode.data.name = this.setAandTWhenNeeded(position);
 
+            if(position.DedicationRegime=='temporal') cell.attr('.card/strokeDasharray', '5,10');
+            if(position.DedicationRegime=='position') cell.attr('.card/strokeDasharray', 'null');
+
             this.savePosition(position, tree);
-            this.paperView.configCell(sheetNode,position.PositionName,position.DedicationRegime);
             this.saveSheet(this.sheetSelected);
         } 
    }
