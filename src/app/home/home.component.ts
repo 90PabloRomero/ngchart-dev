@@ -290,7 +290,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     if(cell.attributes.tree_id !=  $event.attributes.tree_id) {
                         if(cell.attributes.type == 'org.Member3') {
                             this.paperView.member2Def(cell);
-                            //this.paperView.configCell(cell,cell.attributes.attrs['.rank'].text,cell.attributes.attrs.position_type);
                         }
                     }
                 }
@@ -302,7 +301,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.paperView.member3Def(toSelectCell);
 
             toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
-            //this.paperView.configCell(toSelectCell,toSelectCell.attributes.attrs['.rank'].text,toSelectCell.attributes.position_type);
             
             this.saveSheet(this.sheetSelected);
             //setTimeout(()=>{this.refreshSheetOnView();},1000) 
@@ -714,26 +712,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         })
     }
-
-    // setTemporaryTreeNodes(){
-    //     console.log("Find temporary nodes: ")
-    //     console.log(this.nodes)
-    //     let tempNodesData: any = [];
-    //     this.treeOrg.treeModel.doForAll((treeNode)=>{
-    //         let positionCurrent = treeNode.data.position;
-    //         if(treeNode.data.name.includes('(t)')) {
-    //             tempNodesData.push(treeNode.data.name);
-    //             positionCurrent.DedicationRegime = 'temporal'
-    //             this.savePosition(positionCurrent, this.treeOrg)
-    //             let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  positionCurrent.ID })
-    //             this.paperView.configCell(sheetNode,positionCurrent.PositionName,'temporal');
-    //             this.saveSheet(this.sheetSelected);
-    //         }
-    //     })
-    
-    //     console.log("Temporary: ")
-    //     console.log(tempNodesData)
-    // }
 
     tempNames: string[] = [];
     getTemporalNodes(node){
@@ -1649,8 +1627,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
         })
         this.savePosition(position, tree)
-        // let sheetNode = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
-        // this.paperView.configCell(sheetNode,treeNode.data.name,position.DedicationRegime);
         this.saveSheet(this.sheetSelected);
     }
 
