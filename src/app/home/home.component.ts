@@ -845,6 +845,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     removeSheetFromView(sheet: Sheet) {
+        this.saveBeforeLeaving(); //Save every savable thing
+        
         let tempSheets: Sheet[] = this.sheets;
         let i = tempSheets.length;
         this.sheets = [];
