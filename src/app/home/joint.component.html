@@ -15,7 +15,7 @@
                     {{cell.model.attributes.attrs['.rank'].text}}</a></li>
             <li><a class="btn btn-light btn-sm" (click)="openAddNodeModal($event,addNodeTemplate,cell)">Add Child</a>
             </li>
-            <li><a class="btn btn-light btn-sm"
+            <li [hidden]="cell.model.attributes.org_level=='0'"><a class="btn btn-light btn-sm"
                     (click)="openAddNodeModalSibling($event,addNodeTemplateSibling,cell)">Add Sibling</a></li>
             <li><a class="btn btn-light btn-sm" (click)="deleteCell(cell)">Delete
                     {{cell.model.attributes.attrs['.rank'].text}}</a></li>
