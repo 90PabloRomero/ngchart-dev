@@ -332,7 +332,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 localPoint1.x,
                 localPoint1.y,
                 "New Node", "New Node", 'male.png', '#ffffff', '#797979', isAdvisor);
-            this.configCell(cellNew, "New Node", event.source.data.positionType)
+            this.configCell(cellNew, null, "New Node", event.source.data.positionType)
 
             //add link to closest father element     
             let linkClosest = this.getLinkDef(closest, cellNew)
@@ -347,7 +347,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 localPoint1.x,
                 localPoint1.y,
                 "New Node", "New Node", 'male.png', '#ffffff', '#797979', isAdvisor);
-            this.configCell(cellNew, "New Node", event.source.data.positionType)
+            this.configCell(cellNew, null, "New Node", event.source.data.positionType)
         }
 
 
@@ -406,7 +406,9 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     newShapeProperties: any = {};
+    cellToEdit: any = {}
     openConfigNodeModal(event, inputFormTemplate, cell) {  // open node config modal 
+        this.cellToEdit = cell;
         //get custom shape value for init values 
         this.newShapeProperties = {
             width: 180,
@@ -481,10 +483,14 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     applyNewShapeProperties(){
-        //this.configCell(this.nodeGraphCurrent,this.newNodeName,this.positionType);
+        let cell = _.find(this.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  this.cellToEdit.model.attributes.tree_id })
+        let shape = this.newShapeProperties;
+        let name = cell.attributes.attrs['.rank'].text;
+        let positionType = cell.attributes.position_type;
         
-        //Clear newShapeProperties
-        this.newShapeProperties = {};
+
+        
+        this.configCell(cell, shape, name, positionType);
     }
 
 
@@ -949,14 +955,17 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
 
-    configCell(cell, newNodeName, positionType) {  // config graph node 
+    configCell(cell, shapeProperties, newNodeName, positionType) {  // config graph node 
         if (newNodeName == "") {
             alert("Name can't be blank");
             return;
         }
+
+        shapeProperties = shapeProperties? shapeProperties : this.shapeProperties;
+
         if (newNodeName.includes('(t)')) positionType='temporal'
         let textMaxWidth = 130; // when element horizontal
-        if (this.shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
+        if (shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
 
         let opt = { width: textMaxWidth }
         let nameWrap = joint.util.breakText(newNodeName, opt)
@@ -969,42 +978,42 @@ export class JointComponent implements OnInit, AfterViewInit {
         cell.attr('.card/strokeDasharray', null);
 
         ///custom shape styles 
-        if (this.shapeProperties.fill.type != 'none') {
-            cell.attr('.card/fill', this.shapeProperties.fill.color);
+        if (shapeProperties.fill.type != 'none') {
+            cell.attr('.card/fill', shapeProperties.fill.color);
         }
-        if (this.shapeProperties.fill.type == 'none') {
+        if (shapeProperties.fill.type == 'none') {
             cell.attr('.card/fill', 'rgba(255,255,255,1)');
         }
-        if (this.shapeProperties.line.type != 'none') {
-            cell.attr('.card/stroke', this.shapeProperties.line.color);
+        if (shapeProperties.line.type != 'none') {
+            cell.attr('.card/stroke', shapeProperties.line.color);
         }
-        if (this.shapeProperties.line.type == 'none') {
+        if (shapeProperties.line.type == 'none') {
             cell.attr('.card/stroke', 'rgba(255,255,255,1)');
         }
-        cell.attr('.card/stroke-width', this.shapeProperties.line.width);
-        cell.attr('.rank/vertical-alligment', this.shapeProperties.textBox.verticalAlligment);
-        cell.attr('.rank/text-direction', this.shapeProperties.textBox.textDirection);
+        cell.attr('.card/stroke-width', shapeProperties.line.width);
+        cell.attr('.rank/vertical-alligment', shapeProperties.textBox.verticalAlligment);
+        cell.attr('.rank/text-direction', shapeProperties.textBox.textDirection);
         let textDirection: any = '0,-1,1,0',
             verticalAlligment: any = '0,8'
-        if (this.shapeProperties.textBox.verticalAlligment == 'middle') {
+        if (shapeProperties.textBox.verticalAlligment == 'middle') {
             verticalAlligment = '0,8'
         }
-        if (this.shapeProperties.textBox.verticalAlligment == 'top') {
+        if (shapeProperties.textBox.verticalAlligment == 'top') {
             verticalAlligment = '0,-10'
         }
-        if (this.shapeProperties.textBox.verticalAlligment == 'bottom') {
+        if (shapeProperties.textBox.verticalAlligment == 'bottom') {
             verticalAlligment = '0,15'
         }
-        if (this.shapeProperties.textBox.textDirection == 'vertical') {
+        if (shapeProperties.textBox.textDirection == 'vertical') {
             textDirection = '0,-1,1,0'
             verticalAlligment = '-75,20'
         } else {
             textDirection = '1,0,0,1'
         }
-        //cell.size(this.shapeProperties.width, this.shapeProperties.height);
+        cell.size(shapeProperties.width, shapeProperties.height);
         // cell.attributes.size = {
-        //         width: this.shapeProperties.width,
-        //         height: this.shapeProperties.height,
+        //         width: shapeProperties.width,
+        //         height: shapeProperties.height,
         // }
         cell.attr('.rank/transform', 'matrix(' + textDirection + ',' + verticalAlligment + ')');
         if (positionType == 'position') {
@@ -1493,7 +1502,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                     this.graph.addCell(newLink)
 
                 }
-                this.configCell(newNode, name, positionType);
+                this.configCell(newNode, null, name, positionType);
 
             })
         } else { //root
@@ -1502,7 +1511,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 350,
                 50,
                 name, code, 'male.png', '#ffffff', '#555555', false);
-            this.configCell(newNode, name, positionType);
+            this.configCell(newNode, null, name, positionType);
         }
         return newNode;
     }
@@ -1565,7 +1574,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                     this.graph.addCell(newLink)
 
                 }
-                this.configCell(newNode, name, positionType);
+                this.configCell(newNode, null, name, positionType);
 
             } else { //root
 
@@ -1573,7 +1582,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                     350,
                     50,
                     name, code, 'male.png', '#ffffff', '#555555', false);
-                this.configCell(newNode, name, positionType);
+                this.configCell(newNode, null, name, positionType);
             }
         })
         return newNode;

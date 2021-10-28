@@ -758,7 +758,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         console.log("Load Sheet")
         this.sheetSelected = sheet;
         this.isSheetNodesTempView = false;
-        this.getActiveSheetShapesDefaults();
+        //this.getActiveSheetShapesDefaults();
         if (this.sheetSelected.Data != "") {
             let cells = JSON.parse(this.sheetSelected.Data);
             cells = this.updateTempNodesLook(cells);
