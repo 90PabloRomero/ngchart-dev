@@ -1116,7 +1116,7 @@
                     <div class="col-8">
                         <select class="form-control" [(ngModel)]="nodeType" name="nodeType" (change)="setNodeNameDisplacement(nodeType)">
                             <option [ngValue]="'child'">Child</option>
-                            <option [ngValue]="'sibling'">Sibling</option>
+                            <option [ngValue]="'sibling'" [hidden]="treeNodeCurrent.isRoot">Sibling</option>
                         </select>
                     </div>
                 </div>
