@@ -939,8 +939,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
-
+    projectEvent;
+    previousProjectName;
     openProjectForm(event, inputFormTemplate, project: Project) {
+        this.projectEvent = event.srcElement.className;
+        if(project) this.previousProjectName = project.ProjectName;
         this.projectToEdit = new Project;
         if (project) {
             Object.assign(this.projectToEdit, project);
@@ -1130,6 +1133,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     saveProject(project: any, isNameUpdate?: boolean) {  // save  project on db
+        if (this.projectEvent.includes('bi bi-pen')&&(this.previousProjectName==project.ProjectName)) return;
         if (project.ID) { //if exists
             if (!project.ProjectName||project.ProjectName==""){
                 alert("Project name is required!");
