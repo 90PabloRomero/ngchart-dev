@@ -474,7 +474,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         this.saveNamePosition(this.positionCurrent,this.treeOrg);
         this.saveSheet(this.sheetSelected);
-        this.updateAllSheetsFromTreeNode();
+        //this.updateAllSheetsFromTreeNode();
     }
 
     onNavChange(changeEvent: NgbNavChangeEvent) {  // when selecting sheet tab 
@@ -2856,6 +2856,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
             treeNode.data.position.PositionName = this.removeAandTfromName(event.name);
         }
         this.positionCurrent = treeNode.data.position;
+        
+        //this.savePosition(this.positionCurrent, this.treeOrg);
+        //this.saveSheet(this.sheetSelected);
         this.treeOrg.treeModel.update();
         this.onUpdateTree(null, this.treeOrg);
     }

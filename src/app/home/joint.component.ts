@@ -488,8 +488,6 @@ export class JointComponent implements OnInit, AfterViewInit {
         let name = cell.attributes.attrs['.rank'].text;
         let positionType = cell.attributes.position_type;
         
-
-        
         this.configCell(cell, shape, name, positionType);
     }
 
