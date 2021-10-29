@@ -1617,6 +1617,20 @@ export class JointComponent implements OnInit, AfterViewInit {
         this.graph.addCell(cell);
     }
 
+    linkRelAlreadyExists(source,target){
+        let linkAlreadyExists = false;
+        let sourceID = source.id;
+        let targetID = target.id;
+        var links = this.graph.getLinks();
+        if(!links) return false;
+
+        _.each(links, (link)=>{
+            let linkSourceID = link.attributes.source.id;
+            let linkTargetID = link.attributes.target.id;
+            if(linkSourceID==sourceID && linkTargetID==targetID) linkAlreadyExists = true;
+        })
+        return linkAlreadyExists;
+    }
 
     addFunctionalRel(sourceName: any, targetName: any) { // add functional relantionship
         var cells = this.graph.getElements();
@@ -1626,6 +1640,10 @@ export class JointComponent implements OnInit, AfterViewInit {
         let target = _.find(cells, function(el: any) {
             return targetName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
         });
+        
+        let linkAlreadyExists = this.linkRelAlreadyExists(source,target);
+        if(linkAlreadyExists) return
+
         if (source && target) {
             this.addFunctionalRelLink(source, target)
         }
