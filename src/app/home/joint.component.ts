@@ -1632,7 +1632,15 @@ export class JointComponent implements OnInit, AfterViewInit {
         return linkAlreadyExists;
     }
 
+    removeAandTfromName(name){
+        name = name.replace('(a) ','')
+        
+        return name.replace('(t) ','');
+    }
+
     addFunctionalRel(sourceName: any, targetName: any) { // add functional relantionship
+        sourceName = this.removeAandTfromName(sourceName);
+        targetName = this.removeAandTfromName(targetName);
         var cells = this.graph.getElements();
         let source = _.find(cells, function(el: any) {
             return sourceName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
