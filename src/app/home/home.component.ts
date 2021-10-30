@@ -850,6 +850,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return;
     }
 
+    clearSheetById(sheetId) {
+        let sheet = this.projectSheets.find( sh => sh.ID == sheetId)
+        sheet.Data = this.paperView.graph.fromJSON({
+            cells: []
+        })
+        this.saveSheet(sheet);
+        return;
+    }
+
+    clearAllProjectSheets(){
+        this.projectSheets.forEach(sheet=>{
+            this.clearSheetById(sheet.ID);
+        })
+    }
+
     clearSheetSelected() {
         this.paperView.graph.fromJSON({
             cells: []
@@ -1829,10 +1844,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     deleteNodesConfirmedByUser(tree){
-        if (!tree.treeModel.getActiveNode()) {
+        let activeNode = tree.treeModel.getActiveNode();
+        if (!activeNode) {
             alert('No active or selected Node!')
             return;
         }
+
+        let rootNode = tree.treeModel.getFirstRoot();
+        if(rootNode.isActive) {
+            this.clearAllProjectSheets();
+        } 
         this.deleteNodes(tree);
 
         //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
