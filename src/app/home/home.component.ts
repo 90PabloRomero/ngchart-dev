@@ -1879,7 +1879,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             console.log(element.data);
             this.deleteActiveNodeFromTree(tree);
         });
-        
+        this.panelExpanded = true;
     }
 
     checkAndUpdateTreeNodeAddedAllSheets(parent: any, newNodeName: any, newNodeId: any) { //executed only when node is not root 
