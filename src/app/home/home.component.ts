@@ -298,10 +298,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
             //Seleccionar el nodo que genera el evento
             let toSelectCell = _.find(this.paperView.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  $event.attributes.tree_id })
-            this.paperView.member3Def(toSelectCell);
-
-            toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
-            
+            if(toSelectCell) {
+                this.paperView.member3Def(toSelectCell);
+                toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
+            }
             this.saveSheet(this.sheetSelected);
             //setTimeout(()=>{this.refreshSheetOnView();},1000) 
         }
@@ -1577,10 +1577,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     saveNamePosition(position: any, tree: any) { // when position name change in details update name on graph
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
         
-        treeNode.data.name = this.setAandTWhenNeeded(position);
+        if(treeNode && treeNode.data && treeNode.data.name) treeNode.data.name = this.setAandTWhenNeeded(position);
         
         _.each(this.paperView.graph.getElements(), (item) => {
-            if (item.attributes.tree_id == position.ID) {
+            if (item && item.attributes && item.attributes.tree_id == position.ID) {
                 item.attr('.rank/text', position.PositionName);
             }
         })
@@ -1661,13 +1661,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     savePosition(position: any, tree: any) {  // save position (node)
-        let treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
-        treeNodeCurrent.data.position = this.positionCurrent;
-        if(this.treeNodeCurrent.data.attachments){
-            treeNodeCurrent.data.attachment = this.treeNodeCurrent.data.attachments
-            treeNodeCurrent.data.attachments = this.treeNodeCurrent.data.attachments
-        }     
-        if(this.treeNodeCurrent.data.functionalrels) treeNodeCurrent.data.functionalrels = this.treeNodeCurrent.data.functionalrels 
+        let treeNodeCurrent;
+        if(position && position.ID) treeNodeCurrent = this.treeOrg.treeModel.getNodeById(position.ID)
+        if(treeNodeCurrent) {
+            treeNodeCurrent.data.position = this.positionCurrent;
+            if(this.treeNodeCurrent.data.attachments){
+                treeNodeCurrent.data.attachment = this.treeNodeCurrent.data.attachments
+                treeNodeCurrent.data.attachments = this.treeNodeCurrent.data.attachments
+            }     
+            if(this.treeNodeCurrent.data.functionalrels) treeNodeCurrent.data.functionalrels = this.treeNodeCurrent.data.functionalrels 
+        }
+        
         this.nodes = tree.treeModel.nodes;
         let allData = {
             nodes: this.nodes,
