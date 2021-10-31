@@ -387,14 +387,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         _.each(this.projectSheets, sheet=>{
             let sheetCurr =  JSON.parse(sheet.Data);
             _.each(sheetCurr.cells, shCell=>{
-                if(shCell && shCell.attrs && shCell.id == cell.id) {
+                if(shCell && shCell.attrs && shCell.tree_id == cell.attributes.tree_id) {
                     shCell.position_type = position_type;
                     shCell.attrs['.card'].strokeDasharray = link_look;
                 }                    
             }) 
             let currData = JSON.stringify(sheetCurr); 
             sheet.Data = currData;
-            this.saveSheet(sheet);    
+            this.updateSheet(sheet);    
         })
     }
 
@@ -1098,6 +1098,48 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    updateSheet(sheet: any) {  // save sheet on db
+        if (sheet.ID) { //if exists
+            if (!sheet.SheetName||sheet.SheetName==""){
+                alert("Sheet name is required!");
+                return;
+            }
+            let sheetData = JSON.parse(sheet.Data);
+            this.http.put < any > (urlApi + '/sheet/' + sheet.ID, sheet)
+                .subscribe(
+                    (any) => {
+                        if (any) {
+                                this.refreshSelectedSheetCB(sheet, (sh)=>{
+                                    this.sheets.forEach((s)=>{
+                                        if(s.ID==sh.ID){
+                                            s.SheetName=sh.SheetName;
+                                            this.refreshSheetOnView();
+                                        }  
+                                    })
+                                }) 
+                        }
+                    },
+                    err => {
+                        if (err && err.error) {
+                            if (String(err.error.error).match('UNIQUE constraint failed')) {
+                                alert("Sheet name exists!");
+                                this.refreshSelectedSheetCB(sheet, (sh)=>{
+                                            sheet.SheetName=sh.SheetName;
+                                            this.refreshSheetOnView();
+                                }) 
+
+                            }
+                        }
+
+                        if (err.error && err.error.message) {
+                            alert(err.error.message);
+                        }
+                        return;
+                    }
+                );
+        }
+        
+    }
 
     saveSheet(sheet: any, isNameUpdate?: boolean) {  // save sheet on db
         if (sheet.ID) { //if exists
