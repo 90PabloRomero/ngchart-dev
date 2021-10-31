@@ -382,18 +382,46 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
 
+    updateCurrCellDedicationRegimeOnAllSheets(cell, position_type){
+        let link_look = (position_type=='temporal')? '5,10' : 'null';
+        _.each(this.projectSheets, sheet=>{
+            let sheetCurr =  JSON.parse(sheet.Data);
+            _.each(sheetCurr.cells, shCell=>{
+                if(shCell && shCell.attrs && shCell.id == cell.id) {
+                    shCell.position_type = position_type;
+                    shCell.attrs['.card'].strokeDasharray = link_look;
+                }                    
+            }) 
+            let currData = JSON.stringify(sheetCurr); 
+            sheet.Data = currData;
+            this.saveSheet(sheet);    
+        })
+    }
+
    changeDedicationRegime(position:any,tree:any){  // change position dedication regime
         if (this.sheetSelected.ID != 0) {
             let cell = _.find(this.paperView.graph.getElements(), (item) => { return item.attributes.tree_id ==  position.ID })
             var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
-         
             treeNode.data.name = this.setAandTWhenNeeded(position);
 
-            if(position.DedicationRegime=='temporal') cell.attr('.card/strokeDasharray', '5,10');
-            if(position.DedicationRegime=='position') cell.attr('.card/strokeDasharray', 'null');
+            let link_look;
+            let position_type;
+            if(position.DedicationRegime=='temporal') {
+                link_look = '5,10';
+                position_type = 'temporal';
+            }
+            if(position.DedicationRegime=='position') {
+                link_look = 'null';
+                position_type = 'position';
+            }
+            cell.position_type = position_type;
+            cell.attributes.position_type = position_type;
+            cell.attr('.card/strokeDasharray', link_look);
+
+            this.updateCurrCellDedicationRegimeOnAllSheets(cell, position_type);
 
             this.savePosition(position, tree);
-            this.saveSheet(this.sheetSelected);
+            //this.saveSheet(this.sheetSelected);
         } 
    }
 
