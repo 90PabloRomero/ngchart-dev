@@ -3551,10 +3551,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             false,
                             this.treeNodeCurrent
                         )
+                        let cCellAttributes = this.getCurrentCellAttributes(cells, treeNodeRootForSheet.data.id);
+                        if(cCellAttributes) newCell.attributes = cCellAttributes;
                         newCell.attributes.tree_id = treeNodeRootForSheet.data.id;
                         newCells.cells.push(newCell.attributes);
                         sheet.Data = JSON.stringify(newCells);
-                        this.generateSheetDataRecur(treeNodeRootForSheet, newCell.attributes, newCells, sheet);
+                        this.generateSheetDataRecur(treeNodeRootForSheet, newCell.attributes, newCells, sheet, cells);
                     } //  if treeNodeRootForSheet
                 } //  if rootSheetNode
                 this.refreshSheetOnView();
@@ -3562,10 +3564,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         })
     }
 
-
-
-    
-
+    getCurrentCellAttributes(cells, id){
+        let currentCellAttributes = _.find(cells.cells, cell => {
+            return (cell && cell.tree_id && cell.tree_id == id)
+        })
+        return currentCellAttributes;
+    }
 
     updateNodesTreesParent(activeNode: any) {
         if (activeNode.children&&activeNode.children.length > 0) {
@@ -3578,7 +3582,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.onUpdateTree(null, this.treeOrg);
     }
 
-    generateSheetDataRecur(activeNode: any, parentNew: any, cells: any, sheet: any) {
+    generateSheetDataRecur(activeNode: any, parentNew: any, cells: any, sheet: any, oldCells) {
         console.log("Generate sheet data recur")
         let positionType = 'position'
         if (activeNode.children.length > 0) {
@@ -3599,13 +3603,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         false,
                         this.treeNodeCurrent
                     );
+                    let cCellAttributes = this.getCurrentCellAttributes(oldCells, child.data.id);
+                    if(cCellAttributes) newCell.attributes.attrs = cCellAttributes.attrs;
                     newCell.attributes.tree_id = child.data.id;
                     cells.cells.push(newCell.attributes);
                     let newLink = this.paperView.getLinkDef(parentNew, newCell, child.data.is_displacement);
                     cells.cells.push(newLink.attributes);
                     sheet.Data = JSON.stringify(cells);
                     unitX = unitX + 1;
-                    this.generateSheetDataRecur(child, newCell.attributes, cells, sheet)
+                    this.generateSheetDataRecur(child, newCell.attributes, cells, sheet, oldCells)
                 }
 
 
