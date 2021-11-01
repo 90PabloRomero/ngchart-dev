@@ -1204,7 +1204,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         var newCell = new this.Member3({
             "attrs": cell.attributes.attrs,
             "id": cell.attributes.id,    
-            "is_advisor": cell.attributes.isAdvisor,   
+            "is_advisor": cell.attributes.is_advisor,   
             "n1": 0,
             "n2": 0,
             "n3": 0,    
@@ -1230,7 +1230,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         var newCell = new this.Member2({
             "attrs": cell.attributes.attrs,
             "id": cell.attributes.id,    
-            "is_advisor": cell.attributes.isAdvisor,   
+            "is_advisor": cell.attributes.is_advisor,   
             "n1": 0,
             "n2": 0,
             "n3": 0,    
