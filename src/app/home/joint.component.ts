@@ -32,6 +32,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() graphNodeAddedEvent = new EventEmitter(); // graph node elemente added 
     @Output() mouseDownGraphNodeEvent = new EventEmitter(); // used to fire on circle actions
     @Output() deleteGraphNodeEvent = new EventEmitter(); // delete graph node elemente 
+    @Output() applyNewShapePropertiesEvent = new EventEmitter(); // change properties on graph node element
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -489,6 +490,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         let positionType = cell.attributes.position_type;
         
         this.configCell(cell, shape, name, positionType);
+        this.applyNewShapePropertiesEvent.emit();
     }
 
 
