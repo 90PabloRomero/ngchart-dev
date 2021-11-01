@@ -1700,7 +1700,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             }
                         });
                    }    
-                  item.attr('is_advisor', true);
+                  item.attributes.is_advisor = true;
   
                 }else{
                    if (inboundLink&&inboundLink[0]){
@@ -1713,7 +1713,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             }
                         });
                    }  
-                     item.attr('is_advisor', false);
+                   item.attributes.is_advisor = false;
                 }
             }
         })
