@@ -304,7 +304,11 @@ export class JointComponent implements OnInit, AfterViewInit {
 
         this.graphNodeAddedEvent.emit(cell);
 
-        this.reorderPaperGraph();
+        let parent = _.find(this.graph.getElements(), (parent) => { 
+            return (cell.attributes.org_parent!='root' && parent.id == cell.attributes.org_parent_id)
+        })
+
+        if(parent) this.reorderPaperGraphRecur(null, parent);
     }
 
     drop(event: { source: CdkDrag < any > }) {   // when dropping from left bar position shapes  
