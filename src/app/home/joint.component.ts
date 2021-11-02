@@ -341,7 +341,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
             //add link to closest father element     
             let linkClosest = this.getLinkDef(closest, cellNew)
-            this.graph.addCell(linkClosest);
+            //this.graph.addCell(linkClosest);
         } else {
             if (event.source.data.treeOrg && event.source.data.treeOrg.treeModel.nodes.length > 0) {
                 event.source.reset()
