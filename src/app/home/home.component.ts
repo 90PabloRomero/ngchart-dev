@@ -2982,6 +2982,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     if (gEl.attributes.position_type=="temporal"){                   
                          nodePosition.DedicationRegime='temporal';
                     }
+                                                      
+                    nodePosition.AdvisingAuthority=gEl.attributes.is_advisor;
 
                     treeNodeParent.data.children.push({
                         name: gEl.attributes.attrs[".rank"].text,
