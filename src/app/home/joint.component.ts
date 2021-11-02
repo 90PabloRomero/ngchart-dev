@@ -1327,8 +1327,12 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     getLinkDef(source: any, target: any, isDisplacement ? : any) {  // returns a link definition without adding to graph
+        let startDirections = ['bottom'];
         let endDirections = ['top'];
-        if (target.attributes.is_advisor == true) { endDirections = ['right', 'left'] }
+        if (target.attributes.is_advisor == true) { 
+            startDirections = ['right']
+            endDirections = ['right', 'left'] 
+        }
 
 
         if (isDisplacement && isDisplacement == true) {
@@ -1375,7 +1379,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             name: 'manhattan',
             args: {
                 padding: 10,
-                startDirections: ['bottom'],
+                startDirections: startDirections,
                 endDirections: endDirections
             }
         });

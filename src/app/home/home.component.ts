@@ -1695,7 +1695,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             name: 'manhattan',
                             args: {
                                 padding: 10,
-                                startDirections: ['bottom'],
+                                startDirections: ['right'],
                                 endDirections: ['right', 'left']
                             }
                         });
