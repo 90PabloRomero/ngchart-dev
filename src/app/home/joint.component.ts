@@ -143,7 +143,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     });
 
     Member3 = joint.dia.Element.define('org.Member3', {
-        size: { width: 245, height: 105 },
+        size: { width: 213, height: 88 },
         attrs: {
             rect: { width: 170, height: 60 },
             '.card': { fill: '#FFFFFF', stroke: '#000000', 'stroke-width': 2, 'pointer-events': 'visiblePainted', rx: 10, ry: 10 },
