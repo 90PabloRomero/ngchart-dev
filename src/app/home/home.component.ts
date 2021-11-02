@@ -2995,6 +2995,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             return item.data.position.PositionCode == gEl.attributes.id
                         })
                         if (newTreeNode) {
+                            if(gEl.attributes.is_advisor) newTreeNode.data.name = '(a) '+newTreeNode.data.name
+
                             _.each(this.paperView.graph.getElements(), (item) => {
                                 if (item.attributes.id == gEl.attributes.id) {
                                     item.attributes.tree_id = newTreeNode.data.id;
