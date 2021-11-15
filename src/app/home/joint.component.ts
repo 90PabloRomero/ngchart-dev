@@ -318,7 +318,6 @@ export class JointComponent implements OnInit, AfterViewInit {
         }
 
         let elements = this.graph.getElements();
-
         let dragRef: any = event.source._dragRef
         let pointerPosition = JSON.parse(JSON.stringify(dragRef._lastKnownPointerPosition));
         var localPoint1 = this.paper.clientToLocalPoint({

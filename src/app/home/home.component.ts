@@ -38,7 +38,7 @@ const urlApi = GlobalService.apiURL;
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
+    styleUrls: ['./home.component.scss'],
     providers: [NgbAccordionConfig]
 
 })
@@ -117,8 +117,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             //node.toggleExpanded();    
           },
           dragEnd: (tree, node, $event) => {
-              //console.log("Dragged Node: " + node.data.name);
-              //tree.setActiveNode(node, true);
+              console.log("Dragged Node: " + node.data.name);
+            //   tree.setActiveNode(node, true);
               this.generateGraph(this.treeOrg);
           },
           drop: (tree, node, $event, { from, to }) => {
@@ -255,6 +255,43 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[3] = true;
     }
 
+    dropAndSelect(event: any) {
+        this.paperView.drop(event);
+        let length = this.paperView.graph.getElements().length;
+        let cell = this.paperView.graph.getElements()[length-1];
+        this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return cell.attributes.tree_id == item.data.id });
+        TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
+        if (this.sheetSelected.ID != 0) {
+            //Deseleccionar todos los graph nodes, que son posibles seleccionados
+            let length = this.paperView.graph.getElements().length;
+            let cell = this.paperView.graph.getElements()[length-1];
+            console.log(cell);
+            //Deseleccionar todos los graph nodes, que son posibles seleccionados
+            _.each(this.paperView.graph.getElements(), (kcell) => { 
+                if(kcell&&kcell.attributes.type.includes('org.Member')){
+                    if(kcell.attributes.tree_id !=  cell.attributes.tree_id) {
+                        if(kcell.attributes.type == 'org.Member3') {
+                            this.paperView.member2Def(kcell);
+                        }
+                    }
+                }                
+            })
+            // if(cell&&cell.attributes.type.includes('org.Member')){
+            //     if(cell.attributes.type == 'org.Member3') {
+            //         this.paperView.member2Def(cell);
+            //     }
+            // }               
+           //Seleccionar el nodo que genera el evento
+           let toSelectCell = this.paperView.graph.getElements()[length-1]
+           if(toSelectCell) {
+               this.paperView.member3Def(toSelectCell);
+               toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
+           }
+           this.saveSheet(this.sheetSelected);
+           //setTimeout(()=>{this.refreshSheetOnView();},1000) 
+       }
+    }
+
     onTreeEvent(event: any) {  // any event on tree component 
         console.log("OnTreeEvent: "+ event.eventName)
             if (event.eventName == 'moveNode') { // if a tree node is moved updates all sheets and related data
@@ -283,6 +320,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     selectGraphNode($event:any,tree:any){
         console.log("Select Graph Node: ")
+        console.log($event)
+        console.log(this.paperView.graph.getElements())
         if (this.sheetSelected.ID != 0) {
              //Deseleccionar todos los graph nodes, que son posibles seleccionados
              _.each(this.paperView.graph.getElements(), (cell) => { 

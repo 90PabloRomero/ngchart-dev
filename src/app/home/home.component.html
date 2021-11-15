@@ -134,7 +134,7 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-3">
+        <div class="col-3 sidebar">
                         <div class="card-line-accordion">
                         </div>
                         <ngb-accordion #accordion activeIds="3" id="ngb-accordion1" (panelChange)="onAccordionChange($event)">
@@ -157,14 +157,15 @@
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'position',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                    <!-- <div class="col-12" [cdkDragData]="{positionType:'position',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag> -->
+                                                    <div class="col-12" [cdkDragData]="{positionType:'position',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="dropAndSelect($event)" cdkDrag>
                                                         <img style="width:80%;" src="assets/images/position.png">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="dropAndSelect($event)" cdkDrag>
                                                         <img style="width:80%" src="assets/images/advisor.png">
                                                     </div>
                                                     <!-- 
@@ -176,7 +177,7 @@
                                             </div>
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                    <div class="col-12" [cdkDragData]="{positionType:'advisor',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="dropAndSelect($event)" cdkDrag>
                                                         <img style="width:80%" src="assets/images/esquina.png">
                                                     </div> 
                                                 </div>
@@ -192,21 +193,21 @@
                                         <div class="row mt-4"> 
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="dropAndSelect($event)" cdkDrag>
                                                         <img style="width:80%" src="assets/images/temporal.png">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'external',sheetSelected:sheetSelected,treeOrg:treeOrg}" cdkDrag (cdkDragEnded)="paperView.drop($event)">
+                                                    <div class="col-12" [cdkDragData]="{positionType:'external',sheetSelected:sheetSelected,treeOrg:treeOrg}" cdkDrag (cdkDragEnded)="dropAndSelect($event)">
                                                         <img style="width:80%" src="assets/images/external.png">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'vacant',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                    <div class="col-12" [cdkDragData]="{positionType:'vacant',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="dropAndSelect($event)" cdkDrag>
                                                         <img style="width:80%" src="assets/images/vacant.png">
                                                     </div>
                                                 </div>
@@ -222,7 +223,7 @@
                                         <div class="row mt-4"> 
                                             <div class="col-3">
                                                 <div class="row">
-                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag>
+                                                    <div class="col-12" [cdkDragData]="{positionType:'temporal',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="dropAndSelect($event)" cdkDrag>
                                                         <img style="width:80%" src="assets/images/tree.png">
                                                     </div>
                                                 </div>
