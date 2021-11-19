@@ -1705,7 +1705,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item && item.attributes && item.attributes.tree_id == position.ID) {
-                item.attr('.rank/text', position.PositionName);
+                let textMaxWidth = 130; // when element horizontal
+                let textMaxHeight = 45;
+                // if (t.model.attr('.rank/text-direction') == 'vertical') { textMaxWidth = 45; textMaxHeight = 130;} //vertical 
+                let opt = { width: textMaxWidth, height: textMaxHeight }
+                let nameWrap = joint.util.breakText(position.PositionName, opt);
+                item.attr('.rank/text', nameWrap);
             }
         })
         this.savePosition(position, tree)
