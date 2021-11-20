@@ -822,10 +822,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     loadSheet(sheet: any) { // load sheet 
-        console.log("Load Sheet")
+        console.log("Load Sheet");
         this.sheetSelected = sheet;
         this.isSheetNodesTempView = false;
         //this.getActiveSheetShapesDefaults();
+        console.log(this.sheetSelected);
         if (this.sheetSelected.Data != "") {
             let cells = JSON.parse(this.sheetSelected.Data);
             cells = this.updateTempNodesLook(cells);
@@ -844,18 +845,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
         if (this.sheetSelected.Attrs != "") { // set jointjs  paper(sheet)  dimentions on sheet load
+            console.log('false');
             let dim = JSON.parse(this.sheetSelected.Attrs);
             if (dim.w && dim.h) {
 
                 this.paperView.paper.setDimensions(dim.w, dim.h);
             }
         } else {
+            console.log('true');
             this.sheetSelected.Attrs = JSON.stringify({ w: this.paperDimensions.width, h: this.paperDimensions.heigth });
         }
 
         //this.setTemporaryTreeNodes();
 
         return;
+    }
+
+    resizeSheet() {
+        console.log(this.paperView.graph.getBBox());
+        this.sheetSelected.Attrs = JSON.stringify({ w: this.paperView.graph.getBBox().width+200, h: this.paperView.graph.getBBox().height+200 });        
     }
 
     addSheetToViewByName(sheetName: any) {

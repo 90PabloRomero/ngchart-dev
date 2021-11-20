@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light ngNavbar">
     <div style="height: 100%;width: 40px;display: inline;float: left;">
     </div>
     <i class="bi bi-filter-left" style="position: absolute;left: 23px;top: 25px;font-size: 170%;"></i>
@@ -132,7 +132,7 @@
         </div>
     </span>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid ngContainer">
     <div class="row">
         <div class="col-3 sidebar">
                         <div class="card-line-accordion">
@@ -451,7 +451,7 @@
         </div>
 
         <div class="drag-boundary" id="sheetContainer" [ngClass]="panelExpanded?'col-9':'col-9'" [ngStyle]="{'background-color': (sheets.length>0?'rgba(224, 247, 250, 0.35)': '#ffffff') }" style="overflow: none;padding-left: 0;padding-right: 0;">
-            <ul ngbNav [(activeId)]="activeId" #nav="ngbNav" class=" nav nav-pills nav-fill nav-tabs" style="background-color: #fff;border-top: 1px solid #dee2e6;border-bottom: 0" (navChange)="onNavChange($event)">
+            <ul ngbNav [(activeId)]="activeId" #nav="ngbNav" class=" nav nav-pills nav-fill nav-tabs" style="background-color: #fff;border-top: 1px solid #dee2e6;border-bottom: 0;position: fixed;width: 75%;z-index: 10;" (navChange)="onNavChange($event)">
                 <li ngbNavItem class="nav-item" [ngbNavItem]="sheet.ID" *ngFor="let sheet of sheets; let i = index" style="border:none;flex-grow:0.2;margin-bottom:0">
                     <button type="button" class="close" aria-label="Close" [class.active-close]="sheet.ID == activeId" style="outline: none;color: #ccc;line-height:1.5;padding-right: 4px;" (click)="removeSheetFromView(sheet)">
                         <span aria-hidden="true">&times;</span>
@@ -468,8 +468,10 @@
                 </li>
             </ul>
             <div [ngbNavOutlet]="nav"></div>
-                <app-joint #paperView (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)" (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickPaperBlankAreaEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)" (applyNewShapePropertiesEvent)="saveSheet(sheetSelected) ">
+            <div style="margin-top: 42px;height: calc(100vh - 130px) !important;">
+                <app-joint #paperView (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)" (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickPaperBlankAreaEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)" (applyNewShapePropertiesEvent)="saveSheet(sheetSelected)" (resizeSheetEvent)="resizeSheet()">
                 </app-joint>
+            </div>
             <div style="position: fixed; bottom: 1%;left: 25%">
                 <ul class="list-unstyled">
                     <li style="margin-bottom: 2px"><span class="badge" style="color: #ffffff;background-color: #3cd039;border-radius: 50%;filter: drop-shadow( 2px 2px 2px rgba(68, 255, 51, 0.7));">0</span> Supervised Positions</li>

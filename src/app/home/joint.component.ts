@@ -33,6 +33,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() mouseDownGraphNodeEvent = new EventEmitter(); // used to fire on circle actions
     @Output() deleteGraphNodeEvent = new EventEmitter(); // delete graph node elemente 
     @Output() applyNewShapePropertiesEvent = new EventEmitter(); // change properties on graph node element
+    @Output() resizeSheetEvent = new EventEmitter();
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -258,6 +259,12 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.countAllSupervised();
                 this.checkGraphNodeAdded(cell); // when add graph node assign tree id in order to relate each other
             })
+            this.graph.on('add', () => {
+                console.log("addddddddddddd");
+                this.paper.setDimensions(this.graph.getBBox().width+200, (this.graph.getBBox().height+200));
+                this.paper.scaleContentToFit({minScaleX: 0.3, minScaleY: 0.3, maxScaleX: 1 , maxScaleY: 1});
+                this.resizeSheetEvent.emit();
+            });
             this.graph.on('remove', (cell) => {
                 this.updateDirectPositionsCounter();
                 this.countAllSupervised();
@@ -269,17 +276,15 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     click_actions(t, evt, click: boolean){
         if ((t.model.attributes.type == "org.Member") || (t.model.attributes.type == "org.Member2") || (t.model.attributes.type == "org.Member3")) {
-            let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
+            // let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
             this.nodeGraphCurrent = t.model;
         }
 
         this.nodeGraphAnyLastSelected = t;
         
         if(click){
-            console.log('clicked')
             this.clickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details            
         } else {
-            console.log('double clicked')
             this.dblclickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details
         }
         
@@ -353,8 +358,6 @@ export class JointComponent implements OnInit, AfterViewInit {
                 "New Node", "New Node", 'male.png', '#ffffff', '#797979', isAdvisor);
             this.configCell(cellNew, null, "New Node", event.source.data.positionType)
         }
-
-
 
         event.source.reset()
 
@@ -971,7 +974,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
 
         let opt = { width: textMaxWidth }
-        let nameWrap = joint.util.breakText(newNodeName, opt)
+        let nameWrap = joint.util.breakText(newNodeName, opt);
         let attrsCell = { type: '', stops: [], attrs: {} };
 
 
@@ -1481,6 +1484,12 @@ export class JointComponent implements OnInit, AfterViewInit {
         }
         let newNode: any;
 
+        let textMaxWidth = 130; // when element horizontal
+        if (this.shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
+
+        let opt = { width: textMaxWidth }
+        let nameWrap = joint.util.breakText(name, opt)
+
         if (parent) {
 
             this.getNodeCurrentChildrenCount((childrenCount) => {
@@ -1493,7 +1502,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                         parent,
                         parent.attributes.position.x + 200,
                         parent.attributes.position.y + 70,
-                        name, code, 'male.png', '#ffffff', '#797979', true);
+                        nameWrap, code, 'male.png', '#ffffff', '#797979', true);
 
                     let newLink = this.getLinkDef(parent, newNode)
                     this.graph.addCell(newLink)
@@ -1504,7 +1513,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                         parent,
                         parent.attributes.position.x + (200 * unitX),
                         parent.attributes.position.y + (130 * unitY),
-                        name, code, 'male.png', '#ffffff', '#797979', false);
+                        nameWrap, code, 'male.png', '#ffffff', '#797979', false);
                     let newLink = this.getLinkDef(parent, newNode)
                     this.graph.addCell(newLink)
 
@@ -1517,7 +1526,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             newNode = this.member(null,
                 350,
                 50,
-                name, code, 'male.png', '#ffffff', '#555555', false);
+                nameWrap, code, 'male.png', '#ffffff', '#555555', false);
             this.configCell(newNode, null, name, positionType);
         }
         return newNode;
