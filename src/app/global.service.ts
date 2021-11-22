@@ -13,7 +13,7 @@ import {
 // class for some global vars
 export class GlobalService {
     //local for dev
-    public static rootURL: string = "http://localhost:8087"; //server root address Ex. 
+    public static rootURL: string = "http://smartchartd.smartsuitetools.com:8087"; //server root address Ex. 
 
     //for production
     //public static rootURL: string = "http://34.136.4.101:8087"; //server root address Ex. 
@@ -21,7 +21,7 @@ export class GlobalService {
     //public static rootURL: string = "http://localhost:8087"; //server root address Ex. 
     
     // external contacts backend url
-    public static externalApiURL: string = "http://174.138.2.106:8080/smartconnectbackend"; //server root address Ex. 
+    public static externalApiURL: string = "http://api.smartsuitetools.com/smartconnectbackend"; //server root address Ex. 
     public static apiURL: string = GlobalService.rootURL +"/api";
 
   constructor(
