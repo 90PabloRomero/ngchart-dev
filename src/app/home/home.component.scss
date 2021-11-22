@@ -65,6 +65,19 @@
   background-color: #f7fcfc;
   border-right: solid 4px #45d9d9;
 }
+
+.ngNavbar {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  top: 0;
+}
+
+.ngContainer {
+  padding-top: 66px;
+  height: calc(100% - 66px);
+}
+
 ::host {
   display: flex;
   width: 100%;
@@ -219,6 +232,16 @@ input[type="number"]::-webkit-inner-spin-button {
     rgba(190, 250, 239, 0.55) 100%
   );
 }
+
+#position-employee {
+  text-align: left;
+  margin-top: 10px;
+}
+
+#position-employee ul{
+  width: 100%;
+}
+
 
 .ng-autocomplete {
   width: 100%;
@@ -752,9 +775,10 @@ input[type="number"]::-webkit-inner-spin-button {
   outline: none;
 }
 ::ng-deep .joint-paper {
-  height: calc(100vh - 130px) !important;
+  // margin-top: 42px;
+  // height: calc(100vh - 130px) !important;
 }
 ::ng-deep .sidebar {
-  height:  calc(100vh - 65px) !important;
+  height:  calc(100vh - 66px) !important;
   overflow: auto;
 }

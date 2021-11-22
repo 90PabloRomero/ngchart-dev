@@ -33,6 +33,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() mouseDownGraphNodeEvent = new EventEmitter(); // used to fire on circle actions
     @Output() deleteGraphNodeEvent = new EventEmitter(); // delete graph node elemente 
     @Output() applyNewShapePropertiesEvent = new EventEmitter(); // change properties on graph node element
+    @Output() resizeSheetEvent = new EventEmitter();
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -258,6 +259,11 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.countAllSupervised();
                 this.checkGraphNodeAdded(cell); // when add graph node assign tree id in order to relate each other
             })
+            this.graph.on('add', () => {
+                this.paper.setDimensions(this.graph.getBBox().width+200, (this.graph.getBBox().height+200));
+                this.paper.scaleContentToFit({minScaleX: 0.3, minScaleY: 0.3, maxScaleX: 1 , maxScaleY: 1});
+                this.resizeSheetEvent.emit();
+            });
             this.graph.on('remove', (cell) => {
                 this.updateDirectPositionsCounter();
                 this.countAllSupervised();
@@ -269,17 +275,15 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     click_actions(t, evt, click: boolean){
         if ((t.model.attributes.type == "org.Member") || (t.model.attributes.type == "org.Member2") || (t.model.attributes.type == "org.Member3")) {
-            let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
+            // let nameRank = t.model.attributes.attrs['.rank'].text.replace(/\n/, '');
             this.nodeGraphCurrent = t.model;
         }
 
         this.nodeGraphAnyLastSelected = t;
         
         if(click){
-            console.log('clicked')
             this.clickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details            
         } else {
-            console.log('double clicked')
             this.dblclickGraphNodeEvent.emit(t.model); //current position(node) from sheet to node tree details
         }
         
@@ -328,7 +332,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (event.source.data.positionType == "advisor") { isAdvisor = true }
 
 
-        if (elements.length > 0) { // when sheet is blank, prevent link from self  
+        if (elements.length > 0) {
             let cellNewLocation: any = { attributes: { position: { x: localPoint1.x, y: localPoint1.y } } };
             let closest = this.getClosestGraphElement(cellNewLocation);
             let cellNew = this.member(
@@ -353,8 +357,6 @@ export class JointComponent implements OnInit, AfterViewInit {
                 "New Node", "New Node", 'male.png', '#ffffff', '#797979', isAdvisor);
             this.configCell(cellNew, null, "New Node", event.source.data.positionType)
         }
-
-
 
         event.source.reset()
 
@@ -490,9 +492,9 @@ export class JointComponent implements OnInit, AfterViewInit {
         let cell = _.find(this.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  this.cellToEdit.model.attributes.tree_id })
         let shape = this.newShapeProperties;
         let name = cell.attributes.attrs['.rank'].text;
-        let positionType = cell.attributes.position_type;
-        
-        this.configCell(cell, shape, name, positionType);
+        // let positionType = cell.attributes.position_type;
+        console.log(cell, this.positionType);
+        this.configCell(cell, shape, name, this.positionType);
         this.applyNewShapePropertiesEvent.emit();
     }
 
@@ -971,7 +973,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
 
         let opt = { width: textMaxWidth }
-        let nameWrap = joint.util.breakText(newNodeName, opt)
+        let nameWrap = joint.util.breakText(newNodeName, opt);
         let attrsCell = { type: '', stops: [], attrs: {} };
 
 
@@ -1021,8 +1023,8 @@ export class JointComponent implements OnInit, AfterViewInit {
         cell.attr('.rank/transform', 'matrix(' + textDirection + ',' + verticalAlligment + ')');
         if (positionType == 'position') {
             cell.attr('.card/strokeDasharray', null);
-        }
-        if (positionType == 'external') {
+            cell.attr('.card/fill', 'rgba(255,255,255,1)');
+        } else if (positionType == 'external') {
             let color1 = cell.attr('.card/fill');
             cell.attr('.card/strokeDasharray', '5,10');
 
@@ -1046,12 +1048,12 @@ export class JointComponent implements OnInit, AfterViewInit {
             }
             cell.attr('.card/fill', attrsCell);
 
-        }
-        if (positionType == 'temporal') {
+        } else if (positionType == 'temporal') {
             cell.attr('.card/strokeDasharray', '5,10');
+            cell.attr('.card/fill', 'rgba(255,255,255,1)');
 
-        }
-        if (positionType == 'vacant') {
+        } else if (positionType == 'vacant') {
+            console.log(positionType);
             cell.attr('.card/strokeDasharray', '5,10');
             let color1 = cell.attr('.card/fill');
 
@@ -1075,7 +1077,6 @@ export class JointComponent implements OnInit, AfterViewInit {
         cell.attributes.position_type=positionType;
         if (newNodeName != "New Node" && cell.attributes.tree_id != 0) {
             this.nodeGraphNameChangeEvent.emit({ name: newNodeName, tree_id: cell.attributes.tree_id }) // update tree node name on graph node change
-                                                                                                        // nodeGraphNameChange() on home.component.ts
         }
     }
 
@@ -1481,6 +1482,12 @@ export class JointComponent implements OnInit, AfterViewInit {
         }
         let newNode: any;
 
+        let textMaxWidth = 130; // when element horizontal
+        if (this.shapeProperties.textBox.textDirection == 'vertical') { textMaxWidth = 45; } //vertical 
+
+        let opt = { width: textMaxWidth }
+        let nameWrap = joint.util.breakText(name, opt)
+
         if (parent) {
 
             this.getNodeCurrentChildrenCount((childrenCount) => {
@@ -1493,7 +1500,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                         parent,
                         parent.attributes.position.x + 200,
                         parent.attributes.position.y + 70,
-                        name, code, 'male.png', '#ffffff', '#797979', true);
+                        nameWrap, code, 'male.png', '#ffffff', '#797979', true);
 
                     let newLink = this.getLinkDef(parent, newNode)
                     this.graph.addCell(newLink)
@@ -1504,7 +1511,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                         parent,
                         parent.attributes.position.x + (200 * unitX),
                         parent.attributes.position.y + (130 * unitY),
-                        name, code, 'male.png', '#ffffff', '#797979', false);
+                        nameWrap, code, 'male.png', '#ffffff', '#797979', false);
                     let newLink = this.getLinkDef(parent, newNode)
                     this.graph.addCell(newLink)
 
@@ -1517,7 +1524,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             newNode = this.member(null,
                 350,
                 50,
-                name, code, 'male.png', '#ffffff', '#555555', false);
+                nameWrap, code, 'male.png', '#ffffff', '#555555', false);
             this.configCell(newNode, null, name, positionType);
         }
         return newNode;
@@ -1657,12 +1664,13 @@ export class JointComponent implements OnInit, AfterViewInit {
         let target = _.find(cells, function(el: any) {
             return targetName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
         });
-        
-        let linkAlreadyExists = this.linkRelAlreadyExists(source,target);
-        if(linkAlreadyExists) return
-
-        if (source && target) {
-            this.addFunctionalRelLink(source, target)
+        console.log(source,target);
+        if (typeof source != 'undefined' && source && typeof target != 'undefined' && target) {
+            let linkAlreadyExists = this.linkRelAlreadyExists(source,target);
+            if(linkAlreadyExists) { return; }
+            if (source && target) {
+                this.addFunctionalRelLink(source, target)
+            }
         }
     }
 

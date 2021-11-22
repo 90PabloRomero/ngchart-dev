@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light ngNavbar">
     <div style="height: 100%;width: 40px;display: inline;float: left;">
     </div>
     <i class="bi bi-filter-left" style="position: absolute;left: 23px;top: 25px;font-size: 170%;"></i>
@@ -132,7 +132,7 @@
         </div>
     </span>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid ngContainer">
     <div class="row">
         <div class="col-3 sidebar">
                         <div class="card-line-accordion">
@@ -251,8 +251,6 @@
                                     </span>
                                     <span class="panel-title">Organization Chart</span>
                                     <i class="bi bi-triangle" style="position: absolute; left: -44px; top: 0px; color: rgb(69, 217, 217); font-size: 24px; border-right: 3px solid #45d9d9; padding: 24px 9px 24px 9px; background: linear-gradient(to right, rgba(220,245,245,0.10) 0%, rgba(190,250,239,0.55) 100%);" ></i>
-
-
                                 </ng-template>
                                 <ng-template ngbPanelContent>
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -451,7 +449,7 @@
         </div>
 
         <div class="drag-boundary" id="sheetContainer" [ngClass]="panelExpanded?'col-9':'col-9'" [ngStyle]="{'background-color': (sheets.length>0?'rgba(224, 247, 250, 0.35)': '#ffffff') }" style="overflow: none;padding-left: 0;padding-right: 0;">
-            <ul ngbNav [(activeId)]="activeId" #nav="ngbNav" class=" nav nav-pills nav-fill nav-tabs" style="background-color: #fff;border-top: 1px solid #dee2e6;border-bottom: 0" (navChange)="onNavChange($event)">
+            <ul ngbNav [(activeId)]="activeId" #nav="ngbNav" class=" nav nav-pills nav-fill nav-tabs" style="background-color: #fff;border-top: 1px solid #dee2e6;border-bottom: 0;position: fixed;width: 75%;z-index: 10;" (navChange)="onNavChange($event)">
                 <li ngbNavItem class="nav-item" [ngbNavItem]="sheet.ID" *ngFor="let sheet of sheets; let i = index" style="border:none;flex-grow:0.2;margin-bottom:0">
                     <button type="button" class="close" aria-label="Close" [class.active-close]="sheet.ID == activeId" style="outline: none;color: #ccc;line-height:1.5;padding-right: 4px;" (click)="removeSheetFromView(sheet)">
                         <span aria-hidden="true">&times;</span>
@@ -468,8 +466,10 @@
                 </li>
             </ul>
             <div [ngbNavOutlet]="nav"></div>
-                <app-joint #paperView (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)" (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickPaperBlankAreaEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)" (applyNewShapePropertiesEvent)="saveSheet(sheetSelected) ">
+            <div style="margin-top: 42px;height: calc(100vh - 133px) !important;">
+                <app-joint #paperView (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)" (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickPaperBlankAreaEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)" (applyNewShapePropertiesEvent)="saveSheet(sheetSelected)" (resizeSheetEvent)="resizeSheet()">
                 </app-joint>
+            </div>
             <div style="position: fixed; bottom: 1%;left: 25%">
                 <ul class="list-unstyled">
                     <li style="margin-bottom: 2px"><span class="badge" style="color: #ffffff;background-color: #3cd039;border-radius: 50%;filter: drop-shadow( 2px 2px 2px rgba(68, 255, 51, 0.7));">0</span> Supervised Positions</li>
@@ -575,18 +575,6 @@
                                         <ng-template ngbNavContent style="background-color:#c7f4f4;margin-top:0">
                                             <div style=";font-size:80%;text-align:left">
                                                 <p style="background-color:#c7f4f4;margin-top:0;text-align: left;padding-left: 5px;">Description</p>
-                                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                                <label for="vehicle1" class="chk-lbl-position">Loren nt ullaamco est</label><br>
-                                                <input type="checkbox" id="vehicle2" name="vehicle1" value="Bike">
-                                                <label for="vehicle2" class="chk-lbl-position">Loren nt ullaamco est</label><br>
-                                                <input type="checkbox" id="vehicle3" name="vehicle1" value="Bike">
-                                                <label for="vehicle3" class="chk-lbl-position">Loren nt ullaamco est</label><br>
-                                                <input type="checkbox" id="vehicle4" name="vehicle1" value="Bike">
-                                                <label for="vehicle4" class="chk-lbl-position">Loren nt ullaamco est</label><br>
-                                                <input type="checkbox" id="vehicle5" name="vehicle1" value="Bike">
-                                                <label for="vehicle5" class="chk-lbl-position">Loren nt ullaamco est</label><br>
-                                                <input type="checkbox" id="vehicle6" name="vehicle1" value="Bike">
-                                                <label for="vehicle6" class="chk-lbl-position">Loren nt ullaamco est</label><br>
                                                 <button class="btn-responsability" style="padding-left:4px;"><i>+</i></button>
                                                 <button class="btn-responsability"><i>-</i></button>
                                             </div>
@@ -619,9 +607,6 @@
                                         </li>
                                     </ul> -->
                                 </ng-template>
-                        
-                                
-                            
                             </li>
                             <li [ngbNavItem]="3">
                                 <a ngbNavLink><span class="tab-title-small">Position Employee</span></a>
@@ -638,6 +623,19 @@
                                                 <i *ngIf="txtSearchAditional.length<=0" style="position: absolute;left: 6px;top: 8px;color: #797979;" class="bi bi-search"></i>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div id="position-employee">
+                                        <!-- <li style="list-style-type: none;"> -->
+                                            <ul>CEO</ul>
+                                            <ul>CTO</ul>
+                                            <ul>Project Manager</ul>
+                                            <ul>Project Manager</ul>
+                                            <ul>Project Manager</ul>
+                                            <ul>Project Manager</ul>
+                                            <ul>Project Manager</ul>
+                                            <ul>Project Manager</ul>
+                                            <ul>Project Manager</ul>
+                                        <!-- </li> -->
                                     </div>
                                     <div class="div-position-delete">
                                         <button class="btn-position-delete"><i>-</i></button>
