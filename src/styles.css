@@ -112,6 +112,7 @@ input[type="radio"]:checked:after {
 }
 
 input[type='checkbox']{
+  position: relative;
   content: '✔';
   width: 15px !important;
   height: 15px !important;
@@ -139,6 +140,9 @@ input[type='checkbox']:checked:after {
   background: #45d9d9;
   display: flow-root;
   height: 100%;
+  position: absolute;
+  width: 100%;
+  line-height: normal;
 }
 input[type='checkbox']:disabled:after {
   background: #ededed;;

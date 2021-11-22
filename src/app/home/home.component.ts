@@ -257,10 +257,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     dropAndSelect(event: any) {
         this.paperView.drop(event);
-        let length = this.paperView.graph.getElements().length;
-        let cell = this.paperView.graph.getElements()[length-1];
-        this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return cell.attributes.tree_id == item.data.id });
-        TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
+        setTimeout(() => {
+            let length = this.paperView.graph.getElements().length;
+            let cell = this.paperView.graph.getElements()[length-1];
+            this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy(
+                (item) => {
+                    return cell.attributes.tree_id == item.data.id 
+                }
+            );
+        })
+        TREE_ACTIONS.ACTIVATE(this.treeOrg, this.treeNodeCurrent, event);
         if (this.sheetSelected.ID != 0) {
             //Deseleccionar todos los graph nodes, que son posibles seleccionados
             let length = this.paperView.graph.getElements().length;
@@ -473,6 +479,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return event.attributes.tree_id == item.data.id });
+        console.log(this.treeNodeCurrent);
         TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
         if (this.treeNodeCurrent) {
             this.positionCurrent = this.treeNodeCurrent.data.position;
@@ -684,6 +691,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
+    isEmpty(allData: Object) {
+        if (Object.values(allData)[0].length == 0)
+            return true;
+        if (Object.values(Object.values(allData)[1]).length == 0)
+            return true;
+    }
 
     loadProject(project: any) {  // load project
         this.saveBeforeLeaving();
@@ -693,6 +706,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.isProjectFisrtTreeUpdate = true;
         this.projectSelected = project;
         console.log("Load Project: Project Selected: "+ this.projectSelected.ProjectName)
+        console.log(this.projectSelected)
         this.sheets = [];
         this.activeSheets = {};
         let allData = {
@@ -702,10 +716,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (this.projectSelected.Data != "") {
             allData = JSON.parse(this.projectSelected.Data);
             console.log("Load project: All Data: ")
-            console.log(allData)
+            console.log(allData);
         }
         this.nodes = [];
-        if (allData && allData.nodes) {
+        if (Object.values(Object.values(allData)[0]).length ||
+            Object.values(Object.values(allData)[1]).length) {
             console.log("Supuestamente hay all data && alldata.nodes")
             this.nodes = allData.nodes;
             setTimeout(()=>{
@@ -845,11 +860,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
         if (this.sheetSelected.Attrs != "") { // set jointjs  paper(sheet)  dimentions on sheet load
-            console.log('false');
+            console.log(this.paperView.graph.getBBox().width, this.paperView.graph.getBBox().height);
+            let gwidth = this.paperView.graph.getBBox().width;
+            let gheight = this.paperView.graph.getBBox().height;
             let dim = JSON.parse(this.sheetSelected.Attrs);
             if (dim.w && dim.h) {
-
-                this.paperView.paper.setDimensions(dim.w, dim.h);
+                let width = this.paperDimensions.width > dim.w ? (this.paperDimensions.width > gwidth ? this.paperDimensions.width : gwidth) : dim.w;
+                let heigth = this.paperDimensions.heigth > dim.h ? (this.paperDimensions.heigth > gheight ? this.paperDimensions.heigth : gheight) : dim.h;
+                this.paperView.paper.setDimensions(width, heigth);
             }
         } else {
             console.log('true');
@@ -1713,10 +1731,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item && item.attributes && item.attributes.tree_id == position.ID) {
-                let textMaxWidth = 130; // when element horizontal
-                let textMaxHeight = 45;
-                // if (t.model.attr('.rank/text-direction') == 'vertical') { textMaxWidth = 45; textMaxHeight = 130;} //vertical 
-                let opt = { width: textMaxWidth, height: textMaxHeight }
+                let opt = { width: 130, height: 45 }
                 let nameWrap = joint.util.breakText(position.PositionName, opt);
                 item.attr('.rank/text', nameWrap);
             }
@@ -1725,6 +1740,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     changeAdvisingAuthorityPosition(position: any, tree: any) { // when position Is Advisor? change in details update on graph
+        console.log("changeAdvisingAuthorityPosition");
         var treeNode = this.treeOrg.treeModel.getNodeBy((nodeIn) => nodeIn.data.id == position.ID);
         if (treeNode.isRoot) {
             this.positionCurrent.AdvisingAuthority = false;
@@ -1736,7 +1752,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         _.each(this.paperView.graph.getElements(), (item) => {
             if (item.attributes.tree_id == position.ID) {
-                item.attr('.rank/text', position.PositionName);
+
+                let opt = { width: 130, height: 45 }
+                let nameWrap = joint.util.breakText(position.PositionName, opt);
+                item.attr('.rank/text', nameWrap);
                 // change link in location
                 var inboundLink = this.paperView.graph.getConnectedLinks(item, {
                     inbound: true
@@ -3000,6 +3019,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let treeNode = this.treeOrg.treeModel.getNodeBy((item) => {
             return item.data.id == event.tree_id
         })
+        console.log(treeNode);
         if (treeNode) {
             if(treeNode.data.name.includes('(a)')&&treeNode.data.name.includes('(t)')) treeNode.data.name = '(a) (t) ' + event.name;
             if(treeNode.data.name.includes('(a)')&&!treeNode.data.name.includes('(t)')) treeNode.data.name = '(a) ' + event.name;

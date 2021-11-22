@@ -233,6 +233,16 @@ input[type="number"]::-webkit-inner-spin-button {
   );
 }
 
+#position-employee {
+  text-align: left;
+  margin-top: 10px;
+}
+
+#position-employee ul{
+  width: 100%;
+}
+
+
 .ng-autocomplete {
   width: 100%;
 }
