@@ -255,18 +255,51 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[3] = true;
     }
 
+    // getNodeBy() {
+    //     return new Promise((resolve, reject) => {
+    //         let length = this.paperView.graph.getElements().length;
+    //         let cell = this.paperView.graph.getElements()[length-1];
+    //         console.log(length);
+    //         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy(
+    //             (item) => {
+    //                 setTimeout(() => {
+    //                     console.log(cell.attributes, item.data);
+    //                     console.log(cell.attributes.tree_id, item.data.id);
+    //                     if(cell.attributes.tree_id == item.data.id) {
+    //                         resolve(item);
+    //                     } else {
+    //                         reject(null);
+    //                     }
+    //                 }, 1000);
+    //             }
+    //         );
+    //     });
+    // }
+
     dropAndSelect(event: any) {
+        console.log("dropAndSelect");
         this.paperView.drop(event);
-        setTimeout(() => {
-            let length = this.paperView.graph.getElements().length;
+        let length = this.paperView.graph.getElements().length;
+        if (length == 1) {
+                this.treeOrg.treeModel.getFirstRoot().toggleActivated();
+        } else {
             let cell = this.paperView.graph.getElements()[length-1];
             this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy(
                 (item) => {
+                    setTimeout(() => {
+                        console.log(cell.attributes)
+                        if(cell.attributes.tree_id == item.data.id) {
+                            console.log('tree id exist');
+                            const currentNode = this.treeOrg.treeModel.getNodeById(cell.attributes.tree_id);
+                            TREE_ACTIONS.ACTIVATE(this.treeOrg, currentNode, event);
+                            this.treeOrg.treeModel.expandAll()
+                        }
+                    }, 1000);
                     return cell.attributes.tree_id == item.data.id 
                 }
             );
-        })
-        TREE_ACTIONS.ACTIVATE(this.treeOrg, this.treeNodeCurrent, event);
+            TREE_ACTIONS.ACTIVATE(this.treeOrg, this.treeNodeCurrent, event);
+        }
         if (this.sheetSelected.ID != 0) {
             //Deseleccionar todos los graph nodes, que son posibles seleccionados
             let length = this.paperView.graph.getElements().length;
@@ -2090,6 +2123,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     addNode(tree: any, nodeName: any, nodePositionCode: any) {  // add tree node
+        console.log("addNode");
         if (nodeName == undefined || nodeName == '') {
             alert("Node Name can't be empty");
             return;
@@ -2113,6 +2147,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
                 let parentRefresh = tree.treeModel.getNodeById(parent.id);
                 parentRefresh.getLastChild().setActiveAndVisible();
+                console.log(parentRefresh.getLastChild());
             }, 600)
 
         } else { //is root
