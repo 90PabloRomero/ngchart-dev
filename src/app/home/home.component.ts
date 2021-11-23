@@ -94,7 +94,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     positions = {};
     optionsChecked = [];
     txtSearchAditional = '';
-    
+    isSheetToEdit = true;
+
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
@@ -254,27 +255,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[2] = false;
         this.panelsIds[3] = true;
     }
-
-    // getNodeBy() {
-    //     return new Promise((resolve, reject) => {
-    //         let length = this.paperView.graph.getElements().length;
-    //         let cell = this.paperView.graph.getElements()[length-1];
-    //         console.log(length);
-    //         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy(
-    //             (item) => {
-    //                 setTimeout(() => {
-    //                     console.log(cell.attributes, item.data);
-    //                     console.log(cell.attributes.tree_id, item.data.id);
-    //                     if(cell.attributes.tree_id == item.data.id) {
-    //                         resolve(item);
-    //                     } else {
-    //                         reject(null);
-    //                     }
-    //                 }, 1000);
-    //             }
-    //         );
-    //     });
-    // }
 
     dropAndSelect(event: any) {
         console.log("dropAndSelect");
@@ -512,7 +492,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
     graphNodeSelected(event: any) {   // on graph(sheet) node selected
         this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy((item) => { return event.attributes.tree_id == item.data.id });
-        console.log(this.treeNodeCurrent);
+        this.treeOrg.treeModel.expandAll();
         TREE_ACTIONS.ACTIVATE(this.treeOrg,this.treeNodeCurrent,event);
         if (this.treeNodeCurrent) {
             this.positionCurrent = this.treeNodeCurrent.data.position;
@@ -1043,6 +1023,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
             size: 'md',
             scrollable: false
         });
+    }
+
+    test() {
+        console.log("enter press");
+        this.isSheetToEdit = true;
+    }
+
+    EditSheet(sheet: Sheet) {
+        if (!this.projectSelected.ID) {
+            alert("No project Selected!");
+            return;
+        }
+        if (!sheet.ID) {
+            alert("No sheet Selected!");
+            return;
+        }
+        console.log("EditSheet", sheet);
+        this.sheetToEdit = new Sheet;
+        if (sheet) {
+            this.sheetToEdit = sheet;
+        } else {
+            this.sheetToEdit.ProjectID = this.projectSelected.ID;
+        }
     }
 
     openSheetFormEdit(event, inputFormTemplate, sheet: Sheet) { // open sheet edit form modal

@@ -454,7 +454,9 @@
                     <button type="button" class="close" aria-label="Close" [class.active-close]="sheet.ID == activeId" style="outline: none;color: #ccc;line-height:1.5;padding-right: 4px;" (click)="removeSheetFromView(sheet)">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <a ngbNavLink class="nav-link" style="border-bottom: 1px solid #dee2e6;color:#ccc">{{sheet.SheetName}}
+                    <a ngbNavLink class="nav-link" style="border-bottom: 1px solid #dee2e6;color:#ccc">
+                        <input *ngIf="!isSheetToEdit" type="text" [(ngModel)]="sheet.SheetName" [ngClass]="isSheetToEdit?'readonly':''" (change)="isSheetToEdit = true; saveSheet(sheetToEdit,true);">
+                        <p *ngIf="isSheetToEdit" (dblclick)="isSheetToEdit = false; EditSheet(sheetSelected);">{{sheet.SheetName}}</p>
                     </a>
                     <ng-template ngbNavContent>
                     </ng-template>
