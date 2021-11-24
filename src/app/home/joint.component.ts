@@ -911,9 +911,9 @@ export class JointComponent implements OnInit, AfterViewInit {
                 if (child.attributes.child_count == 0) {
                     maxChildCout.push(child.attributes.child_count);
                 } else if (child.attributes.attrs['.n1'].text == 0) {
-                    maxChildCout.push(child.attributes.attrs['.n1'].text);
-                } else {
                     maxChildCout.push(1);
+                } else {
+                    maxChildCout.push(child.attributes.attrs['.n1'].text);
                 }
             })
             children.forEach((child, index) => {
