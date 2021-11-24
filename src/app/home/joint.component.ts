@@ -908,7 +908,11 @@ export class JointComponent implements OnInit, AfterViewInit {
             let length = children.length;
             let maxChildCout = [];
             children.forEach((child) => {
-                maxChildCout.push(child.attributes.child_count);
+                if (child.attributes.child_count == 0) {
+                    maxChildCout.push(child.attributes.child_count);
+                } else {
+                    maxChildCout.push(child.attributes.attrs['.n1'].text);
+                }
             })
             children.forEach((child, index) => {
                     console.log(child.attributes.attrs['.n1'].text);
