@@ -367,6 +367,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     onDeleteGraphNodeEvent($event){
         let cell = $event.model.attributes;
+        console.log(cell);
         let treeNode = this.treeOrg.treeModel.getNodeBy(node => node.id==cell.tree_id);
         TREE_ACTIONS.ACTIVATE(this.treeOrg,treeNode,event);
         
@@ -873,13 +874,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
         if (this.sheetSelected.Attrs != "") { // set jointjs  paper(sheet)  dimentions on sheet load
-            console.log(this.paperView.graph.getBBox().width, this.paperView.graph.getBBox().height);
-            let gwidth = this.paperView.graph.getBBox().width;
-            let gheight = this.paperView.graph.getBBox().height;
             let dim = JSON.parse(this.sheetSelected.Attrs);
             if (dim.w && dim.h) {
-                let width = this.paperDimensions.width > dim.w ? (this.paperDimensions.width > gwidth ? this.paperDimensions.width : gwidth) : dim.w;
-                let heigth = this.paperDimensions.heigth > dim.h ? (this.paperDimensions.heigth > gheight ? this.paperDimensions.heigth : gheight) : dim.h;
+                let width = this.paperDimensions.width > dim.w ? this.paperDimensions.width : dim.w;
+                let heigth = this.paperDimensions.heigth > dim.h ? this.paperDimensions.heigth : dim.h;
                 this.paperView.paper.setDimensions(width, heigth);
             }
         } else {

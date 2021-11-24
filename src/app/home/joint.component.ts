@@ -269,6 +269,34 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.countAllSupervised();
             })
 
+            var verticesTool = new joint.linkTools.Vertices();
+            var segmentsTool = new joint.linkTools.Segments();
+            var sourceArrowheadTool = new joint.linkTools.SourceArrowhead();
+            var targetArrowheadTool = new joint.linkTools.TargetArrowhead();
+            var sourceAnchorTool = new joint.linkTools.SourceAnchor();
+            var targetAnchorTool = new joint.linkTools.TargetAnchor();
+            var boundaryTool = new joint.linkTools.Boundary();
+            // var removeButton = new joint.linkTools.Remove({
+            //     distance: 20
+            // });
+            var toolsView = new joint.dia.ToolsView({
+                tools: [
+                    verticesTool, segmentsTool,
+                    sourceArrowheadTool, targetArrowheadTool,
+                    sourceAnchorTool, targetAnchorTool,
+                    boundaryTool
+                    // , removeButton
+                ]
+            });
+
+            this.paper.on('link:mouseenter', function(linkView) {
+                linkView.addTools(toolsView);
+            });
+
+            this.paper.on('link:mouseleave', function(linkView) {
+                linkView.removeTools();
+            });
+
         }, 1000);
 
     }
@@ -765,6 +793,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     deleteCell(cell) {
         if (confirm('Delete this element and children elements?')) {
             this.getDirectChildrenCount(cell.model, (count) => {
+                console.log(count);
                 if (count > 0) {
                     this.deleteAllFromNode(cell.model);
                     var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
@@ -1336,7 +1365,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
 
         if (isDisplacement && isDisplacement == true) {
-            var cell = new joint.shapes.org.Arrow({
+            var cell = new joint.shapes.standard.Link({
                 source: {
                     id: source.id,
                     anchor: {
@@ -1360,21 +1389,32 @@ export class JointComponent implements OnInit, AfterViewInit {
 
                 }
             });
+            // var cell = new joint.shapes.standard.Link();
+            // cell.source(source);
+            // cell.target(target);
+            cell.connector('jumpover');
 
-
-            cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
-            cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+            // cell.attr('.marker-marker[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+            // cell.attr('.marker-marker[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         } else {
-            var cell = new joint.shapes.org.Arrow({
+            var cell = new joint.shapes.standard.Link({
                 source: { id: source.id, },
                 target: { id: target.id, }
             });
 
-            cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
-            cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+            // cell.attr('.marker-marker[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+            // cell.attr('.marker-marker[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         }
 
 
+        cell.attr({
+            line: {
+                strokeWidth: 3,
+                stroke: '#45d9d9',
+                sourceMarker: {},
+                targetMarker: {}
+            }
+        });
         cell.router({
             name: 'manhattan',
             args: {
@@ -1383,11 +1423,21 @@ export class JointComponent implements OnInit, AfterViewInit {
                 endDirections: endDirections
             }
         });
-        cell.attr(".connection/")
-        cell.attr('.connection/stroke', '#45d9d9');
+        // this.addTools(this.paper, cell);
+        // cell.attr(".connection/")
+        // cell.attr('.connection/stroke', '#45d9d9');
         return cell;
     }
 
+    addTools(paper, link) {
+        var toolsView = new joint.dia.ToolsView({
+            tools: [
+                null,
+                null
+            ]
+        });
+        link.findView(paper).addTools(toolsView);
+    }
 
     // add graph node element
     member(parent: any, x: any, y: any, rank: any, name: any, image: any, background: any, textColor: any, isAdvisor: any) {
