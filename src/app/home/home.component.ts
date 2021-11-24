@@ -1800,24 +1800,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             name: 'manhattan',
                             args: {
                                 padding: 10,
-                                startDirections: ['right'],
+                                startDirections: ['bottom'],
                                 endDirections: ['right', 'left']
                             }
                         });
-                   }    
+                   }
+                   console.log('advising true');    
                   item.attributes.is_advisor = true;
-  
                 }else{
                    if (inboundLink&&inboundLink[0]){
                        inboundLink[0].router({
                             name: 'manhattan',
                             args: {
                                 padding: 10,
-                                startDirections: ['bottom'],
+                                startDirections: ['right', 'bottom', 'left'],
                                 endDirections:  ['top']
                             }
                         });
                    }  
+                   console.log('advising false');
                    item.attributes.is_advisor = false;
                 }
             }

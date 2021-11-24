@@ -1410,7 +1410,19 @@ export class JointComponent implements OnInit, AfterViewInit {
         cell.attr({
             line: {
                 strokeWidth: 3,
-                stroke: '#45d9d9'
+                stroke: '#45d9d9',
+                sourceMarker: {
+                    'type': 'path',
+                    'stroke': 'none',
+                    'fill': '#3498DB',
+                    'd': ''
+                },
+                targetMarker: {
+                    'type': 'path',
+                    'stroke': 'none',
+                    'fill': '#3498DB',
+                    'd': ''
+                }
             }
         });
         cell.router({
