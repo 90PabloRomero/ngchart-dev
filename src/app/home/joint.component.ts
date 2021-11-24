@@ -910,8 +910,10 @@ export class JointComponent implements OnInit, AfterViewInit {
             children.forEach((child) => {
                 if (child.attributes.child_count == 0) {
                     maxChildCout.push(child.attributes.child_count);
-                } else {
+                } else if (child.attributes.attrs['.n1'].text == 0) {
                     maxChildCout.push(child.attributes.attrs['.n1'].text);
+                } else {
+                    maxChildCout.push(1);
                 }
             })
             children.forEach((child, index) => {
