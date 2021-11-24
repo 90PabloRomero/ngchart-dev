@@ -809,8 +809,8 @@ export class JointComponent implements OnInit, AfterViewInit {
                     })
                     cell.remove();
                     cell.model.remove();
-                    this.deleteGraphNodeEvent.emit(cell); // graph node elemente added 
                 }
+                this.deleteGraphNodeEvent.emit(cell);
             })
         }
         this.close();
@@ -1410,9 +1410,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         cell.attr({
             line: {
                 strokeWidth: 3,
-                stroke: '#45d9d9',
-                sourceMarker: {},
-                targetMarker: {}
+                stroke: '#45d9d9'
             }
         });
         cell.router({
