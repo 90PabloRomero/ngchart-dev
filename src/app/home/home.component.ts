@@ -259,14 +259,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     dropAndSelect(event: any) {
         console.log("dropAndSelect");
         this.paperView.drop(event);
-        let length = this.paperView.graph.getElements().length;
-        if (length == 1) {
-                this.treeOrg.treeModel.getFirstRoot().toggleActivated();
-        } else {
-            let cell = this.paperView.graph.getElements()[length-1];
-            this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy(
-                (item) => {
-                    setTimeout(() => {
+        setTimeout(_ => {
+            let length = this.paperView.graph.getElements().length;
+            if (length == 1) {
+                    this.treeOrg.treeModel.getFirstRoot().toggleActivated();
+            } else {
+                let cell = this.paperView.graph.getElements()[length-1];
+                this.treeNodeCurrent = this.treeOrg.treeModel.getNodeBy(
+                    (item) => {
                         console.log(cell.attributes)
                         if(cell.attributes.tree_id == item.data.id) {
                             console.log('tree id exist');
@@ -274,41 +274,41 @@ export class HomeComponent implements OnInit, AfterViewInit {
                             TREE_ACTIONS.ACTIVATE(this.treeOrg, currentNode, event);
                             this.treeOrg.treeModel.expandAll()
                         }
-                    }, 1000);
-                    return cell.attributes.tree_id == item.data.id 
-                }
-            );
-            TREE_ACTIONS.ACTIVATE(this.treeOrg, this.treeNodeCurrent, event);
-        }
-        if (this.sheetSelected.ID != 0) {
-            //Deseleccionar todos los graph nodes, que son posibles seleccionados
-            let length = this.paperView.graph.getElements().length;
-            let cell = this.paperView.graph.getElements()[length-1];
-            console.log(cell);
-            //Deseleccionar todos los graph nodes, que son posibles seleccionados
-            _.each(this.paperView.graph.getElements(), (kcell) => { 
-                if(kcell&&kcell.attributes.type.includes('org.Member')){
-                    if(kcell.attributes.tree_id !=  cell.attributes.tree_id) {
-                        if(kcell.attributes.type == 'org.Member3') {
-                            this.paperView.member2Def(kcell);
-                        }
+                        return cell.attributes.tree_id == item.data.id 
                     }
-                }                
-            })
-            // if(cell&&cell.attributes.type.includes('org.Member')){
-            //     if(cell.attributes.type == 'org.Member3') {
-            //         this.paperView.member2Def(cell);
-            //     }
-            // }               
-           //Seleccionar el nodo que genera el evento
-           let toSelectCell = this.paperView.graph.getElements()[length-1]
-           if(toSelectCell) {
-               this.paperView.member3Def(toSelectCell);
-               toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
-           }
-           this.saveSheet(this.sheetSelected);
-           //setTimeout(()=>{this.refreshSheetOnView();},1000) 
-       }
+                );
+                TREE_ACTIONS.ACTIVATE(this.treeOrg, this.treeNodeCurrent, event);
+            }
+            if (this.sheetSelected.ID != 0) {
+                //Deseleccionar todos los graph nodes, que son posibles seleccionados
+                let length = this.paperView.graph.getElements().length;
+                let cell = this.paperView.graph.getElements()[length-1];
+                console.log(cell);
+                //Deseleccionar todos los graph nodes, que son posibles seleccionados
+                _.each(this.paperView.graph.getElements(), (kcell) => { 
+                    if(kcell&&kcell.attributes.type.includes('org.Member')){
+                        if(kcell.attributes.tree_id !=  cell.attributes.tree_id) {
+                            if(kcell.attributes.type == 'org.Member3') {
+                                this.paperView.member2Def(kcell);
+                            }
+                        }
+                    }                
+                })
+                // if(cell&&cell.attributes.type.includes('org.Member')){
+                //     if(cell.attributes.type == 'org.Member3') {
+                //         this.paperView.member2Def(cell);
+                //     }
+                // }               
+               //Seleccionar el nodo que genera el evento
+               let toSelectCell = this.paperView.graph.getElements()[length-1]
+               if(toSelectCell) {
+                   this.paperView.member3Def(toSelectCell);
+                   toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
+               }
+               this.saveSheet(this.sheetSelected);
+               //setTimeout(()=>{this.refreshSheetOnView();},1000) 
+            }
+        }, 1000);
     }
 
     onTreeEvent(event: any) {  // any event on tree component 

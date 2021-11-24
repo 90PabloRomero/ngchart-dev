@@ -34,6 +34,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() deleteGraphNodeEvent = new EventEmitter(); // delete graph node elemente 
     @Output() applyNewShapePropertiesEvent = new EventEmitter(); // change properties on graph node element
     @Output() resizeSheetEvent = new EventEmitter();
+    @Output() loadingEvent = new EventEmitter();
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -139,6 +140,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         "is_advisor": false,
         "position_type": 'position',
         "tree_id": 0,
+        "child_count": 1
     }, {
         markup: '<g class="rotatable"><g class="scalable"><rect class="card"/></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
@@ -167,6 +169,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         "is_advisor": false,
         "position_type": 'position',
         "tree_id": 0,
+        "child_count": 1
     }, {
         markup: '<g class="rotatable member3"><g class="scalable"><rect class="card"/><g class="curr"><circle id="circle-move-down" name="circle-move-down" cx="85" cy="68" r="5"></circle><circle id="circle-move-left" name="circle-move-left" cx="-10" cy="30" r="5" class="sibling"></circle><circle id="circle-move-right" name="circle-move-right" cx="180" cy="30" r="5" class="sibling"></circle></g></g><text class="rank"/>' + this.c1 + '<text class="n1"/>' + this.c2 + '<text class="n2"/>' + this.c3 + '<text class="n3"/></g>',
     });
@@ -902,25 +905,43 @@ export class JointComponent implements OnInit, AfterViewInit {
         })
         let unitX = -1;
         this.getElementChildren(elem, (children) => {
+            let length = children.length;
+            let maxChildCout = [];
             children.forEach((child) => {
-                let elXY = elem.position()
-                child.position(elXY.x + (250 * unitX), elXY.y + (140));
+                maxChildCout.push(child.attributes.child_count);
+            })
+            children.forEach((child, index) => {
+                    console.log(child.attributes.attrs['.n1'].text);
+                if (length == 1){
+                    unitX = 0;
+                } else if (length % 2 == 0) {
+                    unitX = index - Math.ceil(length/2) + 0.5;
+                } else {
+                    unitX = index - Math.ceil(length/2) + 1;
+                }
+                console.log(length, unitX, child.attributes.child_count);
+                console.log(Math.max(...maxChildCout));
+                let elXY = elem.position();
+                child.position(elXY.x + (250 * unitX * Math.max(...maxChildCout)), elXY.y + (140));
                 let newLink = this.getLinkDef(elem, child);
                 this.graph.addCell(newLink);
                 this.reorderPaperGraphRecur(elem, child);
-                unitX = unitX + 1;
             })
         })
     }
 
-    reorderPaperGraph() {  //reorder graph elements
+    async reorderPaperGraph() {  //reorder graph elements
         this.hashXY = {} // to check if node exists on same position
         let i = 0;
         let root = _.find(this.graph.getElements(), (item) => { return item.attributes.org_parent == 'root' })
         root.position(350, 50)
-        setTimeout(()=>{this.adjustGraphContent()},800);    
-
-        this.reorderPaperGraphRecur(null, root);
+        setTimeout(()=>{this.adjustGraphContent()},800);
+        await this.reorderPaperGraphRecur(null, root);
+        setTimeout(_ => {
+            console.log("resize dimension");
+            this.paper.setDimensions(this.graph.getBBox().width+200, (this.graph.getBBox().height+200));
+            this.paper.scaleContentToFit({minScaleX: 0.3, minScaleY: 0.3, maxScaleX: 1 , maxScaleY: 1});
+        }, 100);
     }
 
 
@@ -1243,6 +1264,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             "position": cell.attributes.position,
             "position_type": cell.attributes.position_type,
             "tree_id": cell.attributes.tree_id,
+            "child_count": cell.attributes.child_count
         });
         cell.attributes = newCell.attributes;
         //this.nodeGraphNameChangeEvent.emit({ name: cell.attrs['.rank'].text, tree_id: cell.attributes.tree_id }) // update tree node name on graph node change
@@ -1269,6 +1291,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             "position": cell.attributes.position,
             "position_type": cell.attributes.position_type,
             "tree_id": cell.attributes.tree_id,
+            "child_count": cell.attributes.child_count
         });
         cell.attributes = newCell.attributes;
         //this.nodeGraphNameChangeEvent.emit({ name: cell.attrs['.rank'].text, tree_id: cell.attributes.tree_id }) // update tree node name on graph node change
@@ -1306,6 +1329,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 "n3": 0,
                 "is_advisor": isAdvisor,
                 "tree_id": 0,
+                "child_count": 1
             });
             return this.memberAddDisplacement(cell, rank, parent)
         }
@@ -1329,6 +1353,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 "n3": 0,
                 "is_advisor": isAdvisor,
                 "tree_id": 0,
+                "child_count": 1
             });
             return this.memberAddDisplacement(cell, rank, parent)
         }
@@ -1449,6 +1474,14 @@ export class JointComponent implements OnInit, AfterViewInit {
         link.findView(paper).addTools(toolsView);
     }
 
+    changeParentChildCount(parent: any) {
+        this.getParentFor(parent, (grandparent) => {
+            // grandparent.attributes.child_count = grandparent.attributes.child_count + 1;
+            this.changeParentChildCount(grandparent);
+        });
+        parent.attributes.child_count = parent.attributes.child_count + 1;
+    }
+
     // add graph node element
     member(parent: any, x: any, y: any, rank: any, name: any, image: any, background: any, textColor: any, isAdvisor: any) {
         let org_parent: any = 'root';
@@ -1458,6 +1491,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             org_parent = parent.attributes.attrs[".rank"].text;
             org_parent_id = parent.id;
             org_level = parent.attributes.org_level + 1;
+            this.changeParentChildCount(parent);
         }
 
         var cell = new this.Member2({
@@ -1480,6 +1514,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             "n3": 0,
             "is_advisor": isAdvisor,
             "tree_id": 0,
+            "child_count": 1
         });
         this.graph.addCell(cell);
 
