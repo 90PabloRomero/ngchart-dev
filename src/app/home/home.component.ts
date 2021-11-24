@@ -377,6 +377,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     lastNodeSearchedId: any;
     lastNodeSearchedKeyword: any;
     findTreeNodeByName(tree: any, search: any) {
+        this.treeOrg.treeModel.expandAll();
         var regex = new RegExp(search, 'gi');
         let node = tree.treeModel.getNodeBy((node) => node.data.name.match(regex))
         if (node) {
@@ -386,6 +387,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (node) {
             this.lastNodeSearchedId = node.data.id;
         }
+        setTimeout(_ => {
+            this.paperView.getCellsByText(search);
+        }, 300);
     }
 
     logout() {
@@ -411,12 +415,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
     treeFocusNextNode() { 
+        this.treeOrg.treeModel.expandAll();
         let focused = this.treeOrg.treeModel.getFocusedNode();
         if (!focused) {
             this.treeOrg.treeModel.focusPreviousNode()
         } else {
             this.getNextNodeCoincidence(focused.findNextNode());
         }
+        setTimeout(_ => {this.paperView.getNextCellByCurrentSearch()}, 300);
     }
 
     getPreviousNodeCoincidence(node: any) {
@@ -433,12 +439,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
     treeFocusPreviousNode() {
+        this.treeOrg.treeModel.expandAll();
         let focused = this.treeOrg.treeModel.getFocusedNode();
         if (!focused) {
             this.treeOrg.treeModel.focusPreviousNode()
         } else {
             this.getPreviousNodeCoincidence(focused.findPreviousNode());
         }
+        setTimeout(_ => {this.paperView.getPreviousCellByCurrentSearch()}, 300);
     }
 
     updateCurrCellDedicationRegimeOnAllSheets(cell, position_type){
