@@ -245,7 +245,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             });
 
             this.paper.on('cell:contextmenu', (cellView, e, x, y) => {
-                if (cellView.model.attributes.type == "org.Arrow") {
+                if (cellView.model.attributes.type == "org.Arrow" || cellView.model.attributes.type == "standard.Link") {
                     return
                 }
                 this.nodeGraphCurrent = cellView.model;
@@ -335,7 +335,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     checkGraphNodeAdded(cell: any) { // set tree id for new graph element created
-        if (cell.attributes.type == "org.Arrow") { return }
+        if (cell.attributes.type == "org.Arrow" || cell.attributes.type == "standard.Link") { return }
 
         this.graphNodeAddedEvent.emit(cell);
 
@@ -699,6 +699,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             sheet.Data = JSON.stringify({
                 "cells": cells
             });
+            console.log(sheet.ID);
             this.http.put < any > (this.urlApi + '/sheet/' + sheet.ID, sheet)
                 .subscribe(
                     (any) => {
@@ -727,25 +728,39 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     getGraphIdFromNodeId(treeNodeId: any, cells: any, cb) {
+        console.log(treeNodeId, cells);
         let cell = _.find(cells, (cell) => { return cell.tree_id == treeNodeId })
+        console.log(cell);
         cb(cell);
     }
 
 
     deleteNodeSheetData(sheet, cells: any, cell: any) {
+        console.log("deleteNodeSheetData");
         _.remove(cells, function(el: any) {
+            if (el.id == cell.id) {
+                console.log("remove rect");
+            }
             return el.id == cell.id;
         });
         _.remove(cells, function(el: any) {
-            if (el.type == "org.Arrow") {
+            console.log(el);
+            if (el.type == "standard.Link" || el.type == "org.Arrow") {
+                if (el.target.id == cell.id) {
+                    console.log("remove target arrow");
+                }
                 return el.target.id == cell.id;
             }
         });
         _.remove(cells, function(el: any) {
-            if (el.type == "org.Arrow") {
+            if (el.type == "standard.Link" || el.type == "org.Arrow") {
+                if (el.source.id == cell.id) {
+                    console.log("remove source arrow");
+                }
                 return el.source.id == cell.id;
             }
         });
+        console.log(cells);
         this.saveSheet(sheet, cells);
         cells.forEach((elem) => {
             if (elem.org_parent_id == cell.id && (elem.type == "org.Member2" || elem.type == "org.Member3")) {
@@ -753,12 +768,12 @@ export class JointComponent implements OnInit, AfterViewInit {
                     return el.id == elem.id;
                 });
                 _.remove(cells, function(el: any) {
-                    if (el.type == "org.Arrow") {
+                    if (el.type == "standard.Link" || el.type == "org.Arrow") {
                         return el.target.id == elem.id;
                     }
                 });
                 _.remove(cells, function(el: any) {
-                    if (el.type == "org.Arrow") {
+                    if (el.type == "standard.Link" || el.type == "org.Arrow") {
                         return el.source.id == elem.id;
                     }
                 });
@@ -775,11 +790,14 @@ export class JointComponent implements OnInit, AfterViewInit {
         sheets.forEach((sheet) => {
             if (sheet.Data != "" && sheet.Data != null && sheet.Data != undefined) {
                 let data: any = JSON.parse(sheet.Data)
-                this.getGraphIdFromNodeId(nodeId, data.cells, (cell) => {
-                    if (cell) {
-                        this.deleteNodeSheetData(sheet, data.cells, cell)
-                    }
-                })
+                // setTimeout(_ => {
+                    console.log(sheet);
+                    this.getGraphIdFromNodeId(nodeId, data.cells, (cell) => {
+                        if (cell) {
+                            this.deleteNodeSheetData(sheet, data.cells, cell)
+                        }
+                    })
+                // }, 3000)
             }
 
         })
@@ -797,22 +815,15 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (confirm('Delete this element and children elements?')) {
             this.getDirectChildrenCount(cell.model, (count) => {
                 console.log(count);
-                if (count > 0) {
-                    this.deleteAllFromNode(cell.model);
-                    var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
-                    outbooundLinksCount.forEach((link) => {
-                        link.remove();
-                    })
-                    cell.remove();
-                    cell.model.remove();
-                } else {
-                    var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
-                    outbooundLinksCount.forEach((link) => {
-                        link.remove();
-                    })
-                    cell.remove();
-                    cell.model.remove();
-                }
+                // if (count > 0) {
+                //     this.deleteAllFromNode(cell.model);
+                // }
+                // var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
+                // outbooundLinksCount.forEach((link) => {
+                //     link.remove();
+                // })
+                // cell.remove();
+                // cell.model.remove();
                 this.deleteGraphNodeEvent.emit(cell);
             })
         }
@@ -1529,14 +1540,37 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     // add graph link
     link(source: any, target: any, breakpoints: any) {
-        var cell = new joint.shapes.org.Arrow({
+        var cell = new joint.shapes.standard.Link({
             source: { id: source.id },
             target: { id: target.id },
             vertices: breakpoints,
             attrs: {
-                ".connection": { 'fill': 'none', 'stroke-linejoin': 'round', 'stroke-width': '3', 'stroke': '#45d9d9' }
+                "line": {
+                    'fill': 'none',
+                    'stroke-linejoin': 'round',
+                    'stroke-width': '3',
+                    'stroke': '#45d9d9' }
             }
         });
+
+        // cell.attr({
+        //     line: {
+        //         strokeWidth: 3,
+        //         stroke: '#45d9d9',
+        //         sourceMarker: {
+        //             'type': 'path',
+        //             'stroke': 'none',
+        //             'fill': '#3498DB',
+        //             'd': ''
+        //         },
+        //         targetMarker: {
+        //             'type': 'path',
+        //             'stroke': 'none',
+        //             'fill': '#3498DB',
+        //             'd': ''
+        //         }
+        //     }
+        // });
         this.graph.addCell(cell);
         this.updateDirectPositionsCounter();
         this.countAllSupervised();
@@ -1704,7 +1738,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     addFunctionalRelLink(source: any, target: any, isNotFunctional ? : any) { // add functional relantionship link
-        var cell = new joint.shapes.org.Arrow({
+        var cell = new joint.shapes.standard.Link({
             source: {
                 id: source.id
             },

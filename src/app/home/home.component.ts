@@ -127,8 +127,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 const activeNodes = tree.activeNodes;
                 if (activeNodes.length > 1) {
                     activeNodes.forEach(item => {
-                    const currentItem = tree.getNodeById(item.id);
-                    tree.moveNode(currentItem, to);
+                        const currentItem = tree.getNodeById(item.id);
+                        tree.moveNode(currentItem, to);
                     });
                 } else {
                     tree.moveNode(from, to);
@@ -254,6 +254,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[1] = false;
         this.panelsIds[2] = false;
         this.panelsIds[3] = true;
+    }
+
+    onDrop($event) {
+        console.log($event);
+    }
+
+    allowDrop(element) {
+        console.log(element);
+        return true;
     }
 
     dropAndSelect(event: any) {
@@ -1106,7 +1115,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
 
     }
-    
+
     openContactForm(event, inputFormTemplate, contact: Contact) {
         this.contactToEdit = new Contact;
         if (contact) {
@@ -1941,8 +1950,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.projectSheets.forEach((sheet) => {
                 if (this.sheetSelected && (sheet.ID == this.sheetSelected.ID)) {
                     newProjectSheets.push(this.sheetSelected);
+                    console.log("this.sheetSelected");
                 } else {
                     newProjectSheets.push(sheet)
+                    console.log("sheet index");
                 }
                 if (i >= this.projectSheets.length - 1) {
                     cb(newProjectSheets)

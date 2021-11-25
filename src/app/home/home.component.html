@@ -468,7 +468,9 @@
                 </li>
             </ul>
             <div [ngbNavOutlet]="nav"></div>
-            <div style="margin-top: 42px;height: calc(100vh - 133px) !important;">
+            <div style="margin-top: 42px;height: calc(100vh - 133px) !important;"
+                (treeDrop)="onDrop($event)"
+                [treeAllowDrop]="allowDrop.bind(this)">
                 <app-joint #paperView (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)" (dblclickGraphNodeEvent)="panelExpanded=false" (clickGraphNodeEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickPaperBlankAreaEvent)="saveNamePosition(positionCurrent,treeOrg)" (clickGraphNodeEvent)="graphNodeSelected($event)" (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)" (sheetDimentionsChangeEvent)="setSheetNewSize($event)" (graphNodeAddedEvent)="graphNodeAdded($event)" (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)" (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)" (applyNewShapePropertiesEvent)="saveSheet(sheetSelected)" (resizeSheetEvent)="resizeSheet()">
                 </app-joint>
             </div>
