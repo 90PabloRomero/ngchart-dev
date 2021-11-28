@@ -272,7 +272,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.countAllSupervised();
             })
 
-            var verticesTool = new joint.linkTools.Vertices();
+            // var verticesTool = new joint.linkTools.Vertices();
             var segmentsTool = new joint.linkTools.Segments();
             var sourceArrowheadTool = new joint.linkTools.SourceArrowhead();
             var targetArrowheadTool = new joint.linkTools.TargetArrowhead();
@@ -284,9 +284,9 @@ export class JointComponent implements OnInit, AfterViewInit {
             // });
             var toolsView = new joint.dia.ToolsView({
                 tools: [
-                    verticesTool, segmentsTool,
+                    // verticesTool, segmentsTool,
                     sourceArrowheadTool, targetArrowheadTool,
-                    sourceAnchorTool, targetAnchorTool,
+                    // sourceAnchorTool, targetAnchorTool,
                     boundaryTool
                     // , removeButton
                 ]
@@ -343,7 +343,16 @@ export class JointComponent implements OnInit, AfterViewInit {
             return (cell.attributes.org_parent!='root' && parent.id == cell.attributes.org_parent_id)
         })
 
-        if(parent) this.reorderPaperGraphRecur(null, parent);
+        // let gParent = _.find(this.graph.getElements(), (parentIndex) => { 
+        //     return (parent.attributes.org_parent!='root' && parentIndex.id == parent.attributes.org_parent_id)
+        // })
+        // if(gParent) {
+        //     this.reorderPaperGraphRecur(null, gParent);
+        // } else 
+        if(parent) {
+            this.reorderPaperGraphRecur(null, parent);
+        }
+            
     }
 
     drop(event: { source: CdkDrag < any > }) {   // when dropping from left bar position shapes  
@@ -917,29 +926,19 @@ export class JointComponent implements OnInit, AfterViewInit {
         let unitX = -1;
         this.getElementChildren(elem, (children) => {
             let length = children.length;
-            let maxChildCout = [];
-            children.forEach((child) => {
-                if (child.attributes.child_count == 0) {
-                    maxChildCout.push(child.attributes.child_count);
-                } else if (child.attributes.attrs['.n1'].text == 0) {
-                    maxChildCout.push(1);
-                } else {
-                    maxChildCout.push(child.attributes.attrs['.n1'].text);
-                }
-            })
             children.forEach((child, index) => {
-                    console.log(child.attributes.attrs['.n1'].text);
-                if (length == 1){
-                    unitX = 0;
-                } else if (length % 2 == 0) {
+                if (length % 2 == 0) {
                     unitX = index - Math.ceil(length/2) + 0.5;
                 } else {
                     unitX = index - Math.ceil(length/2) + 1;
                 }
-                console.log(length, unitX, child.attributes.child_count);
-                console.log(Math.max(...maxChildCout));
                 let elXY = elem.position();
-                child.position(elXY.x + (250 * unitX * Math.max(...maxChildCout)), elXY.y + (140));
+                let divVal = Math.ceil((child.attributes.child_count)/2);
+                if (index < length - 1) {
+                    divVal = Math.floor((children[index+1].attributes.child_count + child.attributes.child_count)/2);
+                }
+                // divVal = (divVal == 0 ? 1 : divVal);
+                child.position(elXY.x + (250 * unitX * divVal), elXY.y + (140));
                 let newLink = this.getLinkDef(elem, child);
                 this.graph.addCell(newLink);
                 this.reorderPaperGraphRecur(elem, child);
@@ -1401,7 +1400,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         let startDirections = ['bottom'];
         let endDirections = ['top'];
         if (target.attributes.is_advisor == true) { 
-            startDirections = ['right']
+            startDirections = ['bottom']
             endDirections = ['right', 'left'] 
         }
 
@@ -1493,10 +1492,9 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     changeParentChildCount(parent: any) {
         this.getParentFor(parent, (grandparent) => {
-            // grandparent.attributes.child_count = grandparent.attributes.child_count + 1;
+            grandparent.attributes.child_count = Math.max(grandparent.attributes.child_count, parent.attributes.child_count);
             this.changeParentChildCount(grandparent);
         });
-        parent.attributes.child_count = parent.attributes.child_count + 1;
     }
 
     // add graph node element
@@ -1508,6 +1506,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             org_parent = parent.attributes.attrs[".rank"].text;
             org_parent_id = parent.id;
             org_level = parent.attributes.org_level + 1;
+            parent.attributes.child_count = parent.attributes.child_count + 1;
             this.changeParentChildCount(parent);
         }
 

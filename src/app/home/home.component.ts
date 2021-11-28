@@ -2038,7 +2038,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
-    deleteNodesConfirmedByUser(tree){
+    deleteNodesConfirmedByUser(tree, flag = false){
+        console.log(flag);
         let activeNode = tree.treeModel.getActiveNode();
         if (!activeNode) {
             alert('No active or selected Node!')
@@ -2049,7 +2050,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if(rootNode.isActive) {
             this.clearAllProjectSheets();
         } 
-        this.deleteNodes(tree);
+        this.deleteNodes(tree, flag);
 
         //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
         setTimeout(function(){ alert("Succesfully deleted selected node(s) and below relations."); }, 500);
@@ -2074,14 +2075,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
-    deleteActiveNodeFromTree(tree){
+    deleteActiveNodeFromTree(tree, flag){
         
         this.positionCurrent= new Position;
         let node = tree.treeModel.getActiveNode();
+        console.log(flag);    
+        if (flag) {
+            this.deleteNodeFunctionalRels(node, tree);
+            this.removeNodeFromParentsChildrenData(node);
+        }
 
-        this.deleteNodeFunctionalRels(node, tree);
 
-        this.removeNodeFromParentsChildrenData(node);
 
         //new, delete node on all sheets 
         this.refreshProjectSelectedSheets((projectSheets) => {
@@ -2092,12 +2096,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
-    deleteNodes(tree) {  // delete tree node 
+    deleteNodes(tree, flag) {  // delete tree node 
         
         tree.treeModel.activeNodes.forEach(element => {
             console.log("Node to Delete: ");
             console.log(element.data);
-            this.deleteActiveNodeFromTree(tree);
+            this.deleteActiveNodeFromTree(tree, flag);
         });
         this.panelExpanded = true;
     }
@@ -2555,7 +2559,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let c = 0
         if (node.data.children.length == 0 && node.data.name == '**Displacement**') {
             node = tree.treeModel.getNodeById(node.id);
-            this.deleteNodes(tree);
+            this.deleteNodes(tree, true);
         } else {
             node.data.children.forEach((child) => {
                 child = tree.treeModel.getNodeById(child.id);
@@ -2579,7 +2583,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 if (c >= node.data.children.length - 1 || node.data.name == '**Displacement**') {
                     node = tree.treeModel.getNodeById(node.id);
                     // node.setActiveAndVisible();
-                    this.deleteNodes(tree);
+                    this.deleteNodes(tree, true);
                 }
 
                 i = i + 1
