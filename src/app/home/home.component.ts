@@ -2098,7 +2098,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return
     }
 
-    deleteNodes(tree, flag) {  // delete tree node 
+    deleteNodes(tree, flag=false) {  // delete tree node 
         
         tree.treeModel.activeNodes.forEach(element => {
             console.log("Node to Delete: ");
