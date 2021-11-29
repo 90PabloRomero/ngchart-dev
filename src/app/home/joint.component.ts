@@ -35,6 +35,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     @Output() applyNewShapePropertiesEvent = new EventEmitter(); // change properties on graph node element
     @Output() resizeSheetEvent = new EventEmitter();
     @Output() loadingEvent = new EventEmitter();
+    @Output() reoderNodeEvent = new EventEmitter();
 
     @ViewChild('paper') paperElement: ElementRef;
     @ViewChild('cellMenu') cellMenu: TemplateRef < any > ;
@@ -933,9 +934,11 @@ export class JointComponent implements OnInit, AfterViewInit {
                     unitX = index - Math.ceil(length/2) + 1;
                 }
                 let elXY = elem.position();
-                let divVal = Math.ceil((child.attributes.child_count)/2);
-                if (index < length - 1) {
-                    divVal = Math.floor((children[index+1].attributes.child_count + child.attributes.child_count)/2);
+                let divVal = Math.ceil((child.attributes.child_count == 1 ? 1 : child.attributes.child_count-1)/2);
+                if (index < length - 1 && index > 0) {
+                    divVal = Math.ceil((children[index-1].attributes.child_count + children[index+1].attributes.child_count + child.attributes.child_count - 1)/2);
+                } else if(index < length - 1){
+                    divVal = Math.ceil((children[index+1].attributes.child_count + child.attributes.child_count - 1)/2);
                 }
                 // divVal = (divVal == 0 ? 1 : divVal);
                 child.position(elXY.x + (250 * unitX * divVal), elXY.y + (140));
@@ -944,20 +947,21 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.reorderPaperGraphRecur(elem, child);
             })
         })
+        this.reoderNodeEvent.emit();
     }
 
-    async reorderPaperGraph() {  //reorder graph elements
+    reorderPaperGraph() {  //reorder graph elements
         this.hashXY = {} // to check if node exists on same position
         let i = 0;
         let root = _.find(this.graph.getElements(), (item) => { return item.attributes.org_parent == 'root' })
         root.position(350, 50)
         setTimeout(()=>{this.adjustGraphContent()},800);
-        await this.reorderPaperGraphRecur(null, root);
+        this.reorderPaperGraphRecur(null, root);
         setTimeout(_ => {
             console.log("resize dimension");
             this.paper.setDimensions(this.graph.getBBox().width+200, (this.graph.getBBox().height+200));
             this.paper.scaleContentToFit({minScaleX: 0.3, minScaleY: 0.3, maxScaleX: 1 , maxScaleY: 1});
-        }, 100);
+        }, 5000);
     }
 
 
@@ -1433,7 +1437,6 @@ export class JointComponent implements OnInit, AfterViewInit {
             // var cell = new joint.shapes.standard.Link();
             // cell.source(source);
             // cell.target(target);
-            cell.connector('jumpover');
 
             // cell.attr('.marker-marker[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
             // cell.attr('.marker-marker[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
@@ -1446,8 +1449,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             // cell.attr('.marker-marker[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
             // cell.attr('.marker-marker[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         }
-
-
+        cell.connector('jumpover');
         cell.attr({
             line: {
                 strokeWidth: 3,
@@ -1548,7 +1550,8 @@ export class JointComponent implements OnInit, AfterViewInit {
                     'fill': 'none',
                     'stroke-linejoin': 'round',
                     'stroke-width': '3',
-                    'stroke': '#45d9d9' }
+                    'stroke': '#45d9d9' 
+                }
             }
         });
 
@@ -1737,12 +1740,34 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     addFunctionalRelLink(source: any, target: any, isNotFunctional ? : any) { // add functional relantionship link
+        console.log("addFunctionalRelLink");
+        console.log(source.id, target.id);
         var cell = new joint.shapes.standard.Link({
             source: {
                 id: source.id
             },
             target: {
                 id: target.id
+            },
+            attrs: {
+                line: {
+                    'fill': 'none',
+                    'stroke-linejoin': 'round',
+                    'stroke-width': '3',
+                    'stroke': '#45d9d9' , 
+                    sourceMarker: {
+                        'type': 'path',
+                        'stroke': 'none',
+                        'fill': '#3498DB',
+                        'd': ''
+                    },
+                    targetMarker: {
+                        'type': 'path',
+                        'stroke': 'none',
+                        'fill': '#3498DB',
+                        'd': ''
+                    }
+                }
             }
         });
 
@@ -1754,15 +1779,16 @@ export class JointComponent implements OnInit, AfterViewInit {
                 startDirections: ['bottom'],
                 endDirections: ['top']
             }
-
-
         });
-        cell.attr(".connection/")
-        cell.attr('.connection/stroke', '#45d9d9');
-        cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
-        cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+        
+        cell.connector('jumpover');
+        // cell.attr(".connection/")
+        // cell.attr('.connection/stroke', '#45d9d9');
+        // cell.attr('.marker-arrowhead[end="source"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
+        // cell.attr('.marker-arrowhead[end="target"]', { d: 'M 10 0 L 0 5 L 10 10 z' });
         if (!isNotFunctional) {
-            cell.attr('.connection/strokeDasharray', '5,10');
+            cell.attr('line/strokeDasharray', '5, 10');
+            // cell.attr('.connection/strokeDasharray', '5,10');
         }
         this.graph.addCell(cell);
     }
@@ -1788,15 +1814,15 @@ export class JointComponent implements OnInit, AfterViewInit {
         return name.replace('(t) ','');
     }
 
-    addFunctionalRel(sourceName: any, targetName: any) { // add functional relantionship
-        sourceName = this.removeAandTfromName(sourceName);
-        targetName = this.removeAandTfromName(targetName);
+    addFunctionalRel(sourceID: any, targetID: any) { // add functional relantionship
+        // sourceID = this.removeAandTfromName(sourceID);
+        // targetID = this.removeAandTfromName(targetID);
         var cells = this.graph.getElements();
         let source = _.find(cells, function(el: any) {
-            return sourceName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
+            return sourceID == el.attributes.tree_id && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
         });
         let target = _.find(cells, function(el: any) {
-            return targetName == el.attributes.attrs['.rank'].text && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
+            return targetID == el.attributes.tree_id && (el.attributes.type == "org.Member2"|| el.attributes.type == "org.Member3");
         });
         console.log(source,target);
         if (typeof source != 'undefined' && source && typeof target != 'undefined' && target) {

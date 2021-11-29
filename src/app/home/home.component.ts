@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       };
     
-      treeModalOptions: ITreeOptions = {
+    treeModalOptions: ITreeOptions = {
         actionMapping: this.treeModalActionMapping,
         useCheckbox: true,
         useTriState: false,
@@ -233,7 +233,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {}
 
-   ngOnInit(): void {
+    ngOnInit(): void {
         this.userId = localStorage.getItem('userId');
         this.userName = localStorage.getItem('name');
         this.accessToken = localStorage.getItem('accessToken');
@@ -349,7 +349,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     selectGraphNode($event:any,tree:any){
         console.log("Select Graph Node: ")
         console.log($event)
-        console.log(this.paperView.graph.getElements())
         if (this.sheetSelected.ID != 0) {
              //Deseleccionar todos los graph nodes, que son posibles seleccionados
              _.each(this.paperView.graph.getElements(), (cell) => { 
@@ -365,6 +364,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
             //Seleccionar el nodo que genera el evento
             let toSelectCell = _.find(this.paperView.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  $event.attributes.tree_id })
+            console.log(toSelectCell);
             if(toSelectCell) {
                 this.paperView.member3Def(toSelectCell);
                 toSelectCell.attributes.attrs['.sibling'].visibility = (toSelectCell.attributes.org_level=='0')? 'hidden' : 'visible'; //Hide sibling circles for root node.
@@ -821,8 +821,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     drawSheetFunctionalRels() { // functional relationships only store on tree, they are draw on every load  
         this.treeOrg.treeModel.doForAll((item) => {
             if (item.data.isfunctionalrel) {
-                if (item.data.functionalRelSourceName && item.data.functionalRelTargetName) {
-                    this.paperView.addFunctionalRel(item.data.functionalRelSourceName, item.data.functionalRelTargetName);
+                console.log("drawSheetFunctionalRels");
+                console.log(item);
+                if (item.data.functionalRelSourceId && item.data.functionalRelTargetId) {
+                    this.paperView.addFunctionalRel(item.data.functionalRelSourceId, item.data.functionalRelTargetId);
                 }
             }
         })
@@ -1583,21 +1585,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         let activeNodeName = this.removeAandTfromName(activeNode.data.name);
         if (this.paperView.graph.getElements().length<=0){ // if sheet empty
-                let newCell = this.paperView.memberDef(null,
-                    350,
-                    50,
-                    activeNodeName,
-                    activeNodeName,
-                    activeNode.data.id,
-                    'male.png',
-                    '#ffffff',
-                    '#797979',
-                    false,
-                    this.treeNodeCurrent
-                );
-                newCell.attributes.tree_id = activeNode.data.id;
-                this.paperView.graph.addCell(newCell);
-                this.generateGraphRecur(activeNode, newCell);
+            let newCell = this.paperView.memberDef(null,
+                350,
+                50,
+                activeNodeName,
+                activeNodeName,
+                activeNode.data.id,
+                'male.png',
+                '#ffffff',
+                '#797979',
+                false,
+                this.treeNodeCurrent
+            );
+            newCell.attributes.tree_id = activeNode.data.id;
+            this.paperView.graph.addCell(newCell);
+            this.generateGraphRecur(activeNode, newCell);
         }else{
             if(baseRoot){  // only generate/update when tree node exists on sheet
              //   console.log(baseRoot);
