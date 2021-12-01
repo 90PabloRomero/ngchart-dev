@@ -255,7 +255,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[2] = false;
         this.panelsIds[3] = true;
     }
-
+    uploadFile(event, tree) {
+        
+        console.log("file-upload-event", event)
+        let value = event[0]
+        this.checkForAttachmentExistingName(value, (isNameExist) => {
+            if (isNameExist) {
+              alert("File name " + value.name + " already exists! ");
+            } else {
+              console.log("Ffffffffff");
+              const formData: FormData = new FormData();
+              formData.append("upload", value, value.name);
+              this.http.post<any>(urlApi + "/upload-file", formData).subscribe(
+                (any) => {
+                  if (any) {
+                    if (any && any.file != "/files/nofile") {
+                      console.log(any.file);
+                      this.addAttachment({
+                        name: any.file,
+                      });
+                      this.savePosition(this.positionCurrent, tree);
+                    }
+                    return;
+                  }
+                },
+                (err) => {
+                  alert(err);
+                  return;
+                }
+              );
+            }
+          });
+    }
     onDrop($event) {
         console.log($event);
     }

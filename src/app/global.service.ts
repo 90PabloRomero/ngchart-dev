@@ -29,6 +29,4 @@ export class GlobalService {
     private http: HttpClient,
     
   ) {}
-
-
 }

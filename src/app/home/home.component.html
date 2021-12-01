@@ -686,6 +686,8 @@
                             <li [ngbNavItem]="6">
                                 <a ngbNavLink><span class="tab-title-small">Attachments</span></a>
                                 <ng-template ngbNavContent>
+                                    <div class="file-drop" appDragDrop (onFileDropped)="uploadFile($event)">
+                                        <input type="file" #fileDropRef id="fileDropRef" (change)="uploadFile($event.target.files, tree)" />
                                     <button type="button" class="btn btn-outline-dark btn-sm" (click)="openFileUpload($event,uploadTemplate)" ngbTooltip="Add Attachment">
                                         <i class="bi bi-plus-circle"></i>
                                     </button>
@@ -701,6 +703,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    </div>
                                 </ng-template>
                             </li>
                             <li [ngbNavItem]="7">
