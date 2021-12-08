@@ -446,8 +446,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <a ngbNavLink class="nav-link" style="border-bottom: 1px solid #dee2e6;color:#ccc">
-                        <input *ngIf="!isSheetToEdit" type="text" [(ngModel)]="sheet.SheetName" [ngClass]="isSheetToEdit?'readonly':''" (change)="isSheetToEdit = true; saveSheet(sheetToEdit,true);">
-                        <p *ngIf="isSheetToEdit" (dblclick)="isSheetToEdit = false; EditSheet(sheetSelected);" style="margin: 0; padding: 0;">{{sheet.SheetName}}</p>
+                        <input *ngIf="!isSheetToEdit && sheet.SheetName == sheetSelected.SheetName" type="text" [(ngModel)]="sheet.SheetName" [ngClass]="isSheetToEdit?'readonly':''" (change)="isSheetToEdit = true; saveSheet(sheetToEdit,true);">
+                        <p *ngIf="isSheetToEdit || sheet.SheetName !== sheetSelected.SheetName" (dblclick)="isSheetToEdit = false; EditSheet(sheetSelected);" style="margin: 0; padding: 0;">{{sheet.SheetName}}</p>
                     </a>
                     <ng-template ngbNavContent>
                     </ng-template>

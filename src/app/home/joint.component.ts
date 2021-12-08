@@ -1624,6 +1624,9 @@ export class JointComponent implements OnInit, AfterViewInit {
 
         let opt = { width: textMaxWidth }
         let nameWrap = joint.util.breakText(name, opt)
+        
+        let isAdvisor = false;
+        if (positionType == "advisor") { isAdvisor = true }
 
         if (parent) {
 
@@ -1632,7 +1635,8 @@ export class JointComponent implements OnInit, AfterViewInit {
                 unitY = 1;
 
                 // set location for element and link 
-                if (this.isAdvisor == true) { //is advisor
+                if (this.isAdvisor == true || isAdvisor) { //is advisor
+                    console.log("this.isAdvisor == true", positionType);
                     newNode = this.member(
                         parent,
                         parent.attributes.position.x + 200,
@@ -1644,6 +1648,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
 
                 } else {
+                    console.log("this.isAdvisor == false", positionType);
                     newNode = this.member(
                         parent,
                         parent.attributes.position.x + (200 * unitX),
