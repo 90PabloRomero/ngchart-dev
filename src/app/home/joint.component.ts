@@ -343,16 +343,10 @@ export class JointComponent implements OnInit, AfterViewInit {
         let parent = _.find(this.graph.getElements(), (parent) => { 
             return (cell.attributes.org_parent!='root' && parent.id == cell.attributes.org_parent_id)
         })
-
-        // let gParent = _.find(this.graph.getElements(), (parentIndex) => { 
-        //     return (parent.attributes.org_parent!='root' && parentIndex.id == parent.attributes.org_parent_id)
-        // })
-        // if(gParent) {
-        //     this.reorderPaperGraphRecur(null, gParent);
-        // } else 
-        if(parent) {
-            this.reorderPaperGraphRecur(null, parent);
-        }
+        this.reorderPaperGraph();
+        // if(parent) {
+        //     this.reorderPaperGraphRecur(null, parent);
+        // }
             
     }
 

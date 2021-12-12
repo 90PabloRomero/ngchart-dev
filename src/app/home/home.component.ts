@@ -255,6 +255,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelsIds[2] = false;
         this.panelsIds[3] = true;
     }
+
     uploadFile(event, tree) {
         
         console.log("file-upload-event", event)

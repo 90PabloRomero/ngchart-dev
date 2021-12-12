@@ -255,11 +255,11 @@
                                 <ng-template ngbPanelContent>
                                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                         <div class="input-group" style="position: relative;">
-                                            <input #treenodesearchinput id="filter" #filter style="height: 32px;width: 71px" class="form-control" type="text" placeholder="" [(ngModel)]="textSearch" (keyup)="findTreeNodeByName(tree,filter.value)" />
+                                            <input #treenodesearchinput id="filter" #filter style="height: 32px;width: 71px" class="form-control" type="text" placeholder="" [(ngModel)]="textSearch" (keyup)="findTreeNodeByName(tree,filter.value)"/>
                                             <button class="btn" id="btn-filter-graph">
                                                 <span *ngIf="textSearch.length>0" aria-hidden="true" (click)="filter.value='';findTreeNodeByName(tree,'');textSearch=''">&times;</span>
                                             </button>
-                                            <i class="bi bi-search" style="position: absolute;right:5px;top:8px"></i>
+                                            <i *ngIf="textSearch.length==0" class="bi bi-search" style="position: absolute;right:5px;top:8px"></i>
                                         </div>
                                         <button style="padding-right:  0px" type="button" class="org-chart btn btn-sm btn-outline-dark" ngbTooltip="focus Previous Node">
                                             <i class="bi bi-chevron-left" (click)="treeFocusPreviousNode()"></i>
