@@ -30,6 +30,7 @@ import { IActionMapping, ITreeOptions, KEYS, TREE_ACTIONS } from '@circlon/angul
 import { event } from 'jquery';
 import { SelectNodeComponent } from '../select-node/select-node.component';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { HttpHeaders } from '@angular/common/http';
 
 const positionsName = [];
 
@@ -673,12 +674,50 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 }
             );
     }
-    getContacts() {   //currently get all projects, TODO: need to filter by user, external  contacts api server were not defined yet
-        this.http.get < any > (urlApi + '/contact')
+
+
+
+    getContacts() {   // get all contacts by user
+
+
+
+        let userId = localStorage.getItem('userId');
+        let accessToken =  localStorage.getItem('accessToken');
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'text/plain',
+                'Accept':'application/json',
+                'access_token':accessToken
+            })
+        };
+
+        this.http.get < any > (GlobalService.externalApiURLSource + 'contact/getContactsForUser/'+userId, httpOptions)
             .subscribe(
                 (any) => {
                     if (any) {
                         this.contacts = any;
+                    }
+                },
+                err => {
+                    if (err.error && err.error.message) {
+                        alert(err.error.message);
+                    }
+                    return;
+                }
+            );
+    }
+
+
+ //currently get all projects, TODO: need to filter by user, external  contacts api server were not defined yet
+
+    getContacts0() {  
+        this.http.get < any > (urlApi + '/contact')
+            .subscribe(
+                (any) => {
+                    if (any) {
+                        // this.contacts = any;
+                        console.log(any);
                     }
                 },
                 err => {
