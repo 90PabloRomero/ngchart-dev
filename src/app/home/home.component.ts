@@ -1141,6 +1141,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (project) {
             Object.assign(this.projectToEdit, project);
         }
+        if(project != null){
+            this.loadProject(project);
+        }
         event.preventDefault();
         this.modalWindow = this.modalService.open(inputFormTemplate, {
             ariaLabelledBy: 'modal-basic-title',
