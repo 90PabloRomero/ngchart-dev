@@ -819,15 +819,15 @@ export class JointComponent implements OnInit, AfterViewInit {
         if (confirm('Delete this element and children elements?')) {
             this.getDirectChildrenCount(cell.model, (count) => {
                 console.log(count);
-                // if (count > 0) {
-                //     this.deleteAllFromNode(cell.model);
-                // }
-                // var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
-                // outbooundLinksCount.forEach((link) => {
-                //     link.remove();
-                // })
-                // cell.remove();
-                // cell.model.remove();
+                if (count > 0) {
+                    this.deleteAllFromNode(cell.model);
+                }
+                var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
+                outbooundLinksCount.forEach((link) => {
+                    link.remove();
+                })
+                cell.remove();
+                cell.model.remove();
                 this.deleteGraphNodeEvent.emit(cell);
             })
         }
