@@ -923,7 +923,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             let length = children.length;
             children.forEach((child, index) => {
                 if (length % 2 == 0) {
-                    unitX = index - Math.ceil(length/2) + 0.5;
+                    unitX = index - Math.ceil(length/2) + 1;
                 } else {
                     unitX = index - Math.ceil(length/2) + 1;
                 }
