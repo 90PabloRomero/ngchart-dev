@@ -697,6 +697,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.contacts = any;
+                        console.log(this.contacts);
+                        
                     }
                 },
                 err => {
@@ -710,7 +712,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
  //currently get all projects, TODO: need to filter by user, external  contacts api server were not defined yet
-
+// DEL_THIS
     getContacts0() {  
         this.http.get < any > (urlApi + '/contact')
             .subscribe(
@@ -1472,9 +1474,81 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    saveContact(contact: any, isNameUpdate?: boolean) {  // save  project on db
-        if (contact.ID) { //if exists
-            if (!contact.Name||contact.Name==""){
+    // DEL_THIS
+
+    // saveContact0(contact: any, isNameUpdate?: boolean) {  // save  project on db
+    //     if (contact.ID) { //if exists
+    //         if (!contact.Name||contact.Name==""){
+    //             alert("Contact name is required!");
+    //             return;
+    //         }
+    //         let querystring="";
+    //         if (isNameUpdate){
+    //             querystring="?isn=yes"
+    //         }
+    //         this.http.put < any > (urlApi + '/contact/' + contact.ID+querystring, contact)
+    //             .subscribe(
+    //                 (any) => {
+    //                     if (any) {
+    //                         alert("Contact Updated!");
+    //                         this.getContacts();
+    //                         return;
+    //                     }
+    //                 },
+    //                 err => {
+    //                     if (err && err.error) {
+    //                         if (String(err.error.error).match('UNIQUE constraint failed')) {
+    //                             alert("Contact name exists!");
+    //                         }
+    //                     }
+
+    //                     if (err.error && err.error.message) {
+    //                         alert(err.error.message);
+    //                     }
+    //                     return;
+    //                 }
+    //             );
+    //     } else {
+    //         if (!contact.Name||contact.Name==""){
+    //             alert("Project name is required!");
+    //             return;
+    //         }
+
+    //         this.http.post < any > (urlApi + '/contact', contact)
+    //             .subscribe(
+    //                 (any) => {
+    //                     if (any) {
+    //                         this.openNewContactAlert();
+    //                         this.getContacts();
+    //                         return
+    //                     }
+    //                 },
+    //                 err => {
+    //                     if (err && err.error) {
+    //                         if (String(err.error.error).match('UNIQUE constraint failed')) {
+    //                             alert("Contact name exists!");
+    //                         }
+    //                     }
+
+    //                     return;
+    //                 }
+    //             );
+
+    //     }
+
+    // }
+
+
+    saveContact(contact: any, isNameUpdate?: boolean) { 
+        
+        // save  project on db
+
+        console.log(contact);
+        
+        if (contact.id) { //if exists
+
+
+            if (!contact.firstName||contact.firstName==""){
                 alert("Contact name is required!");
                 return;
             }
@@ -1482,7 +1556,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (isNameUpdate){
                 querystring="?isn=yes"
             }
-            this.http.put < any > (urlApi + '/contact/' + contact.ID+querystring, contact)
+
+      
+            let accessToken =  localStorage.getItem('accessToken');
+    
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'text/plain',
+                    'Accept':'application/json',
+                    'access_token':accessToken
+
+                })
+            };
+
+            let formData= {
+                firstName  : contact.firstName,
+                id:contact.id
+            };
+
+
+            
+            console.log(GlobalService.externalApiURLSource + 'contact/updateContact/'+contact.id);
+            
+            this.http.put < any > (GlobalService.externalApiURLSource + 'contact/updateContact/'+contact.id, formData, httpOptions)
                 .subscribe(
                     (any) => {
                         if (any) {
@@ -1505,12 +1601,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     }
                 );
         } else {
-            if (!contact.Name||contact.Name==""){
-                alert("Project name is required!");
+
+
+            if (!contact.firstName||contact.firstName==""){
+                alert("Contact name is required!");
                 return;
             }
 
-            this.http.post < any > (urlApi + '/contact', contact)
+
+            let accessToken =  localStorage.getItem('accessToken');
+    
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Accept':'application/json',
+                    'access_token':accessToken
+                })
+            };
+
+
+            let formData= {
+                firstName  : contact.firstName
+            };
+
+            this.http.post < any > (GlobalService.externalApiURLSource + 'contact/createContact/', formData, httpOptions)
                 .subscribe(
                     (any) => {
                         if (any) {
@@ -1533,6 +1646,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
     }
+
 
     confirmDeleteProject(popover) {
         if (popover.isOpen()) {
@@ -1574,8 +1688,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
     }
     deleteContact(contact: Contact) { // delete project from db
-        if (contact.ID != 0) {
-            this.http.delete < any > (urlApi + '/contact/' + contact.ID)
+        if (contact.id != 0) {
+
+            let accessToken =  localStorage.getItem('accessToken');
+
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Accept':'application/json',
+                    'access_token':accessToken
+                })
+            };
+
+
+            this.http.delete < any > (GlobalService.externalApiURLSource + 'contact/deleteContact/' + contact.id, httpOptions)
                 .subscribe(
                     (any) => {
                      console.log(any)

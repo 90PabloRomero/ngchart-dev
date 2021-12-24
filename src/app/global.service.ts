@@ -27,6 +27,8 @@ export class GlobalService {
     public static externalApiURL: string = "http://api.smartsuitetools.com/smartconnectbackend"; //server root address Ex. 
     public static apiURL: string = GlobalService.rootURL +"/api";
     public static externalApiURLSource: string = GlobalService.rootURL2 +"/";
+
+
   constructor(
     private router: Router,
     private http: HttpClient,
