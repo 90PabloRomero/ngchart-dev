@@ -923,7 +923,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             let length = children.length;
             children.forEach((child, index) => {
                 if (length % 2 == 0) {
-                    unitX = index - Math.ceil(length/2) + 1;
+                    unitX = index - Math.ceil(length/2);
                 } else {
                     unitX = index - Math.ceil(length/2) + 1;
                 }
@@ -953,8 +953,8 @@ export class JointComponent implements OnInit, AfterViewInit {
         this.reorderPaperGraphRecur(null, root);
         setTimeout(_ => {
             console.log("resize dimension");
-            this.paper.setDimensions(this.graph.getBBox().width+200, (this.graph.getBBox().height+200));
-            this.paper.scaleContentToFit({minScaleX: 0.3, minScaleY: 0.3, maxScaleX: 1 , maxScaleY: 1});
+            this.paper.setDimensions(this.graph.getBBox().width+400, (this.graph.getBBox().height+300));
+            this.paper.scaleContentToFit({minScaleX: 0.6, minScaleY: 0.6, maxScaleX: 1 , maxScaleY: 1});
         }, 5000);
     }
 
