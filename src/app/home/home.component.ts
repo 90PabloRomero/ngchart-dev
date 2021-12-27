@@ -1559,19 +1559,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       
             let accessToken =  localStorage.getItem('accessToken');
-    
+            let userId = localStorage.getItem('userId');
+
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'text/plain',
                     'Accept':'application/json',
-                    'access_token':accessToken
+                    'access_token':accessToken,
+                    'logged_in_user_id': userId
 
                 })
             };
 
             let formData= {
-                firstName  : contact.firstName,
-                id:contact.id
+             
+       
             };
 
 

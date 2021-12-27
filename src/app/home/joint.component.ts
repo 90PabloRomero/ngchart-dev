@@ -109,7 +109,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     }
 
     tree: any;
-    contacts: Contact[] = [{ ID: 1, Name: 'contact1' }, { ID: 2, Name: 'contact2' }, { ID: 3, Name: 'contact3' }, { ID: 4, Name: 'contact4' }]
+    contacts: Contact[] = [ { ID: 2, Name: 'contact2' ,id: 1, firstName: 'contact1' }, { ID: 3, Name: 'contact3',id: 1, firstName: 'contact1'  }, { ID: 4, Name: 'contact4',id: 1, firstName: 'contact1'  }]
 
     c1 = '<circle class="c1" style="fill:#3cd039 ;stroke:#3cd039;stroke-width:1;stroke-miterlimit:10;filter: drop-shadow( 2px 2px 2px rgba(119, 255, 51, .7));" r="10">' +
         '</circle>';
