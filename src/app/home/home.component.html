@@ -1071,7 +1071,7 @@
                     <div class="form-group row" style="margin: 0px;">
                         <!--                     <label for="ProjectName" class="col-4 col-form-label" style="padding-right:5px;">Project Name</label> -->
                         <div class="col-11" style="padding:  0px;">
-                            <input type="text" class="form-control" id="ProjectName" name="ProjectName" placeholder="Contact Name" #ProjectName="ngModel" [(ngModel)]="contactToEdit.Name" required>
+                            <input type="text" class="form-control" id="ProjectName" name="ProjectName" placeholder="Contact Name" #ProjectName="ngModel" [(ngModel)]="contactToEdit.firstName" required>
                         </div>
                         <div class="col-1"    style="padding:  0px;">
                                 <button class="btn" style="float: left;" (click)="saveContact(contactToEdit,true);modal.dismiss('Cross click')">
