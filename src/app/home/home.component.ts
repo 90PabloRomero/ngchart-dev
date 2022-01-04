@@ -658,7 +658,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                                 this.projectSelected = this.findProjectByName(this.projectToEdit.ProjectName);
                                 if(this.projectSelected) this.loadProject(this.projectSelected)
                             }else{
-                                //this.projectSelected = this.projects[0]
+                                this.loadProject(this.projects[0]);
                             }
                             //this.loadProject(this.projectSelected)
                         }
