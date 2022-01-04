@@ -1480,67 +1480,107 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
 
-    saveContact(contact: any, isNameUpdate?: boolean) {  // save  project on db
-        if (contact.ID) { //if exists
-            if (!contact.Name||contact.Name==""){
-                alert("Contact name is required!");
+    saveContact(contact: any, isNameUpdate?: boolean) {
+        // save  project on db
+    
+        if (contact.id) {
+          //if exists
+    
+          if (!contact.firstName || contact.firstName == "") {
+            alert("Contact name is required!");
+            return;
+          }
+          let querystring = "";
+          if (isNameUpdate) {
+            querystring = "?isn=yes";
+          }
+    
+          let accessToken = localStorage.getItem("accessToken");
+          let userId = localStorage.getItem("userId");
+    
+          const httpOptions = {
+            headers: new HttpHeaders({
+              Accept: "application/json",
+              access_token: accessToken,
+            }),
+          };
+    
+          contact.firstName = contact.firstName;
+    
+          this.http
+            .put<any>(
+              GlobalService.externalApiURLSource +
+                "contact/updateContact/" +
+                contact.id,
+              contact,
+              httpOptions
+            )
+            .subscribe(
+              (any) => {
+                if (any) {
+                  alert("Contact Updated!");
+                  this.getContacts();
+                  return;
+                }
+              },
+              (err) => {
+                if (err && err.error) {
+                  if (String(err.error.error).match("UNIQUE constraint failed")) {
+                    alert("Contact name exists!");
+                  }
+                }
+    
+                if (err.error && err.error.message) {
+                  alert(err.error.message);
+                }
                 return;
-            }
-            let querystring="";
-            if (isNameUpdate){
-                querystring="?isn=yes"
-            }
-            this.http.put < any > (urlApi + '/contact/' + contact.ID+querystring, contact)
-                .subscribe(
-                    (any) => {
-                        if (any) {
-                            alert("Contact Updated!");
-                            this.getContacts();
-                            return;
-                        }
-                    },
-                    err => {
-                        if (err && err.error) {
-                            if (String(err.error.error).match('UNIQUE constraint failed')) {
-                                alert("Contact name exists!");
-                            }
-                        }
-
-                        if (err.error && err.error.message) {
-                            alert(err.error.message);
-                        }
-                        return;
-                    }
-                );
+              }
+            );
         } else {
-            if (!contact.Name||contact.Name==""){
-                alert("Project name is required!");
+          if (!contact.firstName || contact.firstName == "") {
+            alert("Contact name is required!");
+            return;
+          }
+    
+          let accessToken = localStorage.getItem("accessToken");
+    
+          const httpOptions = {
+            headers: new HttpHeaders({
+              Accept: "application/json",
+              access_token: accessToken,
+            }),
+          };
+    
+          let formData = {
+            firstName: contact.firstName,
+          };
+    
+          this.http
+            .post<any>(
+              GlobalService.externalApiURLSource + "contact/createContact/",
+              formData,
+              httpOptions
+            )
+            .subscribe(
+              (any) => {
+                if (any) {
+                  this.openNewContactAlert();
+                  this.getContacts();
+                  return;
+                }
+              },
+              (err) => {
+                if (err && err.error) {
+                  if (String(err.error.error).match("UNIQUE constraint failed")) {
+                    alert("Contact name exists!");
+                  }
+                }
+    
                 return;
-            }
-
-            this.http.post < any > (urlApi + '/contact', contact)
-                .subscribe(
-                    (any) => {
-                        if (any) {
-                            this.openNewContactAlert();
-                            this.getContacts();
-                            return
-                        }
-                    },
-                    err => {
-                        if (err && err.error) {
-                            if (String(err.error.error).match('UNIQUE constraint failed')) {
-                                alert("Contact name exists!");
-                            }
-                        }
-
-                        return;
-                    }
-                );
-
+              }
+            );
         }
-
-    }
+      }
 
     confirmDeleteProject(popover) {
         if (popover.isOpen()) {
@@ -1581,24 +1621,39 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 );
         }
     }
-    deleteContact(contact: Contact) { // delete project from db
-        if (contact.ID != 0) {
-            this.http.delete < any > (urlApi + '/contact/' + contact.ID)
-                .subscribe(
-                    (any) => {
-                     console.log(any)
-                        this.getContacts();
-                        
-                    },
-                    err => {
-                        if (err.error && err.error.message) {
-                            alert(err.error.message);
-                        }
-                        return;
-                    }
-                );
+    deleteContact(contact: Contact) {
+        // delete project from db
+        if (contact.id != 0) {
+          let accessToken = localStorage.getItem("accessToken");
+    
+          const httpOptions = {
+            headers: new HttpHeaders({
+              Accept: "application/json",
+              access_token: accessToken,
+            }),
+          };
+    
+          this.http
+            .delete<any>(
+              GlobalService.externalApiURLSource +
+                "contact/deleteContact/" +
+                contact.id,
+              httpOptions
+            )
+            .subscribe(
+              (any) => {
+                console.log(any);
+                this.getContacts();
+              },
+              (err) => {
+                if (err.error && err.error.message) {
+                  alert(err.error.message);
+                }
+                return;
+              }
+            );
         }
-    }
+      }
 
     addRootNode() {  // add graph root node 
         if (!this.sheetSelected.ID) {
