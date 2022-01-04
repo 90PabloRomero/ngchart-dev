@@ -264,7 +264,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                 this.checkGraphNodeAdded(cell); // when add graph node assign tree id in order to relate each other
             })
             this.graph.on('add', () => {
-                this.paper.setDimensions(this.graph.getBBox().width+200, (this.graph.getBBox().height+200));
+                this.paper.setDimensions(this.graph.getBBox().width+300, (this.graph.getBBox().height+200));
                 this.paper.scaleContentToFit({minScaleX: 0.3, minScaleY: 0.3, maxScaleX: 1 , maxScaleY: 1});
                 this.resizeSheetEvent.emit();
             });
@@ -274,6 +274,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             })
 
             // var verticesTool = new joint.linkTools.Vertices();
+
             var segmentsTool = new joint.linkTools.Segments();
             var sourceArrowheadTool = new joint.linkTools.SourceArrowhead();
             var targetArrowheadTool = new joint.linkTools.TargetArrowhead();
@@ -286,9 +287,10 @@ export class JointComponent implements OnInit, AfterViewInit {
             var toolsView = new joint.dia.ToolsView({
                 tools: [
                     // verticesTool, segmentsTool,
-                    sourceArrowheadTool, targetArrowheadTool,
+                    sourceArrowheadTool,
+                    targetArrowheadTool,
                     // sourceAnchorTool, targetAnchorTool,
-                    boundaryTool
+                    // boundaryTool
                     // , removeButton
                 ]
             });
