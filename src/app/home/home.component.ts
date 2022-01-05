@@ -2152,6 +2152,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
+
     fnToDelete:any;
     argToDelete:any;
     deleteAny(){
