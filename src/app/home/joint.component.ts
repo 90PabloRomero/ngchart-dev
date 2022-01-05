@@ -550,7 +550,8 @@ export class JointComponent implements OnInit, AfterViewInit {
     applyNewShapeProperties(){
         let cell = _.find(this.graph.getElements(), (cell) => { return cell.attributes.tree_id ==  this.cellToEdit.model.attributes.tree_id })
         let shape = this.newShapeProperties;
-        let name = cell.attributes.attrs['.rank'].text;
+        let name = (<HTMLInputElement>document.getElementById("newNodeName")).value;
+        //let name = cell.attributes.attrs['.rank'].text;
         // let positionType = cell.attributes.position_type;
         console.log(cell, this.positionType);
         this.configCell(cell, shape, name, this.positionType);
@@ -974,7 +975,7 @@ export class JointComponent implements OnInit, AfterViewInit {
         let root = _.find(this.graph.getElements(), (item) => { return item.attributes.org_parent == 'root' })
         root.position(350, 50)
         setTimeout(()=>{this.adjustGraphContent()},800);
-        // this.reorderPaperGraphRecur(null, root);
+        this.reorderPaperGraphRecur(null, root);
         setTimeout(_ => {
             console.log("resize dimension");
             this.paper.setDimensions(this.graph.getBBox().width+400, (this.graph.getBBox().height+300));
@@ -1629,8 +1630,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     addGraphNode(parent: any, unitX: any, unitY: any, name: any, code: any, positionType: any, modal ? : any) { // add full graph node with link
 
         if (name == 'undefined' || name == '') {
-            alert("Node Name can't be empty")
-            return
+            name = 'New Node';
         }
         if (modal) {
             modal.dismiss('Cross click')
@@ -1709,8 +1709,7 @@ export class JointComponent implements OnInit, AfterViewInit {
     siblingSide: any = 'left';
     addGraphNodeSibling(siblingRoot: any, unitX: any, unitY: any, name: any, code: any, positionType: any, siblingSide: any, modal: any) {
         if (name == 'undefined' || name == '') {
-            alert("Node Name can't be empty");
-            return
+            name = 'New Node';
         }
 
         if (modal) {
