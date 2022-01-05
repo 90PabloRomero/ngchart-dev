@@ -1060,8 +1060,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     configCell(cell, shapeProperties, newNodeName, positionType) {  // config graph node 
         if (newNodeName == "") {
-            alert("Name can't be blank");
-            return;
+            newNodeName = 'New Node';
         }
 
         shapeProperties = shapeProperties? shapeProperties : this.shapeProperties;
@@ -1173,7 +1172,7 @@ export class JointComponent implements OnInit, AfterViewInit {
             cell.attr('.card/fill', attrsCell);
         }
         cell.attributes.position_type=positionType;
-        if (newNodeName != "New Node" && cell.attributes.tree_id != 0) {
+        if (cell.attributes.tree_id != 0) {
             this.nodeGraphNameChangeEvent.emit({ name: newNodeName, tree_id: cell.attributes.tree_id }) // update tree node name on graph node change
         }
     }
