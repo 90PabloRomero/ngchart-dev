@@ -812,6 +812,17 @@ export class JointComponent implements OnInit, AfterViewInit {
         })
     }
 
+    cell: any;
+    openConfirmDeleteCell(event: any, confirmDeleteCellTemplate: any, cell: any) {
+        this.cell = cell;
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(confirmDeleteCellTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'sm',
+            scrollable: false
+        });
+
+    }
 
 
     deleteNodeAllSheets(node: any, sheets: any) {
@@ -841,21 +852,19 @@ export class JointComponent implements OnInit, AfterViewInit {
 
 
     deleteCell(cell) {
-        if (confirm('Delete this element and children elements?')) {
-            this.getDirectChildrenCount(cell.model, (count) => {
-                console.log(count);
-                if (count > 0) {
-                    this.deleteAllFromNode(cell.model);
-                }
-                var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
-                outbooundLinksCount.forEach((link) => {
-                    link.remove();
-                })
-                cell.remove();
-                cell.model.remove();
-                this.deleteGraphNodeEvent.emit(cell);
+        this.getDirectChildrenCount(cell.model, (count) => {
+            console.log(count);
+            if (count > 0) {
+                this.deleteAllFromNode(cell.model);
+            }
+            var outbooundLinksCount = this.graph.getConnectedLinks(cell.model);
+            outbooundLinksCount.forEach((link) => {
+                link.remove();
             })
-        }
+            cell.remove();
+            cell.model.remove();
+            this.deleteGraphNodeEvent.emit(cell);
+        })
         this.close();
 
     }

@@ -8,6 +8,32 @@
         </ul>
     </section>
 </ng-template>
+<ng-template #confirmDeleteCellTemplate let-modal>
+    <div class="modal-header" style="  background-image: url(assets/images/bg-alert.png);background-position-x: right;border-top-left-radius: 8px;border-top-right-radius: 14px;">
+        <span style="margin-left: auto;margin-right: auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#45d9d9" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+                <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+            </svg>
+        </span>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="   outline: none;color: #ffffff;position: absolute;top: 20px;right: 20px">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="padding: 1px;">
+        <div class="col-12" style="background:#ffffff ">
+            <h6 class="modal-title" id="modal-basic-title" style="color: #777777;padding: 20px;text-align: center;">
+                <span style="text-align: center;font-size: 90%;">Delete this element and children elements?</span>
+            </h6>
+        </div>
+        <div class="col-12" style="background:#ffffff ">
+        </div>
+        <div class="modal-footer" style="    justify-content: center;">
+            <button class="btn btn-success" (click)=" deleteCell(cell);modal.dismiss('Cross click')" style="min-width:85px">yes</button>
+            <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>
 <ng-template #cellMenu let-cell>
     <section class="cell-menu">
         <ul class="list-unstyled contex-menu">
@@ -17,7 +43,7 @@
             </li>
             <li [hidden]="cell.model.attributes.org_level=='0'"><a class="btn btn-light btn-sm"
                     (click)="openAddNodeModalSibling($event,addNodeTemplateSibling,cell)">Add Sibling</a></li>
-            <li><a class="btn btn-light btn-sm" (click)="deleteCell(cell)">Delete
+            <li><a class="btn btn-light btn-sm" (click)="openConfirmDeleteCell($event,confirmDeleteCellTemplate,cell)">Delete
                     {{cell.model.attributes.attrs['.rank'].text}}</a></li>
         </ul>
     </section>
