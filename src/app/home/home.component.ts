@@ -2286,8 +2286,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     addNode(tree: any, nodeName: any, nodePositionCode: any) {  // add tree node
         console.log("addNode");
         if (nodeName == undefined || nodeName == '') {
-            alert("Node Name can't be empty");
-            return;
+            nodeName = 'New Node';
         }
         let nodePosition: Position = new Position;
         let parent: any;
