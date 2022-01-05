@@ -276,8 +276,30 @@ export class JointComponent implements OnInit, AfterViewInit {
             // var verticesTool = new joint.linkTools.Vertices();
 
             var segmentsTool = new joint.linkTools.Segments();
-            var sourceArrowheadTool = new joint.linkTools.SourceArrowhead();
-            var targetArrowheadTool = new joint.linkTools.TargetArrowhead();
+            var sourceArrowheadTool = new joint.linkTools.SourceArrowhead(
+                {
+                    attributes: {
+                        'd': 'M 8 -4 L -5 0 L 8 6 Z',
+                        'fill': '#33334F',
+                        'stroke': '#FFFFFF',
+                        'stroke-width': 2,
+                        'cursor': 'move',
+                        'class': 'source-arrowhead'
+                    }
+                }
+            );
+            var targetArrowheadTool = new joint.linkTools.TargetArrowhead(
+                {
+                    attributes: {
+                        'd': 'M -8 -4 L 5 0 L -8 6 Z',
+                        'fill': '#33334F',
+                        'stroke': '#FFFFFF',
+                        'stroke-width': 2,
+                        'cursor': 'move',
+                        'class': 'target-arrowhead'
+                    }
+                }
+            );
             var sourceAnchorTool = new joint.linkTools.SourceAnchor();
             var targetAnchorTool = new joint.linkTools.TargetAnchor();
             var boundaryTool = new joint.linkTools.Boundary();
