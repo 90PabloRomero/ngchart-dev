@@ -285,7 +285,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                         'stroke-width': 2,
                         'cursor': 'move',
                         'class': 'source-arrowhead'
-                    }
+                    } as joint.dia.ToolView.Options
                 }
             );
             var targetArrowheadTool = new joint.linkTools.TargetArrowhead(
@@ -297,7 +297,7 @@ export class JointComponent implements OnInit, AfterViewInit {
                         'stroke-width': 2,
                         'cursor': 'move',
                         'class': 'target-arrowhead'
-                    }
+                    } as joint.dia.ToolView.Options
                 }
             );
             var sourceAnchorTool = new joint.linkTools.SourceAnchor();
