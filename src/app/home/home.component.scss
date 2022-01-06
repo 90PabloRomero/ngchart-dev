@@ -790,3 +790,11 @@ input[type="number"]::-webkit-inner-spin-button {
   height:  calc(100vh - 66px) !important;
   overflow: auto;
 }
+
+
+.dropdown-menu {
+  min-width: 8rem !important;
+  padding: 0.5rem 0 !important;
+  margin: 0.125rem 59px 0 !important;
+}
+
