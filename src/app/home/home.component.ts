@@ -621,7 +621,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     onAccordionChange(changeEvent: NgbPanelChangeEvent) { // Accordion change event
-        this.panelsIds[changeEvent.panelId] = changeEvent.nextState;
+        this.panelsIds[changeEvent.panelId] = true;
     }
 
     findProjectByName(projectName: string){
@@ -805,6 +805,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.panelExpanded = true;
         this.positionCurrent = new Position;
         this.accordion.expand("2") //open accordeon tree to activate tree
+        this.accordion.expand("3") //open accordeon tree to activate tree
         this.isProjectFisrtTreeUpdate = true;
         this.projectSelected = project;
         console.log("Load Project: Project Selected: "+ this.projectSelected.ProjectName)
