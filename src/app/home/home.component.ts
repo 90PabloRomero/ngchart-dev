@@ -96,6 +96,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     optionsChecked = [];
     txtSearchAditional = '';
     isSheetToEdit = true;
+    contactsSearch:any;
 
     actionMapping: IActionMapping = {
         mouse: {
@@ -697,6 +698,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.contacts = any;
+                        this.contactsSearch = any;
                     }
                 },
                 err => {
@@ -3945,5 +3947,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     onChangeEvent(event) {
         this.panelExpanded=this.panelExpanded == false ? true: false;
+    }
+
+    onSearchContacts(n){
+
+        this.contactsSearch = this.contacts;
+
+        this.contactsSearch = this.contactsSearch.filter((item) => {
+      
+            return (
+              item.firstName.toLowerCase().indexOf(n) >
+              -1
+            );
+          });
+
+
     }
 }
