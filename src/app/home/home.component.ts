@@ -1118,7 +1118,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.modalWindow = this.modalService.open(inputFormTemplate, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'md',
-            scrollable: false
+            scrollable: false,
+            windowClass: 'inputForm-class'
         });
     }
 
@@ -1175,7 +1176,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.modalWindow = this.modalService.open(searchSheetTemplate, {
                 ariaLabelledBy: 'modal-basic-title',
                 size: 'md',
-                scrollable: false
+                scrollable: false,
+                windowClass: 'searchSheet-class'
             });
         }
     }
