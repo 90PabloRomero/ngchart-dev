@@ -1076,7 +1076,11 @@
       </ul>
       <div [ngbNavOutlet]="nav"></div>
       <div
-        style="margin-top: 42px; height: calc(100vh - 133px) !important"
+        style="
+          margin-top: 42px;
+          height: calc(100vh - 133px) !important;
+          margin-bottom: 9px;
+        "
         (treeDrop)="onDrop($event)"
         [treeAllowDrop]="allowDrop.bind(this)"
       >
@@ -1503,14 +1507,83 @@
                       </div>
                     </div>
                   </div>
-                  <div id="position-employee">
+
+                  <div
+                    id="position-employee"
+                    *ngIf="!PositionEmployee_listopened"
+                  >
                     <!-- <li style="list-style-type: none;"> -->
-                    <ul *ngFor="let n of contactsSearch">
-                      <p>
-                        {{ n.firstName }}
-                        {{ n.lastName }}
-                      </p>
+
+                    <div class="nv-position-emp">
+                      <i
+                        (click)="addtocontacts()"
+                        class="bi bi-plus-circle pemp"
+                      ></i>
+
+                      <p class="txt-pemp">Add to contacts</p>
+                    </div>
+                    <ul *ngFor="let n of AddedcontactsSearch">
+                      <!-- (change)="savePosition2()" -->
+
+                      <div class="txt-one-line">
+                        <div class="bx-img-emp">
+                          <img
+                            src="../../assets/images/user-w.png"
+                            class="user-w"
+                          />
+                        </div>
+
+                        <p class="user-nme-txt">
+                          {{ n.firstName }}
+                          {{ n.lastName }}
+                        </p>
+                      </div>
                     </ul>
+
+                    <!-- </li> -->
+                  </div>
+
+                  <div
+                    id="position-employee"
+                    *ngIf="PositionEmployee_listopened"
+                  >
+                    <!-- <li style="list-style-type: none;"> -->
+
+                    <div *ngFor="let n of contactsSearch" class="c-one-line">
+                      <input
+                        class="position-txt-one-line"
+                        type="checkbox"
+                        name="enableAditional"
+                      />
+
+                      <div class="txt-one-line-highighted">
+                        <img
+                          src="../../assets/images/user-w.png"
+                          class="user-w"
+                        />
+
+                        <p class="user-nme-txt">
+                          {{ n.firstName }}
+                          {{ n.lastName }}
+                        </p>
+
+                        <p class="floater">
+                          <i
+                            class="remove"
+                            (click)="
+                              openConfirmDeleteAny(
+                                $event,
+                                confirmDeleteAnyTemplate,
+                                n.firstName,
+                                deleteContact,
+                                n
+                              )
+                            "
+                            class="bi bi-x-circle closeicn"
+                          ></i>
+                        </p>
+                      </div>
+                    </div>
 
                     <!-- </li> -->
                   </div>

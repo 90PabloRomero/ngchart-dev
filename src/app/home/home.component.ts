@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     txtSearchAditional = '';
     isSheetToEdit = true;
     contactsSearch:any;
-
+    PositionEmployee_listopened=false;
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
@@ -1481,7 +1481,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
     }
-
+    addtocontacts(){
+this.PositionEmployee_listopened = true;
+    }
 
     saveContact(contact: any, isNameUpdate?: boolean) {
         // save  project on db
