@@ -2146,7 +2146,7 @@ this.PositionEmployee_listopened = false;
 
     confirmDeleteAnyMsg:any="";
     // modal confirm delete any, confirmDeleteAnyMsg:message to show, fnToDelete:function to call, argToDelete:args to function
-    openConfirmDeleteAny(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
+    openConfirmDeleteProject(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
         this.fnToDelete=fnToDelete;
         this.argToDelete=argToDelete;
         this.confirmDeleteAnyMsg=confirmDeleteAnyMsg;
@@ -2154,7 +2154,36 @@ this.PositionEmployee_listopened = false;
         this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'sm',
-            scrollable: false
+            scrollable: false,
+            windowClass: 'project-confirm'
+        });
+
+    }
+    // modal confirm delete any, confirmDeleteAnyMsg:message to show, fnToDelete:function to call, argToDelete:args to function
+    openConfirmDeleteContact(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
+        this.fnToDelete=fnToDelete;
+        this.argToDelete=argToDelete;
+        this.confirmDeleteAnyMsg=confirmDeleteAnyMsg;
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'sm',
+            scrollable: false,
+            windowClass: 'contact-confirm'
+        });
+
+    }
+    // modal confirm delete any, confirmDeleteAnyMsg:message to show, fnToDelete:function to call, argToDelete:args to function
+    openConfirmDeleteSheet(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
+        this.fnToDelete=fnToDelete;
+        this.argToDelete=argToDelete;
+        this.confirmDeleteAnyMsg=confirmDeleteAnyMsg;
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'sm',
+            scrollable: false,
+            windowClass: 'sheet-confirm'
         });
 
     }

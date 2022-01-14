@@ -45,7 +45,7 @@
       <button
         ngbTooltip="Delete Sheet"
         (click)="
-          openConfirmDeleteAny(
+          openConfirmDeleteSheet(
             $event,
             confirmDeleteAnyTemplate,
             sheetSelected.SheetName,
@@ -844,10 +844,10 @@
                       </button>
                       <button
                         (click)="
-                          openConfirmDeleteAny(
+                          openConfirmDeleteProject(
                             $event,
                             confirmDeleteAnyTemplate,
-                            project.ProjectName,
+                            'this project',
                             deleteProject,
                             project
                           )
@@ -942,10 +942,10 @@
                       >
                         <i class="bi bi-pen"></i>
                       </button>
-             
+
                       <button
                         (click)="
-                          openConfirmDeleteAny(
+                          openConfirmDeleteContact(
                             $event,
                             confirmDeleteAnyTemplate,
                             contact.Name,
@@ -3214,6 +3214,7 @@
     </div>
   </div>
 </ng-template>
+
 <ng-template #confirmDeleteAnyTemplate let-modal>
   <div
     class="modal-header"
@@ -3264,12 +3265,11 @@
         id="modal-basic-title"
         style="color: #777777; padding: 20px; text-align: center"
       >
-        <span style="text-align: center; font-size: 90%"
+        <span style="text-align: center; font-size: 70%"
           >Will you like to delete {{ confirmDeleteAnyMsg }}?</span
         >
       </h6>
     </div>
-    <div class="col-12" style="background: #ffffff"></div>
     <div class="modal-footer" style="justify-content: center">
       <button
         class="btn btn-success"

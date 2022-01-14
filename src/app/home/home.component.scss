@@ -162,6 +162,27 @@ input[type="number"]::-webkit-inner-spin-button {
   transform: translate(-50%, 0);
 }
 
+::ng-deep .project-confirm {
+  margin-top: 25%;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: 312px!important;
+    height: 227px!important;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }  
+}
+
+::ng-deep .sheet-confirm {
+  margin-top: 20%;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: 264px!important;
+    height: 232px!important;
+    left: 40%;
+    transform: translate(-50%, 0);
+  }  
+}
 .bg-light {
   background-color: #ffffff !important;
 }
