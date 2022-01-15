@@ -1028,6 +1028,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         this.optionsChecked = []
     }
+    classes = [];
+
+    toggleClasses(sheetId) {
+        !this.classes[sheetId]? this.classes[sheetId] = "activeSheet-class" : this.classes[sheetId] = "";
+    }
 
     removeSheetFromView(sheet: Sheet) {
         this.saveBeforeLeaving(); //Save every savable thing
