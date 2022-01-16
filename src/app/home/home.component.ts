@@ -1203,7 +1203,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.modalWindow = this.modalService.open(inputFormTemplate, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'md',
-            scrollable: false
+            scrollable: false,
+            windowClass: 'addProject-prompt'
         });
 
     }
