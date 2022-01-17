@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     txtSearchAditional = '';
     isSheetToEdit = true;
     contactsSearch:any;
-    PositionEmployee_listopened=false;
+    PositionEmployee_listopened=true;
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
@@ -215,6 +215,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     accessToken: any;
     userContacts: any = [];
     errorMessage: any;
+    selectedDataValue:any;
 
     constructor(
         private modalService: NgbModal,
@@ -1482,7 +1483,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
     addtocontacts(){
-this.PositionEmployee_listopened = true;
+        console.log("TT");
+this.PositionEmployee_listopened = false;
     }
 
     saveContact(contact: any, isNameUpdate?: boolean) {
@@ -3965,4 +3967,13 @@ this.PositionEmployee_listopened = true;
 
 
     }
+
+    selectdataClk(n){
+        console.log(n);
+this.selectedDataValue = n.id;
+    }
+    addToContactClk(){
+        this.PositionEmployee_listopened = true;
+    }
+    
 }

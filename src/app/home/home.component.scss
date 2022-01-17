@@ -338,6 +338,7 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-top: 10px;
   border-radius: 5px;
   padding: 15px 5px;
+  padding-top: 0px;
 }
 
 .btn-outline-dark:not(:disabled):not(.disabled).active,
@@ -715,6 +716,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding-left: 20px;
   border: none;
   font-size: 70%;
+  cursor: pointer;
 }
 .div-position-delete{
   display: flex;
@@ -820,6 +822,7 @@ p.txt-pemp {
   padding-top: 9px;
   height: 35px;
   margin-bottom: 10px;
+  cursor: pointer;
 
 }
 
@@ -841,7 +844,7 @@ p.user-nme-txt {
 }
 
 div#position-employee {
-  padding-right: 18px;
+  padding-right: 22%;
 }
 
 p.floater {
@@ -849,11 +852,77 @@ p.floater {
 }
 
 .c-one-line {
-  margin-left: 9px;
+  margin-left: 20px;
   display: flex;
 }
 
 input.position-txt-one-line {
   margin-top: 10px;
   margin-right: 9px;
+}
+
+
+.position-employee-listopened {
+    border-radius: 13px;
+    -webkit-box-shadow: -5px 8px 27px 0px #d7d8da;
+    -moz-box-shadow: 5px 2px 36px 5px #d7d8da;
+    height: 100%;
+    width: 74% !important;
+    margin-top: 12px;
+    padding-top: 11px;
+    margin-left: 10px;
+    height: 166px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.position-employee-listopened::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+ul.nav-pills.nav.flex-column {
+  border-right: 1px solid #dae0e5;
+}
+
+.txt-one-line-highighted.highlighted_class {
+  border: 2px solid #45d9d9;
+  padding-top: 8px;
+}
+
+.txt-one-line {
+  display: flex;
+  padding-left: 0px !important;
+
+
+}
+
+.bx-img-emp {
+  width: 33px !important;
+}
+
+.nv-position-emp {
+  margin-left: 13px;
+}
+p.user-nme-txt.panel {
+  margin-left: 7px;
+  text-align: left;
+  margin-top: 0px;
+}
+i.bi.bi-plus-circle.pemp {
+  cursor: pointer;
+}
+.row.head-position-emp {
+  margin-left: -4px;
+  margin-top: 0px;
+  margin-top: 6px;
+  margin-bottom: -1px;
+}
+
+p.user-nme-txt.panel.highlighted_class {
+  color: #45d9d9;
+  font-weight: bold;
+}
+p.user-nme-txt.panel {
+  cursor: pointer;
 }
