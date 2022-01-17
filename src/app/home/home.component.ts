@@ -96,7 +96,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     optionsChecked = [];
     txtSearchAditional = '';
     isSheetToEdit = true;
-
+    contactsSearch:any;
+    PositionEmployee_listopened=false;
     actionMapping: IActionMapping = {
         mouse: {
           contextMenu: (tree, node, $event) => {
@@ -697,6 +698,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 (any) => {
                     if (any) {
                         this.contacts = any;
+                        this.contactsSearch = any;
                     }
                 },
                 err => {
@@ -1479,7 +1481,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
     }
-
+    addtocontacts(){
+this.PositionEmployee_listopened = true;
+    }
 
     saveContact(contact: any, isNameUpdate?: boolean) {
         // save  project on db
@@ -3945,5 +3949,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     onChangeEvent(event) {
         this.panelExpanded=this.panelExpanded == false ? true: false;
+    }
+
+    onSearchContacts(n){
+
+        this.contactsSearch = this.contacts;
+
+        this.contactsSearch = this.contactsSearch.filter((item) => {
+      
+            return (
+              item.firstName.toLowerCase().indexOf(n) >
+              -1
+            );
+          });
+
+
     }
 }

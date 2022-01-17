@@ -234,6 +234,7 @@ input[type="number"]::-webkit-inner-spin-button {
 #position-employee {
   text-align: left;
   margin-top: 10px;
+  margin-left: -17px;
 }
 
 #position-employee ul{
@@ -793,8 +794,66 @@ input[type="number"]::-webkit-inner-spin-button {
 
 
 .dropdown-menu {
-  min-width: 8rem !important;
-  padding: 0.5rem 0 !important;
-  margin: 0.125rem -18px 1px !important;
+  margin-left: 25px;
 }
 
+
+#position-employee {
+
+  height: 166px;
+  overflow-y: scroll;
+}
+
+.nv-position-emp {
+  display: flex;
+}
+p.txt-pemp {
+  margin-top: 0px;
+  font-size: 71%;
+  margin-left: 7px;
+}
+
+.txt-one-line-highighted {
+  display: flex;
+  background: #ebfcfc;
+  border-radius: 60px;
+  padding-top: 9px;
+  height: 35px;
+  margin-bottom: 10px;
+
+}
+
+
+img.user-w {
+  background: #bac9ca;
+  height: 19px;
+  padding: 2px;
+  border-radius: 4px;
+  margin-left: 12px;
+  margin-top: -1px;
+}
+
+p.user-nme-txt {
+  font-size: 70%;
+  margin-left: 6px;
+  margin-top: 2px;
+  width: 100%;
+}
+
+div#position-employee {
+  padding-right: 18px;
+}
+
+p.floater {
+  margin-right: 9px;
+}
+
+.c-one-line {
+  margin-left: 9px;
+  display: flex;
+}
+
+input.position-txt-one-line {
+  margin-top: 10px;
+  margin-right: 9px;
+}
