@@ -72,6 +72,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     projectSheets: Sheet[]; //all sheets from project
     sheetSelected: Sheet;
     projectSelected: Project;
+    projectSuccessAlert: any;
     nodeName: any;
     newNodeCode: any;
     newNodeName: any;
@@ -1209,6 +1210,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
 
+    openProjectFormCustom(event, inputFormTemplate, project: Project, projectSuccessTemplate) {
+        this.projectSuccessAlert = projectSuccessTemplate;
+        this.projectEvent = event.srcElement.className;
+        if(project) this.previousProjectName = project.ProjectName;
+        this.projectToEdit = new Project;
+        if (project) {
+            Object.assign(this.projectToEdit, project);
+        }
+        if(project != null){
+            this.loadProject(project);
+        }
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(inputFormTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'md',
+            scrollable: false,
+            windowClass: 'addProject-prompt'
+        });
+
+    }
+
     openContactForm(event, inputFormTemplate, contact: Contact) {
         this.contactToEdit = new Contact;
         if (contact) {
@@ -1425,7 +1447,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
     }
-
+    
     saveProject(project: any, isNameUpdate?: boolean) {  // save  project on db
         if (this.projectEvent.includes('bi bi-pen')&&(this.previousProjectName==project.ProjectName)) return;
         if (project.ID) { //if exists
@@ -1471,7 +1493,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 .subscribe(
                     (any) => {
                         if (any) {
-                            alert("Project "+ project.ProjectName +" Created!");
+                            console.log(this.projectSuccessAlert);
+                            this.openSuccessAlert(this.projectSuccessAlert,project.ProjectName);
+                            //alert("Project "+ project.ProjectName +" Created!");
                             this.getProjects();
                             return
                         }
@@ -1837,8 +1861,17 @@ this.PositionEmployee_listopened = false;
         });
 
     }
+    customProjectName: string;
+    openSuccessAlert(projectSuccessTemplate: any, projectName: any) {  //  open modal for tree node
+        this.customProjectName = projectName;
+        this.modalWindow = this.modalService.open(projectSuccessTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'md',
+            scrollable: false
+        });
 
-
+    }
+    
     onUpdateTree($event, tree) { // save project when tree is updated
         console.log("OnUpdateTree")
         if (!this.projectSelected.ID) {
