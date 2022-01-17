@@ -876,8 +876,8 @@
             </table>
           </ng-template>
         </ngb-panel>
-
-        <ngb-panel id="4">
+        <!-- CONTACTS LISTING -->
+        <!-- <ngb-panel id="4">
           <ng-template ngbPanelTitle style="position: relative">
             <span
               *ngIf="!panelsIds[4]"
@@ -942,14 +942,7 @@
                       >
                         <i class="bi bi-pen"></i>
                       </button>
-                      <!-- <ng-template #popTitle>Delete <b>{{project.ProjectName}}</b>?</ng-template>
-                                                        <ng-template #popContent>
-                                                            <button class="btn btn-sm btn-outline-danger " (click)="deleteProject(project)">Yes</button>
-                                                            <button class="btn btn-sm btn-outline-success">No</button>
-                                                        </ng-template>
-                                                        <button (click)="confirmDeleteProject(p2)" triggers="manual" #p2="ngbPopover" placement="top" [ngbPopover]="popContent" [popoverTitle]="popTitle" type="button" class="btn btn-outline-dark btn-sm">
-                                                            <i class="bi bi-dash-circle"></i>
-                                                        </button> -->
+             
                       <button
                         (click)="
                           openConfirmDeleteAny(
@@ -971,7 +964,7 @@
               </tbody>
             </table>
           </ng-template>
-        </ngb-panel>
+        </ngb-panel> -->
       </ngb-accordion>
 
       <div style="width: 100%; text-align: center; padding: 8px">
@@ -1058,7 +1051,7 @@
           </a>
           <ng-template ngbNavContent> </ng-template>
         </li>
-        <li style="flex-grow: 1">
+        <li class="toggle-li" style="flex-grow: 1">
           <a
             class="nav-link text-right"
             style="border-bottom: 1px solid #dee2e6"
@@ -1465,12 +1458,13 @@
                   ><span class="tab-title-small">Position Employee</span></a
                 >
                 <ng-template ngbNavContent>
-                  <div class="row" style="height: 30px">
+                  <div class="row head-position-emp" style="height: 30px">
                     <div
                       class="col-6"
                       style="padding-left: 0; padding-right: 0"
                     >
                       <label
+                        (click)="addtocontacts()"
                         class="form-control lbl-privacy"
                         for="enableAditional"
                       >
@@ -1509,23 +1503,30 @@
                   </div>
 
                   <div
-                    id="position-employee"
+                    id="position-employee listopened"
+                    class="position-employee-listopened"
                     *ngIf="!PositionEmployee_listopened"
                   >
                     <!-- <li style="list-style-type: none;"> -->
 
                     <div class="nv-position-emp">
                       <i
-                        (click)="addtocontacts()"
+                        (click)="addToContactClk()"
                         class="bi bi-plus-circle pemp"
                       ></i>
 
                       <p class="txt-pemp">Add to contacts</p>
                     </div>
-                    <ul *ngFor="let n of AddedcontactsSearch">
+                    <div class="listopened-ul" *ngFor="let n of contactsSearch">
                       <!-- (change)="savePosition2()" -->
 
-                      <div class="txt-one-line">
+                      <div
+                        class="txt-one-line"
+                        (click)="selectdataClk(n)"
+                        [ngClass]="{
+                          highlighted_class: n.id === selectedDataValue
+                        }"
+                      >
                         <div class="bx-img-emp">
                           <img
                             src="../../assets/images/user-w.png"
@@ -1533,12 +1534,17 @@
                           />
                         </div>
 
-                        <p class="user-nme-txt">
+                        <p
+                          [ngClass]="{
+                            highlighted_class: n.id === selectedDataValue
+                          }"
+                          class="user-nme-txt panel"
+                        >
                           {{ n.firstName }}
                           {{ n.lastName }}
                         </p>
                       </div>
-                    </ul>
+                    </div>
 
                     <!-- </li> -->
                   </div>
@@ -1556,7 +1562,13 @@
                         name="enableAditional"
                       />
 
-                      <div class="txt-one-line-highighted">
+                      <div
+                        class="txt-one-line-highighted"
+                        (click)="selectdataClk(n)"
+                        [ngClass]="{
+                          highlighted_class: n.id === selectedDataValue
+                        }"
+                      >
                         <img
                           src="../../assets/images/user-w.png"
                           class="user-w"
