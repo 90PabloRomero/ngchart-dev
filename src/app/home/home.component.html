@@ -45,7 +45,7 @@
       <button
         ngbTooltip="Delete Sheet"
         (click)="
-          openConfirmDeleteAny(
+          openConfirmDeleteSheet(
             $event,
             confirmDeleteAnyTemplate,
             sheetSelected.SheetName,
@@ -789,7 +789,7 @@
               style="position: absolute; top: 26px; right: 32px"
               (click)="
                 savePositionAndExpandPanel(positionCurrent, treeOrg);
-                openProjectForm($event, projectTemplate, null)
+                openProjectFormCustom($event, projectTemplate, null,projectCreatedTemplate)
               "
               ngbTooltip="Add Project"
               triggers="hover"
@@ -844,10 +844,10 @@
                       </button>
                       <button
                         (click)="
-                          openConfirmDeleteAny(
+                          openConfirmDeleteProject(
                             $event,
                             confirmDeleteAnyTemplate,
-                            project.ProjectName,
+                            'this project',
                             deleteProject,
                             project
                           )
@@ -942,10 +942,10 @@
                       >
                         <i class="bi bi-pen"></i>
                       </button>
-             
+
                       <button
                         (click)="
-                          openConfirmDeleteAny(
+                          openConfirmDeleteContact(
                             $event,
                             confirmDeleteAnyTemplate,
                             contact.Name,
@@ -2594,10 +2594,7 @@
 
     <div class="col-12" style="background: #ffffff">
       <form style="margin: 0px">
-        <!--                 <label><b style="font-size: 1em">Sheet</b></label>
-                <hr style="margin-top: 0px"> -->
         <div class="form-group row" style="margin: 0px">
-          <!--             <label for="SheetName" class="col-4 col-form-label" style="padding-right:5px;">Sheet Name</label> -->
           <div class="col-11" style="padding: 0px">
             <input type="text" class="form-control" />
           </div>
@@ -2612,70 +2609,19 @@
               <i style="font-size: 28px" class="bi bi-check2-circle"></i>
             </button>
           </div>
-
-          <!--  <div class="col-12">
-                        <div style="float: right" *ngIf="SheetName.invalid && (SheetName.dirty || SheetName.touched)">
-                            <div *ngIf="SheetName.errors.required">
-                                <p class="text-danger">*Sheet Name is required</p>
-                            </div>
-                        </div>
-                    </div> -->
-        </div>
-        <div style="margin: 10px 20px">
-          <div *ngFor="let sheet of projectSheets; index as i">
-            <div class="form-group">
-              <label class="form-check-label">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  [checked]="activeSheets[sheet.ID]"
-                  [disabled]="activeSheets[sheet.ID]"
-                  (change)="updateCheckedOptions(sheet.ID)"
-                />{{ sheet.SheetName }}
-              </label>
-            </div>
-          </div>
         </div>
       </form>
+
     </div>
-    <!--         <div class="modal-footer">
-            <button class="btn btn-danger" (click)="modal.dismiss('Cross click')" style="float: left;">Close</button>
-            <button class="btn btn-success" style="float: right;" (click)="saveSheet(sheetToEdit);modal.dismiss('Cross click')">Save</button>
-        </div> -->
   </div>
-  <!-- <div class="modal-header" style="  background-color:#ffffff">
-        <h4 class="modal-title" id="modal-basic-title" style="color: #45d9d9">
-            <span>Select</span> Project Sheet
-        </h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="   outline: none;color: #ffffff">
-            <span aria-hidden="true">&times;</span>
-        </button>
+  <div *ngFor="let sheet of projectSheets; index as i">
+    <div class="sheetItem-class" [ngClass]="classes[sheet.ID]" (change)="updateCheckedOptions(sheet.ID); toggleClasses(sheet.ID)">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" [checked]="activeSheets[sheet.ID]"
+          [disabled]="activeSheets[sheet.ID]" style="display: none;" />{{ sheet.SheetName }}
+      </label>
     </div>
-    <div class="modal-body" style="padding: 1px;">
-        <div class="col-12" style="background:#ffffff ">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let sheet of projectSheets; index as i">
-                        <td>{{ sheet.SheetName }}</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-dark btn-sm" (click)="addSheetToView(sheet);modal.dismiss('Cross click')" ngbTooltip="Add Sheet to View">
-                                <i class="bi bi-check2-all"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" (click)="modal.dismiss('Cross click')" style="float: left;">Close</button>
-        </div>
-    </div> -->
+  </div>
 </ng-template>
 <ng-template #rt let-r="result" let-t="term">
   <span style="border-bottom: 1px solid #eeeeee; padding-bottom: 5px">
@@ -3214,6 +3160,7 @@
     </div>
   </div>
 </ng-template>
+
 <ng-template #confirmDeleteAnyTemplate let-modal>
   <div
     class="modal-header"
@@ -3264,12 +3211,11 @@
         id="modal-basic-title"
         style="color: #777777; padding: 20px; text-align: center"
       >
-        <span style="text-align: center; font-size: 90%"
+        <span style="text-align: center; font-size: 70%"
           >Will you like to delete {{ confirmDeleteAnyMsg }}?</span
         >
       </h6>
     </div>
-    <div class="col-12" style="background: #ffffff"></div>
     <div class="modal-footer" style="justify-content: center">
       <button
         class="btn btn-success"
@@ -3280,6 +3226,46 @@
       </button>
       <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">
         Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #projectCreatedTemplate let-modal>
+  <div class="modal-header" style="
+      background-image: url(assets/images/bg-alert.png);
+      background-position-x: right;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 14px;
+    ">
+    <span style="margin-left: auto; margin-right: auto">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#45d9d9" class="bi bi-exclamation-triangle"
+        viewBox="0 0 16 16">
+        <path
+          d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+        <path
+          d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z" />
+      </svg>
+    </span>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" style="
+        outline: none;
+        color: #ffffff;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      ">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="padding: 1px">
+    <div class="col-12" style="background: #ffffff">
+      <h6 class="modal-title" id="modal-basic-title" style="color: #777777; padding: 20px; text-align: center">
+        <span style="text-align: center; font-size: 70%">Project {{ customProjectName }} has been created!</span>
+      </h6>
+    </div>
+    <div class="modal-footer" style="justify-content: center">
+      <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">
+        Close
       </button>
     </div>
   </div>

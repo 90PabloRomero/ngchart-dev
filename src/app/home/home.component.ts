@@ -72,6 +72,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     projectSheets: Sheet[]; //all sheets from project
     sheetSelected: Sheet;
     projectSelected: Project;
+    projectSuccessAlert: any;
     nodeName: any;
     newNodeCode: any;
     newNodeName: any;
@@ -1028,6 +1029,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         this.optionsChecked = []
     }
+    classes = [];
+
+    toggleClasses(sheetId) {
+        !this.classes[sheetId]? this.classes[sheetId] = "activeSheet-class" : this.classes[sheetId] = "";
+    }
 
     removeSheetFromView(sheet: Sheet) {
         this.saveBeforeLeaving(); //Save every savable thing
@@ -1118,7 +1124,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.modalWindow = this.modalService.open(inputFormTemplate, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'md',
-            scrollable: false
+            scrollable: false,
+            windowClass: 'inputForm-class'
         });
     }
 
@@ -1175,7 +1182,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.modalWindow = this.modalService.open(searchSheetTemplate, {
                 ariaLabelledBy: 'modal-basic-title',
                 size: 'md',
-                scrollable: false
+                scrollable: false,
+                windowClass: 'searchSheet-class'
             });
         }
     }
@@ -1196,7 +1204,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.modalWindow = this.modalService.open(inputFormTemplate, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'md',
-            scrollable: false
+            scrollable: false,
+            windowClass: 'addProject-prompt'
+        });
+
+    }
+
+    openProjectFormCustom(event, inputFormTemplate, project: Project, projectSuccessTemplate) {
+        this.projectSuccessAlert = projectSuccessTemplate;
+        this.projectEvent = event.srcElement.className;
+        if(project) this.previousProjectName = project.ProjectName;
+        this.projectToEdit = new Project;
+        if (project) {
+            Object.assign(this.projectToEdit, project);
+        }
+        if(project != null){
+            this.loadProject(project);
+        }
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(inputFormTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'md',
+            scrollable: false,
+            windowClass: 'addProject-prompt'
         });
 
     }
@@ -1417,7 +1447,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
 
     }
-
+    
     saveProject(project: any, isNameUpdate?: boolean) {  // save  project on db
         if (this.projectEvent.includes('bi bi-pen')&&(this.previousProjectName==project.ProjectName)) return;
         if (project.ID) { //if exists
@@ -1463,7 +1493,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 .subscribe(
                     (any) => {
                         if (any) {
-                            alert("Project "+ project.ProjectName +" Created!");
+                            console.log(this.projectSuccessAlert);
+                            this.openSuccessAlert(this.projectSuccessAlert,project.ProjectName);
+                            //alert("Project "+ project.ProjectName +" Created!");
                             this.getProjects();
                             return
                         }
@@ -1829,8 +1861,17 @@ this.PositionEmployee_listopened = false;
         });
 
     }
+    customProjectName: string;
+    openSuccessAlert(projectSuccessTemplate: any, projectName: any) {  //  open modal for tree node
+        this.customProjectName = projectName;
+        this.modalWindow = this.modalService.open(projectSuccessTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'md',
+            scrollable: false
+        });
 
-
+    }
+    
     onUpdateTree($event, tree) { // save project when tree is updated
         console.log("OnUpdateTree")
         if (!this.projectSelected.ID) {
@@ -2146,7 +2187,7 @@ this.PositionEmployee_listopened = false;
 
     confirmDeleteAnyMsg:any="";
     // modal confirm delete any, confirmDeleteAnyMsg:message to show, fnToDelete:function to call, argToDelete:args to function
-    openConfirmDeleteAny(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
+    openConfirmDeleteProject(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
         this.fnToDelete=fnToDelete;
         this.argToDelete=argToDelete;
         this.confirmDeleteAnyMsg=confirmDeleteAnyMsg;
@@ -2154,7 +2195,36 @@ this.PositionEmployee_listopened = false;
         this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'sm',
-            scrollable: false
+            scrollable: false,
+            windowClass: 'project-confirm'
+        });
+
+    }
+    // modal confirm delete any, confirmDeleteAnyMsg:message to show, fnToDelete:function to call, argToDelete:args to function
+    openConfirmDeleteContact(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
+        this.fnToDelete=fnToDelete;
+        this.argToDelete=argToDelete;
+        this.confirmDeleteAnyMsg=confirmDeleteAnyMsg;
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'sm',
+            scrollable: false,
+            windowClass: 'contact-confirm'
+        });
+
+    }
+    // modal confirm delete any, confirmDeleteAnyMsg:message to show, fnToDelete:function to call, argToDelete:args to function
+    openConfirmDeleteSheet(event: any, confirmDeleteTreeNodeTemplate: any, confirmDeleteAnyMsg: any,fnToDelete:any,argToDelete:any) {
+        this.fnToDelete=fnToDelete;
+        this.argToDelete=argToDelete;
+        this.confirmDeleteAnyMsg=confirmDeleteAnyMsg;
+        event.preventDefault();
+        this.modalWindow = this.modalService.open(confirmDeleteTreeNodeTemplate, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'sm',
+            scrollable: false,
+            windowClass: 'sheet-confirm'
         });
 
     }

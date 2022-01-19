@@ -4,6 +4,17 @@
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2345d9d9" class="bi bi-calendar" viewBox="0 0 16 16">  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg>');
 }
 
+.activeSheet-class{
+  padding: 3%;
+  border: 2px solid #11a7a7;
+  background-image: linear-gradient(#45d9d921, #45d9d921);
+  color: #156262; margin-bottom: 5px;
+}
+
+.sheetItem-class{
+  padding: 3%;
+}
+
 .attachment-scrollbar {
   position: relative;
   height: 190px;
@@ -156,10 +167,71 @@ input[type="number"]::-webkit-inner-spin-button {
 
 ::ng-deep .modal-content {
   border-radius: 0.8rem;
-  margin-top: 80px;
   width: fit-content;
   left: 50%;
   transform: translate(-50%, 0);
+}
+
+::ng-deep .addProject-prompt {
+  margin-top: 43vh;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: fit-content;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }  
+}
+
+::ng-deep .editProject-prompt {
+  margin-top: 43vh;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: fit-content;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }  
+}
+
+::ng-deep .project-confirm {
+  margin-top: 43vh;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: 312px!important;
+    height: 227px!important;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }  
+}
+
+::ng-deep .sheet-confirm {
+  margin-top: 40vh;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: 264px!important;
+    height: 232px!important;
+    left: 40%;
+    transform: translate(-50%, 0);
+  }  
+}
+
+::ng-deep .searchSheet-class {
+  margin-top: 40vh;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: 'fit-content';
+    left: 50%;
+    transform: translate(-50%, 0);
+  }  
+}
+
+::ng-deep .inputForm-class {
+  margin-top: 43vh;
+  .modal-content {
+    border-radius: 0.8rem;
+    width: fit-content;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }  
 }
 
 .bg-light {
