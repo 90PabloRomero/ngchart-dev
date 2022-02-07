@@ -1,2214 +1,2246 @@
 <nav class="navbar navbar-light bg-light ngNavbar">
-  <div class="d-flex">
-    <div style="width:50px;">
-      <i class="bi bi-filter-left" style="position: absolute; left: 23px; top: 25px; font-size: 170%"></i>
-    </div>
-    <div>
-      <img style="height: 50px" src="assets/images/logo.png" />
+  <div style="height: 100%; width: 40px; display: inline; float: left"></div>
+  <i
+    class="bi bi-filter-left"
+    style="position: absolute; left: 23px; top: 25px; font-size: 170%"
+  ></i>
+  <img style="height: 50px" src="assets/images/logo.png" />
+
+  <div
+    class="btn-toolbar ml-auto mr-auto"
+    role="toolbar"
+    aria-label="Toolbar with button groups"
+  >
+    <div class="btn-group mr-2" role="group" aria-label="Second group">
+      <!-- <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveSheet(sheetSelected)" ngbTooltip="Save Sheet" [disabled]="!sheetSelected.ID">
+                <i class="bi bi-save"></i>
+            </button> -->
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        ngbTooltip="Search Sheet"
+        (click)="openSheetSearch($event, searchSheetTemplate)"
+      >
+        <i class="bi bi-folder2-open"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        (click)="openSheetForm($event, sheetTemplate, null)"
+        ngbTooltip="Add Sheet"
+      >
+        <i class="bi bi-plus-circle"></i>
+      </button>
+      <!-- <ng-template #popTitle>Delete <b>{{sheetSelected.SheetName}}</b>?</ng-template>
+            <ng-template #popContent>
+                <button class="btn btn-sm btn-outline-danger " (click)="deleteCurrentSheet()">Yes</button>
+                <button class="btn btn-sm btn-outline-success">No</button>
+            </ng-template>
+            <button (click)="confirmDelete(p1)" triggers="manual" #p1="ngbPopover" placement="bottom" [ngbPopover]="popContent" [popoverTitle]="popTitle" type="button" class="btn btn-outline-dark btn-sm">
+                <span ngbTooltip="Delete Sheet">
+                    <i class="bi bi-dash-circle"></i>
+                </span>
+            </button> -->
+
+      <button
+        ngbTooltip="Delete Sheet"
+        (click)="
+          openConfirmDeleteSheet(
+            $event,
+            confirmDeleteAnyTemplate,
+            sheetSelected.SheetName,
+            deleteCurrentSheet,
+            null
+          )
+        "
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        [disabled]="!activeSheets[sheetSelected.ID]"
+      >
+        <i class="bi bi-dash-circle"></i>
+      </button>
+      <div
+        class="btn-group-sm mr-1"
+        role="group"
+        aria-label="First group"
+        style="height: 26px"
+      >
+        <input
+          id="nodeGraphLevelSelected"
+          name="nodeGraphLevelSelected"
+          style="
+            margin-top: 5px;
+            height: 20px;
+            width: 50px;
+            display: inline;
+            float: left;
+            padding-left: 2px;
+            padding-right: 0px;
+            font-size: 11px;
+          "
+          class="form-control"
+          min="0"
+          type="number"
+          [(ngModel)]="nodeGraphLevelSelected"
+          (keyup)="showNodesByLevel(nodeGraphLevelSelected)"
+          (change)="showNodesByLevel(nodeGraphLevelSelected)"
+        />
+        <!--                     <div class="input-group" style="position: relative;">
+                    </div> -->
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="">
+        <i class="bi bi-play"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        (click)="contractAllSheetNodes()"
+        ngbTooltip="Collapse All"
+      >
+        <i class="bi bi-arrows-angle-contract"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        (click)="expandAllSheetNodes()"
+        ngbTooltip="Expand All"
+      >
+        <i class="bi bi-arrows-angle-expand"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        ngbTooltip="Export Tree Nodes"
+        (click)="exportTreeNodes(tree)"
+      >
+        <i class="bi bi-upload"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        (click)="openReporsWindow($event, reportsWindowTemplate)"
+        ngbTooltip="Reports"
+      >
+        <i class="bi bi-bar-chart-line"></i>
+      </button>
+      <div class="btn-group-sm mr-1" role="group" aria-label="First group">
+        <div class="input-group" style="position: relative">
+          <input
+            id="filter"
+            #filter
+            style="margin-top: 5px; height: 20px; width: 80px; font-size: 11px"
+            class="form-control"
+            type="text"
+            placeholder="Search"
+            [(ngModel)]="textSearch2"
+            (keyup)="paperView.getCellsByText(textSearch2)"
+          />
+          <button class="btn" id="btn-filter-graph">
+            <span
+              *ngIf="textSearch2.length > 0"
+              aria-hidden="true"
+              (click)="
+                filter.value = ''; paperView.unhighlightAll(); textSearch2 = ''
+              "
+              >&times;</span
+            >
+          </button>
+          <i
+            *ngIf="textSearch2.length <= 0"
+            style="
+              position: absolute;
+              right: 1px;
+              top: 8px;
+              font-size: 80%;
+              padding-right: 3px;
+            "
+            class="bi bi-search"
+          ></i>
+        </div>
+      </div>
+      <button
+        style="padding-right: 0px"
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        ngbTooltip="focus Previous Node"
+        (click)="paperView.getPreviousCellByCurrentSearch()"
+      >
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button
+        style="padding-left: 0px"
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        (click)="paperView.getNextCellByCurrentSearch()"
+        ngbTooltip="focus Next Node"
+      >
+        <i class="bi bi-chevron-right"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        (click)="expandAllSheetNodes()"
+        ngbTooltip="Flag"
+      >
+        <i class="bi bi-flag"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark"
+        ngbTooltip="Graph from Element"
+        (click)="generateGraph(treeOrg)"
+      >
+        <i class="bi bi-diagram-2"></i>
+      </button>
+      <button
+        *ngIf="panelExpanded == false"
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        (click)="panelExpanded = true"
+        ngbTooltip="Hide right panel"
+      >
+        <i class="bi bi-arrow-bar-right"></i>
+      </button>
+      <button
+        type="button"
+        class="btn-tools btn btn-outline-dark btn-sm"
+        ngbTooltip="Default config"
+        (click)="
+          openConfigDefaultShapeModal($event, configDefaultShapeTemplate)
+        "
+      ></button>
+
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        (click)="openSheetFormEdit($event, sheetTemplate, sheetSelected)"
+        ngbTooltip="Edit Sheet"
+      >
+        <i class="bi bi-pen"></i>
+      </button>
+
+      <div
+        class="btn-group"
+        ngbDropdown
+        role="group"
+        aria-label="Button group with nested dropdown"
+        ngbTooltip="Scale"
+        placement="right"
+      >
+        <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle>
+          <i class="bi bi-zoom-in"></i>
+          ({{ paperView.scale }})
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button ngbDropdownItem (click)="paperView.setScale(0.3)">0.3</button>
+          <button ngbDropdownItem (click)="paperView.setScale(0.5)">0.5</button>
+          <button ngbDropdownItem (click)="paperView.setScale(0.7)">0.7</button>
+          <button ngbDropdownItem (click)="paperView.setScale(1)">1</button>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        (click)="openTranslateAllModal($event, translateAllTemplate)"
+        ngbTooltip="Move All"
+      >
+        <i class="bi bi-arrows-move"></i>
+      </button>
+      <!-- <button type="button" class="btn btn-outline-dark btn-sm" (click)="addRootNode()" ngbTooltip="Add Graph Node">
+                    <i class="bi bi-node-plus"></i>
+                </button> -->
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        (click)="clearGraphAndSheet()"
+        ngbTooltip="Clear Graph"
+      >
+        <i class="bi bi-x-circle"></i>
+      </button>
+
+      <!--
+            <button *ngIf="panelExpanded==true" type="button" class="btn btn-outline-dark btn-sm" (click)="panelExpanded=false" ngbTooltip="showright panel">
+                <i class="bi bi-arrow-bar-left"></i>
+            </button>
+            -->
     </div>
   </div>
-  <div class="d-flex">
-    <div class="btn-toolbar ml-auto mr-auto" role="toolbar" aria-label="Toolbar with button groups">
-      <div class="btn-group mr-2" role="group" aria-label="Second group">
-        <!-- <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveSheet(sheetSelected)" ngbTooltip="Save Sheet" [disabled]="!sheetSelected.ID">
-                  <i class="bi bi-save"></i>
-              </button> -->
-        <button type="button" class="btn btn-outline-dark btn-sm" ngbTooltip="Search Sheet" (click)="openSheetSearch($event, searchSheetTemplate)">
-          <i class="bi bi-folder2-open"></i>
-        </button>
-        <button type="button" class="btn btn-outline-dark btn-sm" (click)="openSheetForm($event, sheetTemplate, null)" ngbTooltip="Add Sheet">
-          <i class="bi bi-plus-circle"></i>
-        </button>
-        <!-- <ng-template #popTitle>Delete <b>{{sheetSelected.SheetName}}</b>?</ng-template>
-              <ng-template #popContent>
-                  <button class="btn btn-sm btn-outline-danger " (click)="deleteCurrentSheet()">Yes</button>
-                  <button class="btn btn-sm btn-outline-success">No</button>
-              </ng-template>
-              <button (click)="confirmDelete(p1)" triggers="manual" #p1="ngbPopover" placement="bottom" [ngbPopover]="popContent" [popoverTitle]="popTitle" type="button" class="btn btn-outline-dark btn-sm">
-                  <span ngbTooltip="Delete Sheet">
-                      <i class="bi bi-dash-circle"></i>
-                  </span>
-              </button> -->
-
-        <button ngbTooltip="Delete Sheet" (click)="openConfirmDeleteSheet(
-              $event,
-              confirmDeleteAnyTemplate,
-              sheetSelected.SheetName,
-              deleteCurrentSheet,
-              null
-            )
-          "
-          type="button"
-          class="btn btn-outline-dark btn-sm"
-          [disabled]="!activeSheets[sheetSelected.ID]"
-        >
-          <i class="bi bi-dash-circle"></i>
-        </button>
-        <div
-          class="btn-group-sm mr-1"
-          role="group"
-          aria-label="First group"
-          style="height: 26px"
-        >
-          <input
-            id="nodeGraphLevelSelected"
-            name="nodeGraphLevelSelected"
-            style="
-              margin-top: 5px;
-              height: 20px;
-              width: 50px;
-              display: inline;
-              float: left;
-              padding-left: 2px;
-              padding-right: 0px;
-              font-size: 11px;
-            "
-            class="form-control"
-            min="0"
-            type="number"
-            [(ngModel)]="nodeGraphLevelSelected"
-            (keyup)="showNodesByLevel(nodeGraphLevelSelected)"
-            (change)="showNodesByLevel(nodeGraphLevelSelected)"
-          />
-          <!--                     <div class="input-group" style="position: relative;">
-                      </div> -->
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="">
-          <i class="bi bi-play"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          (click)="contractAllSheetNodes()"
-          ngbTooltip="Collapse All"
-        >
-          <i class="bi bi-arrows-angle-contract"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          (click)="expandAllSheetNodes()"
-          ngbTooltip="Expand All"
-        >
-          <i class="bi bi-arrows-angle-expand"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          ngbTooltip="Export Tree Nodes"
-          (click)="exportTreeNodes(tree)"
-        >
-          <i class="bi bi-upload"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          (click)="openReporsWindow($event, reportsWindowTemplate)"
-          ngbTooltip="Reports"
-        >
-          <i class="bi bi-bar-chart-line"></i>
-        </button>
-        <div class="btn-group-sm mr-1" role="group" aria-label="First group">
-          <div class="input-group" style="position: relative">
-            <input
-              id="filter"
-              #filter
-              style="margin-top: 5px; height: 20px; width: 80px; font-size: 11px"
-              class="form-control"
-              type="text"
-              placeholder="Search"
-              [(ngModel)]="textSearch2"
-              (keyup)="paperView.getCellsByText(textSearch2)"
+  <span id="user-info">
+    <div ngbDropdown class="d-inline-block">
+      <button
+        style="border: none"
+        class="btn btn-outline-primary"
+        id="dropdownBasic2"
+        ngbDropdownToggle
+      >
+        <span class="mr-2">
+          <i class="bi bi-grid"></i>
+        </span>
+        <span class="mr-2 user-name">{{ userName }}</span>
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            fill="#45d9d9"
+            class="bi bi-person-circle"
+            viewBox="0 0 16 16"
+          >
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+            <path
+              fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
             />
-            <button class="btn" id="btn-filter-graph">
-              <span
-                *ngIf="textSearch2.length > 0"
-                aria-hidden="true"
-                (click)="
-                  filter.value = ''; paperView.unhighlightAll(); textSearch2 = ''
-                "
-                >&times;</span
-              >
-            </button>
+          </svg>
+          <!--                 <img  class="rounded-circle" src="assets/images/nick.png"> -->
+        </span>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button
+          style="padding: 0px; text-align: center"
+          ngbDropdownItem
+          (click)="logout()"
+        >
+          logout
+        </button>
+      </div>
+    </div>
+  </span>
+</nav>
+<div class="container-fluid ngContainer">
+  <div class="row">
+    <div class="col-3 sidebar">
+      <div class="card-line-accordion"></div>
+      <ngb-accordion
+        #accordion
+        activeIds="3"
+        id="ngb-accordion1"
+        (panelChange)="onAccordionChange($event)"
+      >
+        <ngb-panel id="1">
+          <ng-template
+            ngbPanelTitle
+            style="position: relative"
+            class="card-line-accordion"
+          >
+            <span
+              *ngIf="!panelsIds[1]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
+            </span>
+            <span
+              *ngIf="panelsIds[1]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-dash-square" style="color: #343a40"></i>
+            </span>
+            <span class="panel-title">Shapes</span>
+
             <i
-              *ngIf="textSearch2.length <= 0"
+              class="bi bi-circle-square"
               style="
                 position: absolute;
-                right: 1px;
-                top: 8px;
-                font-size: 80%;
-                padding-right: 3px;
+                left: -44px;
+                top: 0px;
+                color: rgb(69, 217, 217);
+                font-size: 24px;
+                border-right: 3px solid #45d9d9;
+                padding: 24px 9px 24px 9px;
+                background: linear-gradient(
+                  to right,
+                  rgba(220, 245, 245, 0.1) 0%,
+                  rgba(190, 250, 239, 0.55) 100%
+                );
               "
-              class="bi bi-search"
             ></i>
-          </div>
-        </div>
-        <button
-          style="padding-right: 0px"
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          ngbTooltip="focus Previous Node"
-          (click)="paperView.getPreviousCellByCurrentSearch()"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-        <button
-          style="padding-left: 0px"
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          (click)="paperView.getNextCellByCurrentSearch()"
-          ngbTooltip="focus Next Node"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          (click)="expandAllSheetNodes()"
-          ngbTooltip="Flag"
-        >
-          <i class="bi bi-flag"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark"
-          ngbTooltip="Graph from Element"
-          (click)="generateGraph(treeOrg)"
-        >
-          <i class="bi bi-diagram-2"></i>
-        </button>
-        <button
-          *ngIf="panelExpanded == false"
-          type="button"
-          class="btn btn-outline-dark btn-sm"
-          (click)="panelExpanded = true"
-          ngbTooltip="Hide right panel"
-        >
-          <i class="bi bi-arrow-bar-right"></i>
-        </button>
-        <button
-          type="button"
-          class="btn-tools btn btn-outline-dark btn-sm"
-          ngbTooltip="Default config"
-          (click)="
-            openConfigDefaultShapeModal($event, configDefaultShapeTemplate)
-          "
-        ></button>
-
-        <button
-          type="button"
-          class="btn btn-outline-dark btn-sm"
-          (click)="openSheetFormEdit($event, sheetTemplate, sheetSelected)"
-          ngbTooltip="Edit Sheet"
-        >
-          <i class="bi bi-pen"></i>
-        </button>
-
-        <div
-          class="btn-group"
-          ngbDropdown
-          role="group"
-          aria-label="Button group with nested dropdown"
-          ngbTooltip="Scale"
-          placement="right"
-        >
-          <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle>
-            <i class="bi bi-zoom-in"></i>
-            ({{ paperView.scale }})
-          </button>
-          <div class="dropdown-menu" ngbDropdownMenu>
-            <button ngbDropdownItem (click)="paperView.setScale(0.3)">0.3</button>
-            <button ngbDropdownItem (click)="paperView.setScale(0.5)">0.5</button>
-            <button ngbDropdownItem (click)="paperView.setScale(0.7)">0.7</button>
-            <button ngbDropdownItem (click)="paperView.setScale(1)">1</button>
-          </div>
-        </div>
-        <button
-          type="button"
-          class="btn btn-outline-dark btn-sm"
-          (click)="openTranslateAllModal($event, translateAllTemplate)"
-          ngbTooltip="Move All"
-        >
-          <i class="bi bi-arrows-move"></i>
-        </button>
-        <!-- <button type="button" class="btn btn-outline-dark btn-sm" (click)="addRootNode()" ngbTooltip="Add Graph Node">
-                      <i class="bi bi-node-plus"></i>
-                  </button> -->
-        <button
-          type="button"
-          class="btn btn-outline-dark btn-sm"
-          (click)="clearGraphAndSheet()"
-          ngbTooltip="Clear Graph"
-        >
-          <i class="bi bi-x-circle"></i>
-        </button>
-
-        <!--
-              <button *ngIf="panelExpanded==true" type="button" class="btn btn-outline-dark btn-sm" (click)="panelExpanded=false" ngbTooltip="showright panel">
-                  <i class="bi bi-arrow-bar-left"></i>
-              </button>
-              -->
-      </div>
-    </div>
-  </div>
-  <div class="d-flex">
-    <span id="user-info">
-      <div ngbDropdown class="d-inline-block">
-        <button
-          style="border: none"
-          class="btn btn-outline-primary"
-          id="dropdownBasic2"
-          ngbDropdownToggle
-        >
-          <span class="mr-2">
-            <i class="bi bi-grid"></i>
-          </span>
-          <span class="mr-2 user-name">{{ userName }}</span>
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="#45d9d9"
-              class="bi bi-person-circle"
-              viewBox="0 0 16 16"
-            >
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-              <path
-                fill-rule="evenodd"
-                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-              />
-            </svg>
-          </span>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="dropdown-menu dropdown-menu-end">
-          <button
-            style="padding: 0px; text-align: center"
-            ngbDropdownItem
-            (click)="logout()"
-          >
-            logout
-          </button>
-        </div>
-      </div>
-    </span>
-  </div>
-</nav>
-<div class="ngContainer">
-  <div class="sidebar">
-    <div data-simplebar="init" class="h-100">
-      <div class="simplebar-wrapper" style="margin: 0px;">
-        <div class="card-line-accordion"></div>
-        <ngb-accordion #accordion activeIds="3" id="ngb-accordion1" (panelChange)="onAccordionChange($event)">
-          <ngb-panel id="1">
-            <ng-template
-              ngbPanelTitle
-              style="position: relative"
-              class="card-line-accordion"
-            >
-              <span
-                *ngIf="!panelsIds[1]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
-              </span>
-              <span
-                *ngIf="panelsIds[1]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-dash-square" style="color: #343a40"></i>
-              </span>
-              <span class="panel-title">Shapes</span>
-
-              <i class="bi bi-circle-square" style="position: absolute;left: -44px;top: 0px;color: rgb(69, 217, 217);font-size: 24px;border-right: 3px solid #45d9d9;padding: 24px 9px 24px 9px;background: linear-gradient(to right,rgba(220, 245, 245, 0.1) 0%,rgba(190, 250, 239, 0.55) 100%);"></i>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <div id="">
-                <div class="row">
-                  <div class="col-3">
-                    <div class="row">
-                      <!-- <div class="col-12" [cdkDragData]="{positionType:'position',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag> -->
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'position',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        (cdkDragEnded)="dropAndSelect($event)"
-                        cdkDrag
-                      >
-                        <img
-                          style="width: 80%"
-                          src="assets/images/position.png"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'advisor',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        (cdkDragEnded)="dropAndSelect($event)"
-                        cdkDrag
-                      >
-                        <img style="width: 80%" src="assets/images/advisor.png" />
-                      </div>
-                      <!-- 
-                                                      <div class="col-12" style="margin-top: 5px;" ngbTooltip="Advisor">
-                                                          <img style="width:100%;" src="assets/images/advisor.png">
-                                                      </div>
-              -->
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'advisor',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        (cdkDragEnded)="dropAndSelect($event)"
-                        cdkDrag
-                      >
-                        <img style="width: 80%" src="assets/images/esquina.png" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div class="col-12" ngbTooltip="Functional Relationship">
-                        <img
-                          style="width: 100%"
-                          src="assets/images/functionalrel.png"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-4">
-                  <div class="col-3">
-                    <div class="row">
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'temporal',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        (cdkDragEnded)="dropAndSelect($event)"
-                        cdkDrag
-                      >
-                        <img
-                          style="width: 80%"
-                          src="assets/images/temporal.png"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'external',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        cdkDrag
-                        (cdkDragEnded)="dropAndSelect($event)"
-                      >
-                        <img
-                          style="width: 80%"
-                          src="assets/images/external.png"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'vacant',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        (cdkDragEnded)="dropAndSelect($event)"
-                        cdkDrag
-                      >
-                        <img style="width: 80%" src="assets/images/vacant.png" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div class="col-12" ngbTooltip="Direct Relationship">
-                        <img
-                          style="width: 100%"
-                          src="assets/images/directrel.png"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-4">
-                  <div class="col-3">
-                    <div class="row">
-                      <div
-                        class="col-12"
-                        [cdkDragData]="{
-                          positionType: 'temporal',
-                          sheetSelected: sheetSelected,
-                          treeOrg: treeOrg
-                        }"
-                        (cdkDragEnded)="dropAndSelect($event)"
-                        cdkDrag
-                      >
-                        <img style="width: 80%" src="assets/images/tree.png" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-3"></div>
-                  <div class="col-3"></div>
-                  <div class="col-3"></div>
-                </div>
-              </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel id="2">
-            <ng-template ngbPanelTitle style="position: relative">
-              <span
-                *ngIf="!panelsIds[2]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
-              </span>
-              <span
-                *ngIf="panelsIds[2]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-dash-square" style="color: #343a40"></i>
-              </span>
-              <span class="panel-title">Organization Chart</span>
-              <i
-                class="bi bi-triangle"
-                style="
-                  position: absolute;
-                  left: -44px;
-                  top: 0px;
-                  color: rgb(69, 217, 217);
-                  font-size: 24px;
-                  border-right: 3px solid #45d9d9;
-                  padding: 24px 9px 24px 9px;
-                  background: linear-gradient(
-                    to right,
-                    rgba(220, 245, 245, 0.1) 0%,
-                    rgba(190, 250, 239, 0.55) 100%
-                  );
-                "
-              ></i>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <div
-                class="btn-toolbar"
-                role="toolbar"
-                aria-label="Toolbar with button groups"
-              >
-                <div class="input-group" style="position: relative">
-                  <input
-                    #treenodesearchinput
-                    id="filter"
-                    #filter
-                    style="height: 32px; width: 71px"
-                    class="form-control"
-                    type="text"
-                    placeholder=""
-                    [(ngModel)]="textSearch"
-                    (keyup)="findTreeNodeByName(tree, filter.value)"
-                  />
-                  <button class="btn" id="btn-filter-graph">
-                    <span
-                      *ngIf="textSearch.length > 0"
-                      aria-hidden="true"
-                      (click)="
-                        filter.value = '';
-                        findTreeNodeByName(tree, '');
-                        textSearch = ''
-                      "
-                      >&times;</span
-                    >
-                  </button>
-                  <i
-                    *ngIf="textSearch.length == 0"
-                    class="bi bi-search"
-                    style="position: absolute; right: 5px; top: 8px"
-                  ></i>
-                </div>
-                <button
-                  style="padding-right: 0px"
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  ngbTooltip="focus Previous Node"
-                >
-                  <i
-                    class="bi bi-chevron-left"
-                    (click)="treeFocusPreviousNode()"
-                  ></i>
-                </button>
-                <button
-                  style="padding-left: 0px"
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="treeFocusNextNode()"
-                  ngbTooltip="focus Next Node"
-                >
-                  <i class="bi bi-chevron-right"></i>
-                </button>
-                <button
-                  style="padding-left: 0px"
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark btn-img"
-                  (click)="treeFocusNextNode()"
-                  ngbTooltip="focus Next Node"
-                ></button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="treeNodeOneLevelUp(tree)"
-                  ngbTooltip="Move Level Up"
-                >
-                  <i class="bi bi-arrow-up"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="treeNodeOneLevelDown(tree)"
-                  ngbTooltip="Move Level Down"
-                >
-                  <i class="bi bi-arrow-down"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="treeNodesSameLevelUp(tree)"
-                  ngbTooltip="Move Left"
-                >
-                  <i class="bi bi-arrow-left"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="treeNodesSameLevelDown(tree)"
-                  ngbTooltip="Move Rigth"
-                >
-                  <i class="bi bi-arrow-Right"></i>
-                </button>
-                <!-- <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="openConfirmDeleteTreeNodes
-              ($event,confirmDeleteTreeNodeTemplate,tree)" ngbTooltip="Delete Node">
-                                              <i class="bi bi-chevron-double-right"></i>
-                                          </button> -->
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="
-                    openConfirmDeleteTreeNodes(
-                      $event,
-                      confirmDeleteTreeNodeTemplate,
-                      tree
-                    )
-                  "
-                  ngbTooltip="Delete Node"
-                >
-                  <i class="bi bi-dash-circle"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="
-                    openAddTreeNodeTemplate($event, addTreeNodeTemplate, tree)
-                  "
-                  ngbTooltip="Add Child Node"
-                >
-                  <i class="bi bi-plus-circle"></i>
-                </button>
-                <div class="input-group" style="width: 60px; height: 15px">
-                  <input
-                    id="filterlevel"
-                    #treefilterlevel
-                    type="number"
-                    min="0"
-                    style="height: 32px; width: 71px; padding-right: 0px"
-                    class="form-control"
-                    aria-label="Input group example"
-                    aria-describedby="btnGroupAddon"
-                    [(ngModel)]="treeLevelFilter"
-                    (keyup)="setTreeLevelFilter(tree, treefilterlevel.value)"
-                    (change)="setTreeLevelFilter(tree, treefilterlevel.value)"
-                  />
-                </div>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="tree.treeModel.collapseAll()"
-                  ngbTooltip="Collapse All"
-                >
-                  <i class="bi bi-caret-right"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="tree.treeModel.collapseAll()"
-                  ngbTooltip="Collapse All"
-                >
-                  <i class="bi bi-arrows-angle-contract"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="tree.treeModel.expandAll()"
-                  ngbTooltip="Expand All"
-                >
-                  <i class="bi bi-arrows-angle-expand"></i>
-                </button>
-
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="removeNodeDisplacement(tree)"
-                  ngbTooltip="Remove Displacement"
-                >
-                  <i class="bi bi-arrow-bar-up"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="addNodeDisplacement(tree)"
-                  ngbTooltip="Insert Displacement"
-                >
-                  <i class="bi bi-arrow-bar-down"></i>
-                </button>
-                <!--                             <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="Graph from Element" (click)="generateGraph(tree)">
-                                              <i class="bi bi-diagram-2"></i>
-                                          </button> -->
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  ngbTooltip="Export Tree Nodes"
-                  (click)="exportTreeNodes(tree)"
-                >
-                  <i class="bi bi-download"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                  (click)="openReporsWindow($event, reportsWindowTemplate)"
-                  ngbTooltip="Reports"
-                >
-                  <i class="bi bi-list"></i>
-                </button>
-                <button
-                  type="button"
-                  class="org-chart btn btn-sm btn-outline-dark"
-                >
-                  <i class="bi bi-flag"></i>
-                </button>
-              </div>
-              <div style="height: 230px; overflow: auto">
-                <tree-root
-                  #tree
-                  [nodes]="nodes"
-                  (focus)="onNodeFocus($event, tree)"
-                  (updateData)="onUpdateTree($event, tree)"
-                  [options]="options"
-                  (event)="onTreeEvent($event)"
-                ></tree-root>
-              </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel id="3">
-            <ng-template ngbPanelTitle style="position: relative">
-              <span
-                *ngIf="!panelsIds[3]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
-              </span>
-              <span
-                *ngIf="panelsIds[3]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-dash-square" style="color: #343a40"></i>
-              </span>
-              <span class="panel-title" *ngIf="!projectSelected">Projects</span>
-              <span class="panel-title" *ngIf="projectSelected">{{
-                projectSelected.ProjectName
-              }}</span>
-              <button
-                class="btn btn-outline-dark mb-1 float-right"
-                style="position: absolute; top: 26px; right: 32px"
-                (click)="
-                  savePositionAndExpandPanel(positionCurrent, treeOrg);
-                  openProjectFormCustom($event, projectTemplate, null,projectCreatedTemplate)
-                "
-                ngbTooltip="Add Project"
-                triggers="hover"
-              >
-                <i class="bi bi-plus-circle"></i>
-              </button>
-              <i
-                class="bi bi-journals"
-                style="
-                  position: absolute;
-                  left: -44px;
-                  top: 0px;
-                  color: rgb(69, 217, 217);
-                  font-size: 24px;
-                  border-right: 3px solid #45d9d9;
-                  padding: 24px 9px 24px 9px;
-                  background: linear-gradient(
-                    to right,
-                    rgba(220, 245, 245, 0.1) 0%,
-                    rgba(190, 250, 239, 0.55) 100%
-                  );
-                "
-              ></i>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <table class="table table-sm">
-                <tbody>
-                  <tr
-                    *ngFor="let project of projects; index as i"
-                    [class.active-project]="project.ID == projectSelected.ID"
-                  >
-                    <td style="width: 50%; overflow-x: hidden">
-                      {{ project.ProjectName }}
-                    </td>
-                    <td style="width: 50%">
-                      <div
-                        class="btn-group-sm"
-                        style="text-align: right"
-                        role="group"
-                        aria-label="First group"
-                      >
-                        <button
-                          type="button"
-                          class="btn btn-outline-dark btn-sm"
-                          (click)="
-                            openProjectForm($event, projectTemplate, project)
-                          "
-                          ngbTooltip="Edit Project"
-                          triggers="hover"
-                        >
-                          <i class="bi bi-pen"></i>
-                        </button>
-                        <button
-                          (click)="
-                            openConfirmDeleteProject(
-                              $event,
-                              confirmDeleteAnyTemplate,
-                              'this project',
-                              deleteProject,
-                              project
-                            )
-                          "
-                          type="button"
-                          class="btn btn-outline-dark btn-sm"
-                          ngbTooltip="Delete Project"
-                          triggers="hover"
-                        >
-                          <i class="bi bi-dash-circle"></i>
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-outline-dark btn-sm"
-                          (click)="loadProject(project)"
-                          ngbTooltip="Select Project"
-                          [disabled]="project == projectSelected"
-                          triggers="hover"
-                        >
-                          <i class="bi bi-check2"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </ng-template>
-          </ngb-panel>
-          <!-- CONTACTS LISTING -->
-          <!-- <ngb-panel id="4">
-            <ng-template ngbPanelTitle style="position: relative">
-              <span
-                *ngIf="!panelsIds[4]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
-              </span>
-              <span
-                *ngIf="panelsIds[4]"
-                style="position: absolute; top: 33px; right: 10px"
-              >
-                <i class="bi bi-dash-square" style="color: #343a40"></i>
-              </span>
-
-              <span class="panel-title">Contacts</span>
-              <i
-                class="bi bi-people"
-                style="
-                  position: absolute;
-                  left: -44px;
-                  top: 0px;
-                  color: rgb(69, 217, 217);
-                  font-size: 24px;
-                  border-right: 3px solid #45d9d9;
-                  padding: 24px 9px 24px 9px;
-                  background: linear-gradient(
-                    to right,
-                    rgba(220, 245, 245, 0.1) 0%,
-                    rgba(190, 250, 239, 0.55) 100%
-                  );
-                "
-              ></i>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <button
-                class="btn btn-outline-dark mb-1"
-                (click)="openContactForm($event, contactTemplate, null)"
-                ngbTooltip="Add Contact"
-              >
-                <i class="bi bi-plus-circle"></i>
-              </button>
-              <table class="table table-sm">
-                <tbody>
-                  <tr *ngFor="let contact of contacts; index as i">
-                    <td style="width: 50%; overflow-x: hidden">
-                      {{ contact.firstName }}
-                    </td>
-                    <td style="width: 50%">
-                      <div
-                        class="btn-group-sm"
-                        style="text-align: right"
-                        role="group"
-                        aria-label="First group"
-                      >
-                        <button
-                          type="button"
-                          class="btn btn-outline-dark btn-sm"
-                          (click)="
-                            openContactForm($event, contactTemplate, contact)
-                          "
-                          ngbTooltip="Edit Project"
-                        >
-                          <i class="bi bi-pen"></i>
-                        </button>
-
-                        <button
-                          (click)="
-                            openConfirmDeleteContact(
-                              $event,
-                              confirmDeleteAnyTemplate,
-                              contact.Name,
-                              deleteContact,
-                              contact
-                            )
-                          "
-                          type="button"
-                          class="btn btn-outline-dark btn-sm"
-                        >
-                          <i class="bi bi-dash-circle"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </ng-template>
-          </ngb-panel> -->
-        </ngb-accordion>
-
-        <div style="width: 100%; text-align: center; padding: 8px">
-          <button class="btn-export-data" (click)="exportG()">
-            <i
-              class="bi bi-download"
-              style="padding-left: 10px; padding-right: 10px; margin: 5px auto"
-            ></i
-            >Export Data
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="main-content">
-    <div class="row">
-      <div class="col-12">
-        <div class="document-content">
-          <div
-            class="drag-boundary"
-            id="sheetContainer"
-            [ngClass]="panelExpanded ? '' : ''"
-            [ngStyle]="{
-              'background-color':
-                sheets.length > 0 ? 'rgba(224, 247, 250, 0.35)' : '#ffffff'
-            }"
-            style="overflow: none; padding-left: 0; padding-right: 0"
-          >
-            <ul
-              ngbNav
-              [(activeId)]="activeId"
-              #nav="ngbNav"
-              class="nav nav-pills nav-fill nav-tabs top-tab"
-              (navChange)="onNavChange($event)"
-            >
-              <li
-                ngbNavItem
-                class="nav-item"
-                [ngbNavItem]="sheet.ID"
-                *ngFor="let sheet of sheets; let i = index"
-                style="border: none; flex-grow: 0.2; margin-bottom: 0"
-              >
-                <button
-                  type="button"
-                  class="close"
-                  aria-label="Close"
-                  [class.active-close]="sheet.ID == activeId"
-                  style="
-                    outline: none;
-                    color: #ccc;
-                    line-height: 1.5;
-                    padding-right: 4px;
-                    padding-top:3px;
-                  "
-                  (click)="removeSheetFromView(sheet)"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <a
-                  ngbNavLink
-                  class="nav-link"
-                  style="border-bottom: 1px solid #dee2e6; color: #ccc"
-                >
-                  <input
-                    *ngIf="
-                      !isSheetToEdit && sheet.SheetName == sheetSelected.SheetName
-                    "
-                    type="text"
-                    [(ngModel)]="sheet.SheetName"
-                    [ngClass]="isSheetToEdit ? 'readonly' : ''"
-                    (change)="isSheetToEdit = true; saveSheet(sheetToEdit, true)"
-                  />
-                  <p
-                    *ngIf="
-                      isSheetToEdit || sheet.SheetName !== sheetSelected.SheetName
-                    "
-                    (dblclick)="isSheetToEdit = false; EditSheet(sheetSelected)"
-                    style="margin: 0; padding: 0"
-                  >
-                    {{ sheet.SheetName }}
-                  </p>
-                </a>
-                <ng-template ngbNavContent> </ng-template>
-              </li>
-              <li class="toggle-li" style="flex-grow: 1">
-                <a
-                  class="nav-link text-right"
-                  style="border-bottom: 1px solid #dee2e6"
-                >
-                  <ui-switch
-                    (changeEvent)="onChangeEvent($event)"
-                    size="small"
-                    switchColor="#fff"
-                    color="#45d9d9"
-                    [(checked)]="!panelExpanded"
-                    [disabled]="nodes.length < 1"
-                  ></ui-switch>
-                </a>
-              </li>
-            </ul>
-            <div [ngbNavOutlet]="nav"></div>
-            <div
-              style="
-                margin-top: 12px;
-                height: calc(100vh - 100px) !important;
-                margin-bottom: 9px;
-              "
-              (treeDrop)="onDrop($event)"
-              [treeAllowDrop]="allowDrop.bind(this)"
-            >
-              <app-joint
-                #paperView
-                (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)"
-                (dblclickGraphNodeEvent)="panelExpanded = false"
-                (clickGraphNodeEvent)="saveNamePosition(positionCurrent, treeOrg)"
-                (clickPaperBlankAreaEvent)="
-                  saveNamePosition(positionCurrent, treeOrg)
-                "
-                (clickGraphNodeEvent)="graphNodeSelected($event)"
-                (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)"
-                (sheetDimentionsChangeEvent)="setSheetNewSize($event)"
-                (graphNodeAddedEvent)="graphNodeAdded($event)"
-                (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)"
-                (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)"
-                (applyNewShapePropertiesEvent)="saveSheet(sheetSelected)"
-                (resizeSheetEvent)="resizeSheet()"
-                (reoderNodeEvent)="drawSheetFunctionalRels()"
-              >
-              </app-joint>
-            </div>
-            <div style="position: fixed; bottom: 1%;padding-left: 30px;">
-              <ul class="list-unstyled">
-                <li style="margin-bottom: 2px">
-                  <span
-                    class="badge"
-                    style="
-                      color: #ffffff;
-                      background-color: #3cd039;
-                      border-radius: 50%;
-                      filter: drop-shadow(2px 2px 2px rgba(68, 255, 51, 0.7));
-                    "
-                    >0</span
-                  >
-                  Supervised Positions
-                </li>
-                <li style="margin-bottom: 2px">
-                  <span
-                    class="badge"
-                    style="
-                      color: #ffffff;
-                      background-color: #ee9f06;
-                      border-radius: 50%;
-                      filter: drop-shadow(2px 2px 2px rgba(255, 202, 51, 0.7));
-                    "
-                    >0</span
-                  >
-                  Directly Supervised Positions
-                </li>
-                <li style="margin-bottom: 2px">
-                  <span
-                    class="badge"
-                    style="
-                      color: #ffffff;
-                      background-color: #3977d4;
-                      border-radius: 50%;
-                      filter: drop-shadow(2px 2px 2px rgba(51, 133, 255, 0.7));
-                    "
-                    >0</span
-                  >
-                  Position Advisors
-                </li>
-              </ul>
-            </div>
-            <!--</div>-->
-            <!--<div [ngClass]="panelExpanded?'hidePanel':'col-3'" style="border: 1px solid #efefef">-->
-
-            <div
-              class="details-box"
-              [ngClass]="panelExpanded ? 'hidePanel' : 'div-panel-right'"
-              cdkDragBoundary=".drag-boundary"
-              cdkDrag
-            >
-              <div class="details-handle" cdkDragHandle>
-                <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
-                  ></path>
-                  <path d="M0 0h24v24H0z" fill="none"></path>
-                </svg>
-              </div>
-              <form style="width: 100%">
-                <div class="div-panel-right-inner">
-                  <div class="form-row" style="text-align: left">
-                    <div class="col">
-                      <label for="PositionNameInput" class="label-input-panel"
-                        >Name</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control mt-1 input-panel"
-                        id="PositionNameInput"
-                        name="PositionNameInput"
-                        placeholder="Name"
-                        #PositionName="ngModel"
-                        [(ngModel)]="positionCurrent.PositionName"
-                        (change)="saveNamePosition(positionCurrent, treeOrg)"
-                      />
-                    </div>
-
-                    <div class="col">
-                      <label for="PositionCodeInput" class="label-input-panel"
-                        >Code</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control mt-1 input-panel"
-                        id="PositionCodeInput"
-                        name="PositionCodeInput"
-                        #PositionCode="ngModel"
-                        [(ngModel)]="positionCurrent.PositionCode"
-                        (change)="savePosition(positionCurrent, tree)"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-row" style="text-align: left">
-                    <div class="col" style="position: relative">
-                      <label
-                        for="PositionInmediateSuperiorInput"
-                        class="label-input-panel"
-                        >Direct Supervisor</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control mt-1 input-panel"
-                        id="PositionInmediateSuperiorInput"
-                        name="PositionInmediateSuperiorInput"
-                        placeholder="Direct Supervisor"
-                        #PositionInmediateSuperior="ngModel"
-                        [(ngModel)]="positionCurrent.PositionInmediateSuperior"
-                        (change)="savePosition(positionCurrent, tree)"
-                        disabled
-                      />
-                      <i
-                        *ngIf="this.positionCurrent.PositionInmediateSuperior"
-                        (click)="
-                          openSetImendiateSuperior(
-                            $event,
-                            setImendiateSuperiorTemplate
-                          )
-                        "
-                        style="
-                          position: absolute;
-                          right: 14px;
-                          top: 30px;
-                          color: #45d9d9;
-                        "
-                        class="bi bi-search"
-                      ></i>
-                    </div>
-
-                    <div class="col">
-                      <label for="AbbreviationInput" class="label-input-panel"
-                        >Abbreviation</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control mt-1 input-panel"
-                        id="AbbreviationInput"
-                        name="AbbreviationInput"
-                        placeholder="Abbreviation"
-                        #Abbreviation="ngModel"
-                        [(ngModel)]="positionCurrent.Abbreviation"
-                        (change)="savePosition(positionCurrent, tree)"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="col" style="text-align: left">
-                      <label for="LocationInput" class="label-input-panel"
-                        >Location</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control mt-1 input-panel"
-                        id="LocationInput"
-                        name="LocationInput"
-                        placeholder="Location"
-                        #Location="ngModel"
-                        [(ngModel)]="positionCurrent.Location"
-                        (change)="savePosition(positionCurrent, tree)"
-                      />
-                    </div>
-
-                    <div class="col" style="padding-top: 18px">
-                      <div class="form-check mt-1" id="advising-input-wrap">
-                        <label
-                          id="advising-input-label"
-                          class="form-check-label"
-                          for="AdvisingAuthorityCodeInput"
-                        >
-                          Advisory Authority
-                        </label>
-                        <input
-                          class="form-check-input"
-                          style="margin-left: 0.75rem"
-                          type="checkbox"
-                          id="AdvisingAuthorityCodeInput"
-                          name="AdvisingAuthorityCodeInput"
-                          #AdvisingAuthority="ngModel"
-                          [(ngModel)]="positionCurrent.AdvisingAuthority"
-                          [disabled]="!this.positionCurrent.PositionInmediateSuperior"
-                          (change)="
-                            changeAdvisingAuthorityPosition(positionCurrent, treeOrg)
-                          "
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-row" style="text-align: left">
-                    <div class="col">
-                      <label for="CompanyInput" class="label-input-panel"
-                        >Company</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control mt-1 input-panel"
-                        id="CompanyInput"
-                        name="CompanyInput"
-                        placeholder="Company"
-                        #Company="ngModel"
-                        [(ngModel)]="positionCurrent.Company"
-                        (change)="savePosition(positionCurrent, tree)"
-                      />
-                    </div>
-
-                    <div class="col">
-                      <label for="textBox.DedicationRegime" class="label-input-panel"
-                        >Dedication Regime</label
-                      >
-                      <select
-                        (change)="changeDedicationRegime(positionCurrent, treeOrg)"
-                        class="form-control input-panel label-select-panel"
-                        [(ngModel)]="positionCurrent.DedicationRegime"
-                        name="textBox.DedicationRegime"
-                      >
-                        <option [ngValue]="'position'">Full</option>
-                        <option [ngValue]="'temporal'">Temporal</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-row" style="text-align: left">
-                    <div class="col col-6">
-                      <label for="CompanyInput" class="label-input-panel"
-                        >Creation date</label
-                      >
-                      <input
-                        class="form-control mt-1 input-panel"
-                        placeholder="yyyy-mm-dd"
-                        name="CreationDate"
-                        type="date"
-                        #CreationDate="ngModel"
-                        [(ngModel)]="positionCurrent.CreationDate"
-                        (change)="savePosition(positionCurrent, tree)"
-                      />
-                    </div>
-                    <div class="col col-6">
-                      <label for="CompanyInput" class="label-input-panel"
-                        >Space to supervisor</label
-                      >
-                      <input
-                        type="number"
-                        class="form-control mt-1 input-panel"
-                        id="SpacesToSupervisorInput"
-                        name="SpacesToSupervisorInput"
-                        #SpacesToSupervisor="ngModel"
-                        min="0"
-                        [(ngModel)]="positionCurrent.SpacesToSupervisor"
-                        (change)="savePositionDisplacement(positionCurrent, tree)"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex" id="position-data">
-                  <ul
-                    ngbNav
-                    #nav3="ngbNav"
-                    [(activeId)]="activeDetail"
-                    class="nav-pills"
-                    orientation="vertical"
-                    (navChange)="onNavChangeNav3($event)"
-                  >
-                    <li [ngbNavItem]="1">
-                      <a ngbNavLink><span class="tab-title-small">Mission</span></a>
-                      <ng-template ngbNavContent>
-                        <textarea
-                          style="height: 100%"
-                          rows="8"
-                          class="form-control"
-                          id="PositionValues"
-                          name="PositionValues"
-                          placeholder="Mission"
-                          #PositionValues="ngModel"
-                          [(ngModel)]="positionCurrent.PositionValues"
-                          (change)="savePosition(positionCurrent, tree)"
-                        ></textarea>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="2">
-                      <a ngbNavLink>
-                        <span class="tab-title-small">Position Description</span></a
-                      >
-                      <ng-template ngbNavContent>
-                        <ul
-                          ngbNav
-                          #nav="ngbNav"
-                          [(activeId)]="activeTab"
-                          class="nav nav-tabs ul-position"
-                        >
-                          <li
-                            [ngbNavItem]="1"
-                            class="nav-item"
-                            style="font-size: 80%; width: 62%"
-                          >
-                            <a ngbNavLink class="nav-link">Key responsabilities</a>
-                            <ng-template
-                              ngbNavContent
-                              style="background-color: #c7f4f4; margin-top: 0"
-                            >
-                              <div style="font-size: 80%; text-align: left">
-                                <!-- <p style="background-color:#c7f4f4;margin-top:0;text-align: left;padding-left: 5px;">Description</p> -->
-                                <button
-                                  class="btn-responsability"
-                                  style="padding-left: 4px"
-                                >
-                                  <i>+</i>
-                                </button>
-                                <button class="btn-responsability"><i>-</i></button>
-                              </div>
-                            </ng-template>
-                          </li>
-                          <li
-                            [ngbNavItem]="2"
-                            class="nav-item"
-                            style="font-size: 80%; width: 38%"
-                          >
-                            <a ngbNavLink class="nav-link">Essential skills</a>
-                            <ng-template ngbNavContent>
-                              <!-- <p style="background-color:#c7f4f4;margin-top:0;text-align: left;padding-left: 5px;font-size:80%">Description</p> -->
-                              <textarea
-                                style="
-                                  margin-top: 0;
-                                  text-align: left;
-                                  padding-left: 5px;
-                                "
-                                rows="8"
-                                class="form-control"
-                                id="PositionValues"
-                                name="PositionValues"
-                                placeholder="Essential Skills"
-                              ></textarea>
-                            </ng-template>
-                          </li>
-                        </ul>
-
-                        <div [ngbNavOutlet]="nav" class="mt-2"></div>
-
-                        <!-- <ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
-                                              <li  [ngbNavItem]="1">
-                                                  <a ngbNavLink><span class="tab-title">Key Responsabilities</span></a>
-                                                  <ng-template ngbNavContent>
-                                                  <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
-                                                  </ng-template>
-                                              </li>
-                                              <li  [ngbNavItem]="2">
-                                                  <a ngbNavLink><span class="tab-title">Essential Skills</span></a>
-                                                  <ng-template ngbNavContent>
-                                                  <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
-                                                  </ng-template>
-                                              </li>
-                                          </ul> -->
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="3">
-                      <a ngbNavLink
-                        ><span class="tab-title-small">Position Employee</span></a
-                      >
-                      <ng-template ngbNavContent>
-                        <div class="row head-position-emp" style="height: 30px">
-                          <div
-                            class="col-6"
-                            style="padding-left: 0; padding-right: 0"
-                          >
-                            <label
-                              (click)="addtocontacts()"
-                              class="form-control lbl-privacy"
-                              for="enableAditional"
-                            >
-                              <small class="lbl-position-title"
-                                >Position employee</small
-                              >
-                            </label>
-                          </div>
-                          <div
-                            class="col-6"
-                            style="padding-left: 0; padding-right: 0"
-                          >
-                            <div style="position: relative; width: 100%">
-                              <input
-                                type="text"
-                                id="txtSearchAditional"
-                                style="padding-left: 23px"
-                                name="txtSearchAditional"
-                                [(ngModel)]="txtSearchAditional"
-                                class="form-control mt-1 input-panel"
-                                placeholder="Search"
-                                (input)="onSearchContacts($event.target.value)"
-                              />
-                              <i
-                                *ngIf="txtSearchAditional.length <= 0"
-                                style="
-                                  position: absolute;
-                                  left: 6px;
-                                  top: 8px;
-                                  color: #797979;
-                                "
-                                class="bi bi-search"
-                              ></i>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          id="position-employee listopened"
-                          class="position-employee-listopened"
-                          *ngIf="!PositionEmployee_listopened"
-                        >
-                          <!-- <li style="list-style-type: none;"> -->
-
-                          <div class="nv-position-emp">
-                            <i
-                              (click)="addToContactClk()"
-                              class="bi bi-plus-circle pemp"
-                            ></i>
-
-                            <p class="txt-pemp">Add to contacts</p>
-                          </div>
-                          <div class="listopened-ul" *ngFor="let n of contactsSearch">
-                            <!-- (change)="savePosition2()" -->
-
-                            <div
-                              class="txt-one-line"
-                              (click)="selectdataClk(n)"
-                              [ngClass]="{
-                                highlighted_class: n.id === selectedDataValue
-                              }"
-                            >
-                              <div class="bx-img-emp">
-                                <img
-                                  src="../../assets/images/user-w.png"
-                                  class="user-w"
-                                />
-                              </div>
-
-                              <p
-                                [ngClass]="{
-                                  highlighted_class: n.id === selectedDataValue
-                                }"
-                                class="user-nme-txt panel"
-                              >
-                                {{ n.firstName }}
-                                {{ n.lastName }}
-                              </p>
-                            </div>
-                          </div>
-
-                          <!-- </li> -->
-                        </div>
-
-                        <div
-                          id="position-employee"
-                          *ngIf="PositionEmployee_listopened"
-                        >
-                          <!-- <li style="list-style-type: none;"> -->
-
-                          <div *ngFor="let n of contactsSearch" class="c-one-line">
-                            <input
-                              class="position-txt-one-line"
-                              type="checkbox"
-                              name="enableAditional"
-                            />
-
-                            <div
-                              class="txt-one-line-highighted"
-                              (click)="selectdataClk(n)"
-                              [ngClass]="{
-                                highlighted_class: n.id === selectedDataValue
-                              }"
-                            >
-                              <img
-                                src="../../assets/images/user-w.png"
-                                class="user-w"
-                              />
-
-                              <p class="user-nme-txt">
-                                {{ n.firstName }}
-                                {{ n.lastName }}
-                              </p>
-
-                              <p class="floater">
-                                <i
-                                  class="remove"
-                                  (click)="
-                                    openConfirmDeleteAny(
-                                      $event,
-                                      confirmDeleteAnyTemplate,
-                                      n.firstName,
-                                      deleteContact,
-                                      n
-                                    )
-                                  "
-                                  class="bi bi-x-circle closeicn"
-                                ></i>
-                              </p>
-                            </div>
-                          </div>
-
-                          <!-- </li> -->
-                        </div>
-                        <div class="div-position-delete">
-                          <button class="btn-position-delete"><i>-</i></button>
-                        </div>
-                        <!--
-                                          <div class="row">
-                                              <div class="col-12">
-                                                  <app-select-contact #selectContactComp (contactsAdded)="addNewContactsEmployeePosition($event)"></app-select-contact>
-                                              </div>
-                                              <table class="table table-sm">
-                                                  <tbody>
-                                                      <tr *ngFor="let person of treeNodeCurrent.data.employees_position">
-                                                          <td>
-                                                              <button class="btn" (click)="deleteContactsEmployeePosition(person)">
-                                                                  <i class="bi bi-x-circle"></i>
-                                                              </button>
-                                                          </td>
-                                                          <td> {{person.name}} </td>
-                                                      </tr>
-                                                  </tbody>
-                                              </table>
-                                          </div>
-                                          -->
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="4">
-                      <a ngbNavLink
-                        ><span class="tab-title-small"
-                          >Functional Relationship</span
-                        ></a
-                      >
-                      <ng-template ngbNavContent>
-                        <button
-                          type="button"
-                          class="btn btn-outline-dark btn-sm"
-                          (click)="openAddFunctionalRel($event, funcionalRelTemplate)"
-                          ngbTooltip="Add Functional Relationship"
-                        >
-                          <i class="bi bi-plus-circle"></i>
-                        </button>
-                        <table>
-                          <tbody>
-                            <tr
-                              *ngFor="
-                                let functionalRel of treeNodeCurrent.data
-                                  .functionalrels
-                              "
-                            >
-                              <td>
-                                <button
-                                  class="btn"
-                                  (click)="
-                                    openConfirmDeleteFuncRel(
-                                      $event,
-                                      functionalRel,
-                                      confirmDeleteFuncRelTemplate
-                                    )
-                                  "
-                                >
-                                  <i class="bi bi-x-circle"></i>
-                                </button>
-                              </td>
-                              <td>{{ functionalRel.name }}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="5">
-                      <a ngbNavLink><span class="tab-title-small">Notes</span></a>
-                      <ng-template ngbNavContent>
-                        <textarea
-                          style="height: 100%"
-                          rows="8"
-                          class="form-control"
-                          id="Notes"
-                          name="Notes"
-                          placeholder="Notes"
-                          #Notes="ngModel"
-                          [(ngModel)]="positionCurrent.Notes"
-                          (change)="savePosition(positionCurrent, tree)"
-                        ></textarea>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="6">
-                      <a ngbNavLink
-                        ><span class="tab-title-small">Attachments</span></a
-                      >
-                      <ng-template ngbNavContent>
-                        <div
-                          class="file-drop"
-                          appDragDrop
-                          (onFileDropped)="uploadFile($event.target.files, tree)"
-                        >
-                          <input
-                            type="file"
-                            #fileDropRef
-                            id="fileDropRef"
-                            (change)="uploadFile($event.target.files, tree)"
-                          />
-                          <button
-                            type="button"
-                            class="btn btn-outline-dark btn-sm"
-                            (click)="openFileUpload($event, uploadTemplate)"
-                            ngbTooltip="Add Attachment"
-                          >
-                            <i class="bi bi-plus-circle"></i>
-                          </button>
-                          <table
-                            class="attachment-table-wrapper-scroll-y attachment-scrollbar"
-                          >
-                            <tbody>
-                              <tr
-                                *ngFor="
-                                  let attachment of treeNodeCurrent.data.attachments.sort();
-                                  index as i
-                                "
-                              >
-                                <td>
-                                  <button
-                                    (click)="
-                                      openConfirmDeleteAttachment(
-                                        $event,
-                                        attachment,
-                                        confirmDeleteAttachmentTemplate
-                                      )
-                                    "
-                                    type="button"
-                                    class="btn btn-outline-dark btn-sm"
-                                  >
-                                    <i class="bi bi-x-circle"></i>
-                                  </button>
-                                </td>
-                                <td style="font-size: 10">
-                                  <i [class]="attachment.class"></i>
-                                  {{ fileNameSub(attachment.name) }}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="7">
-                      <a ngbNavLink><span class="tab-title-small">Privacy</span></a>
-                      <ng-template ngbNavContent>
-                        <div class="row">
-                          <div class="col-12" style="min-height: 140px">
-                            <div class="row" style="height: 30px">
-                              <div
-                                class="col-6"
-                                style="padding-left: 0; padding-right: 0"
-                              >
-                                <label
-                                  class="form-control lbl-privacy"
-                                  for="enableAditional"
-                                >
-                                  <input
-                                    id="chkAditional1"
-                                    type="checkbox"
-                                    name="enableAditional"
-                                    [(ngModel)]="
-                                      treeNodeCurrent.data.privacy.enableAditional
-                                    "
-                                    (change)="savePosition2()"
-                                  />
-                                  <label for="chkAditional1" style="margin-left: 10px"
-                                    ><small>Aditional</small></label
-                                  >
-                                </label>
-                              </div>
-                              <div
-                                class="col-6"
-                                style="padding-left: 0; padding-right: 0"
-                              >
-                                <div style="position: relative; width: 100%">
-                                  <input
-                                    type="text"
-                                    id="txtSearchAditional"
-                                    style="padding-left: 23px"
-                                    name="txtSearchAditional"
-                                    [(ngModel)]="txtSearchAditional"
-                                    class="form-control mt-1 input-panel"
-                                    placeholder="Search"
-                                  />
-                                  <i
-                                    *ngIf="txtSearchAditional.length <= 0"
-                                    style="
-                                      position: absolute;
-                                      left: 6px;
-                                      top: 8px;
-                                      color: #797979;
-                                    "
-                                    class="bi bi-search"
-                                  ></i>
-                                </div>
-                              </div>
-                              <!--
-                                                      <div class="row">
-                                                          <div class="col-12">
-                                                              <app-select-contact #selectContactComp (contactsAdded)="addAditionalPosition($event)"></app-select-contact>
-                                                          </div>
-                                                      </div>
-                                                      -->
-                            </div>
-                            <table class="table table-sm table-privacy">
-                              <tbody>
-                                <tr>
-                                  <th></th>
-                                  <th><small>Name</small></th>
-                                  <th><small>View</small></th>
-                                  <th><small>Modify</small></th>
-                                  <th><small>Delete</small></th>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <button type="button" class="close-privacy">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </td>
-                                  <td><small>Name 1</small></td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <button type="button" class="close-privacy">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </td>
-                                  <td><small>Name 2</small></td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <button type="button" class="close-privacy">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </td>
-                                  <td><small>Name 3</small></td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableAditional
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                </tr>
-                                <!--
-                                                          <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsAditional">
-                                                              <td>
-                                                                  <button class="btn" (click)="deleteAditionalPosition(contact,tree)">
-                                                                      <i class="bi bi-x-circle"></i>
-                                                                  </button>
-                                                              </td>
-                                                              <td> {{contact.name}} </td>
-                                                              <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see">
-                                                              </td>
-                                                              <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify">
-                                                              </td>
-                                                              <td class="pt-2"> <input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
-                                                          </tr>
-                                                      -->
-                              </tbody>
-                            </table>
-                          </div>
-                          <div class="col-12" style="min-height: 140px">
-                            <div class="row">
-                              <div
-                                class="col-6"
-                                style="padding-left: 0; padding-right: 0"
-                              >
-                                <form style="margin-bottom: 0px; height: 15px">
-                                  <label
-                                    class="form-control lbl-privacy"
-                                    for="enableException"
-                                  >
-                                    <input
-                                      id="chkAditional2"
-                                      type="checkbox"
-                                      name="enableException"
-                                      [(ngModel)]="
-                                        treeNodeCurrent.data.privacy.enableException
-                                      "
-                                      (change)="
-                                        savePosition(positionCurrent, treeOrg)
-                                      "
-                                    />
-                                    <label
-                                      for="chkAditional2"
-                                      style="margin-left: 10px"
-                                      ><small>Except</small></label
-                                    >
-                                  </label>
-                                </form>
-                              </div>
-                              <div
-                                class="col-6"
-                                style="padding-left: 0; padding-right: 0"
-                              >
-                                <div style="position: relative; width: 100%">
-                                  <input
-                                    type="text"
-                                    id="txtSearchAditional"
-                                    style="padding-left: 23px"
-                                    name="txtSearchAditional"
-                                    [(ngModel)]="txtSearchAditional"
-                                    class="form-control mt-1 input-panel"
-                                    placeholder="Search"
-                                  />
-                                  <i
-                                    *ngIf="txtSearchAditional.length <= 0"
-                                    style="
-                                      position: absolute;
-                                      left: 6px;
-                                      top: 8px;
-                                      color: #797979;
-                                    "
-                                    class="bi bi-search"
-                                  ></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-12">
-                                <!--*ngIf="treeNodeCurrent.data.privacy.enableException"-->
-                                <!--<app-select-contact #selectContactComp (contactsAdded)="addExceptionPosition($event)"></app-select-contact>-->
-                                <!-- 
-                                                              <input *ngIf="positionCurrentPrivacy.enableAditional" class="form-control form-control-sm" type="text" name="enableAditionalSearch" placeholder="Search" [ngbTypeahead]="searchContacts" [resultTemplate]="rt" (selectItem)="selectAditionalPosition($event)" [inputFormatter]="formatter"> -->
-                              </div>
-                            </div>
-                            <table
-                              class="table table-sm table-privacy"
-                              style="margin-bottom: 0px"
-                            >
-                              <tbody>
-                                <tr>
-                                  <th></th>
-                                  <th><small>Name</small></th>
-                                  <th><small>View</small></th>
-                                  <th><small>Modify</small></th>
-                                  <th><small>Delete</small></th>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <button type="button" class="close-privacy">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </td>
-                                  <td><small>Name 1</small></td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <button type="button" class="close-privacy">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </td>
-                                  <td><small>Name 2</small></td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <button type="button" class="close-privacy">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </td>
-                                  <td><small>Name 3</small></td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      [attr.disabled]="
-                                        !treeNodeCurrent.data.privacy.enableException
-                                          ? true
-                                          : null
-                                      "
-                                    />
-                                  </td>
-                                </tr>
-                                <!--
-                                                          <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsException">
-                                                              <td> <button class="btn" (click)="deleteExceptionPosition(contact,tree)">
-                                                                      <i class="bi bi-x-circle"></i>
-                                                                  </button>
-                                                              </td>
-                                                              <td> {{contact.name}} </td>
-                                                              <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see"> </td>
-                                                              <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify"></td>
-                                                              <td class="pt-2"> <input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
-                                                          </tr>
-                                                          -->
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </ng-template>
-                    </li>
-                  </ul>
-                  <div [ngbNavOutlet]="nav3" class="ml-2"></div>
-                </div>
-              </form>
-            </div>
-
-            <div id="div-panel-right-inner-3" class="div-panel-right-inner">
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div id="">
               <div class="row">
-                <div class="col-6">
+                <div class="col-3">
                   <div class="row">
-                    <div class="col-4">
+                    <!-- <div class="col-12" [cdkDragData]="{positionType:'position',sheetSelected:sheetSelected,treeOrg:treeOrg}" (cdkDragEnded)="paperView.drop($event)" cdkDrag> -->
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'position',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      (cdkDragEnded)="dropAndSelect($event)"
+                      cdkDrag
+                    >
                       <img
-                        style="width: 100%"
-                        src="assets/images/position-gray.png"
+                        style="width: 80%"
+                        src="assets/images/position.png"
                       />
                     </div>
-                    <div class="col-8">
-                      <span class="text-info">Position</span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="row">
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'advisor',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      (cdkDragEnded)="dropAndSelect($event)"
+                      cdkDrag
+                    >
+                      <img style="width: 80%" src="assets/images/advisor.png" />
+                    </div>
+                    <!-- 
+                                                    <div class="col-12" style="margin-top: 5px;" ngbTooltip="Advisor">
+                                                        <img style="width:100%;" src="assets/images/advisor.png">
+                                                    </div>
+            -->
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="row">
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'advisor',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      (cdkDragEnded)="dropAndSelect($event)"
+                      cdkDrag
+                    >
+                      <img style="width: 80%" src="assets/images/esquina.png" />
                     </div>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-3">
                   <div class="row">
-                    <div class="col-4">
-                      <img style="width: 100%" src="assets/images/external.png" />
-                    </div>
-                    <div class="col-8">
-                      <span class="text-info">External Position</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-4">
-                      <img style="width: 100%" src="assets/images/advisor-gray.png" />
-                    </div>
-                    <div class="col-8">
-                      <span class="text-info">Advisor</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-4">
-                      <img style="width: 100%" src="assets/images/temporal.png" />
-                    </div>
-                    <div class="col-8">
-                      <span class="text-info">Temporal Position</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row mt-2">
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-4">
+                    <div class="col-12" ngbTooltip="Functional Relationship">
                       <img
                         style="width: 100%"
                         src="assets/images/functionalrel.png"
                       />
                     </div>
-                    <div class="col-8">
-                      <span class="text-info">Functional Relationship</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-3">
+                  <div class="row">
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'temporal',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      (cdkDragEnded)="dropAndSelect($event)"
+                      cdkDrag
+                    >
+                      <img
+                        style="width: 80%"
+                        src="assets/images/temporal.png"
+                      />
                     </div>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-3">
                   <div class="row">
-                    <div class="col-4">
-                      <img style="width: 100%" src="assets/images/vacant.png" />
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'external',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      cdkDrag
+                      (cdkDragEnded)="dropAndSelect($event)"
+                    >
+                      <img
+                        style="width: 80%"
+                        src="assets/images/external.png"
+                      />
                     </div>
-                    <div class="col-8">
-                      <span class="text-info">Vacant Position</span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="row">
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'vacant',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      (cdkDragEnded)="dropAndSelect($event)"
+                      cdkDrag
+                    >
+                      <img style="width: 80%" src="assets/images/vacant.png" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="row">
+                    <div class="col-12" ngbTooltip="Direct Relationship">
+                      <img
+                        style="width: 100%"
+                        src="assets/images/directrel.png"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row mt-2">
-                <div class="col-6">
+              <div class="row mt-4">
+                <div class="col-3">
                   <div class="row">
-                    <div class="col-4">
-                      <img style="width: 100%" src="assets/images/directrel.png" />
-                    </div>
-                    <div class="col-8">
-                      <span class="text-info">Direct Relationship</span>
+                    <div
+                      class="col-12"
+                      [cdkDragData]="{
+                        positionType: 'temporal',
+                        sheetSelected: sheetSelected,
+                        treeOrg: treeOrg
+                      }"
+                      (cdkDragEnded)="dropAndSelect($event)"
+                      cdkDrag
+                    >
+                      <img style="width: 80%" src="assets/images/tree.png" />
                     </div>
                   </div>
                 </div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="2">
+          <ng-template ngbPanelTitle style="position: relative">
+            <span
+              *ngIf="!panelsIds[2]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
+            </span>
+            <span
+              *ngIf="panelsIds[2]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-dash-square" style="color: #343a40"></i>
+            </span>
+            <span class="panel-title">Organization Chart</span>
+            <i
+              class="bi bi-triangle"
+              style="
+                position: absolute;
+                left: -44px;
+                top: 0px;
+                color: rgb(69, 217, 217);
+                font-size: 24px;
+                border-right: 3px solid #45d9d9;
+                padding: 24px 9px 24px 9px;
+                background: linear-gradient(
+                  to right,
+                  rgba(220, 245, 245, 0.1) 0%,
+                  rgba(190, 250, 239, 0.55) 100%
+                );
+              "
+            ></i>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div
+              class="btn-toolbar"
+              role="toolbar"
+              aria-label="Toolbar with button groups"
+            >
+              <div class="input-group" style="position: relative">
+                <input
+                  #treenodesearchinput
+                  id="filter"
+                  #filter
+                  style="height: 32px; width: 71px"
+                  class="form-control"
+                  type="text"
+                  placeholder=""
+                  [(ngModel)]="textSearch"
+                  (keyup)="findTreeNodeByName(tree, filter.value)"
+                />
+                <button class="btn" id="btn-filter-graph">
+                  <span
+                    *ngIf="textSearch.length > 0"
+                    aria-hidden="true"
+                    (click)="
+                      filter.value = '';
+                      findTreeNodeByName(tree, '');
+                      textSearch = ''
+                    "
+                    >&times;</span
+                  >
+                </button>
+                <i
+                  *ngIf="textSearch.length == 0"
+                  class="bi bi-search"
+                  style="position: absolute; right: 5px; top: 8px"
+                ></i>
+              </div>
+              <button
+                style="padding-right: 0px"
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                ngbTooltip="focus Previous Node"
+              >
+                <i
+                  class="bi bi-chevron-left"
+                  (click)="treeFocusPreviousNode()"
+                ></i>
+              </button>
+              <button
+                style="padding-left: 0px"
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="treeFocusNextNode()"
+                ngbTooltip="focus Next Node"
+              >
+                <i class="bi bi-chevron-right"></i>
+              </button>
+              <button
+                style="padding-left: 0px"
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark btn-img"
+                (click)="treeFocusNextNode()"
+                ngbTooltip="focus Next Node"
+              ></button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="treeNodeOneLevelUp(tree)"
+                ngbTooltip="Move Level Up"
+              >
+                <i class="bi bi-arrow-up"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="treeNodeOneLevelDown(tree)"
+                ngbTooltip="Move Level Down"
+              >
+                <i class="bi bi-arrow-down"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="treeNodesSameLevelUp(tree)"
+                ngbTooltip="Move Left"
+              >
+                <i class="bi bi-arrow-left"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="treeNodesSameLevelDown(tree)"
+                ngbTooltip="Move Rigth"
+              >
+                <i class="bi bi-arrow-Right"></i>
+              </button>
+              <!-- <button type="button" class="org-chart btn btn-sm btn-outline-dark" (click)="openConfirmDeleteTreeNodes
+            ($event,confirmDeleteTreeNodeTemplate,tree)" ngbTooltip="Delete Node">
+                                            <i class="bi bi-chevron-double-right"></i>
+                                        </button> -->
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="
+                  openConfirmDeleteTreeNodes(
+                    $event,
+                    confirmDeleteTreeNodeTemplate,
+                    tree
+                  )
+                "
+                ngbTooltip="Delete Node"
+              >
+                <i class="bi bi-dash-circle"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="
+                  openAddTreeNodeTemplate($event, addTreeNodeTemplate, tree)
+                "
+                ngbTooltip="Add Child Node"
+              >
+                <i class="bi bi-plus-circle"></i>
+              </button>
+              <div class="input-group" style="width: 60px; height: 15px">
+                <input
+                  id="filterlevel"
+                  #treefilterlevel
+                  type="number"
+                  min="0"
+                  style="height: 32px; width: 71px; padding-right: 0px"
+                  class="form-control"
+                  aria-label="Input group example"
+                  aria-describedby="btnGroupAddon"
+                  [(ngModel)]="treeLevelFilter"
+                  (keyup)="setTreeLevelFilter(tree, treefilterlevel.value)"
+                  (change)="setTreeLevelFilter(tree, treefilterlevel.value)"
+                />
+              </div>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="tree.treeModel.collapseAll()"
+                ngbTooltip="Collapse All"
+              >
+                <i class="bi bi-caret-right"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="tree.treeModel.collapseAll()"
+                ngbTooltip="Collapse All"
+              >
+                <i class="bi bi-arrows-angle-contract"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="tree.treeModel.expandAll()"
+                ngbTooltip="Expand All"
+              >
+                <i class="bi bi-arrows-angle-expand"></i>
+              </button>
+
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="removeNodeDisplacement(tree)"
+                ngbTooltip="Remove Displacement"
+              >
+                <i class="bi bi-arrow-bar-up"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="addNodeDisplacement(tree)"
+                ngbTooltip="Insert Displacement"
+              >
+                <i class="bi bi-arrow-bar-down"></i>
+              </button>
+              <!--                             <button type="button" class="btn btn-sm btn-outline-dark" ngbTooltip="Graph from Element" (click)="generateGraph(tree)">
+                                            <i class="bi bi-diagram-2"></i>
+                                        </button> -->
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                ngbTooltip="Export Tree Nodes"
+                (click)="exportTreeNodes(tree)"
+              >
+                <i class="bi bi-download"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+                (click)="openReporsWindow($event, reportsWindowTemplate)"
+                ngbTooltip="Reports"
+              >
+                <i class="bi bi-list"></i>
+              </button>
+              <button
+                type="button"
+                class="org-chart btn btn-sm btn-outline-dark"
+              >
+                <i class="bi bi-flag"></i>
+              </button>
+            </div>
+            <div style="height: 230px; overflow: auto">
+              <tree-root
+                #tree
+                [nodes]="nodes"
+                (focus)="onNodeFocus($event, tree)"
+                (updateData)="onUpdateTree($event, tree)"
+                [options]="options"
+                (event)="onTreeEvent($event)"
+              ></tree-root>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="3">
+          <ng-template ngbPanelTitle style="position: relative">
+            <span
+              *ngIf="!panelsIds[3]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
+            </span>
+            <span
+              *ngIf="panelsIds[3]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-dash-square" style="color: #343a40"></i>
+            </span>
+            <span class="panel-title" *ngIf="!projectSelected">Projects</span>
+            <span class="panel-title" *ngIf="projectSelected">{{
+              projectSelected.ProjectName
+            }}</span>
+            <button
+              class="btn btn-outline-dark mb-1 float-right"
+              style="position: absolute; top: 26px; right: 32px"
+              (click)="
+                savePositionAndExpandPanel(positionCurrent, treeOrg);
+                openProjectFormCustom($event, projectTemplate, null,projectCreatedTemplate)
+              "
+              ngbTooltip="Add Project"
+              triggers="hover"
+            >
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <i
+              class="bi bi-journals"
+              style="
+                position: absolute;
+                left: -44px;
+                top: 0px;
+                color: rgb(69, 217, 217);
+                font-size: 24px;
+                border-right: 3px solid #45d9d9;
+                padding: 24px 9px 24px 9px;
+                background: linear-gradient(
+                  to right,
+                  rgba(220, 245, 245, 0.1) 0%,
+                  rgba(190, 250, 239, 0.55) 100%
+                );
+              "
+            ></i>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <table class="table table-sm">
+              <tbody>
+                <tr
+                  *ngFor="let project of projects; index as i"
+                  [class.active-project]="project.ID == projectSelected.ID"
+                >
+                  <td style="width: 50%; overflow-x: hidden">
+                    {{ project.ProjectName }}
+                  </td>
+                  <td style="width: 50%">
+                    <div
+                      class="btn-group-sm"
+                      style="text-align: right"
+                      role="group"
+                      aria-label="First group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-outline-dark btn-sm"
+                        (click)="
+                          openProjectForm($event, projectTemplate, project)
+                        "
+                        ngbTooltip="Edit Project"
+                        triggers="hover"
+                      >
+                        <i class="bi bi-pen"></i>
+                      </button>
+                      <button
+                        (click)="
+                          openConfirmDeleteProject(
+                            $event,
+                            confirmDeleteAnyTemplate,
+                            'this project',
+                            deleteProject,
+                            project
+                          )
+                        "
+                        type="button"
+                        class="btn btn-outline-dark btn-sm"
+                        ngbTooltip="Delete Project"
+                        triggers="hover"
+                      >
+                        <i class="bi bi-dash-circle"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-dark btn-sm"
+                        (click)="loadProject(project)"
+                        ngbTooltip="Select Project"
+                        [disabled]="project == projectSelected"
+                        triggers="hover"
+                      >
+                        <i class="bi bi-check2"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+        </ngb-panel>
+        <!-- CONTACTS LISTING -->
+        <!-- <ngb-panel id="4">
+          <ng-template ngbPanelTitle style="position: relative">
+            <span
+              *ngIf="!panelsIds[4]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-caret-down-fill" style="color: #343a40"></i>
+            </span>
+            <span
+              *ngIf="panelsIds[4]"
+              style="position: absolute; top: 33px; right: 10px"
+            >
+              <i class="bi bi-dash-square" style="color: #343a40"></i>
+            </span>
+
+            <span class="panel-title">Contacts</span>
+            <i
+              class="bi bi-people"
+              style="
+                position: absolute;
+                left: -44px;
+                top: 0px;
+                color: rgb(69, 217, 217);
+                font-size: 24px;
+                border-right: 3px solid #45d9d9;
+                padding: 24px 9px 24px 9px;
+                background: linear-gradient(
+                  to right,
+                  rgba(220, 245, 245, 0.1) 0%,
+                  rgba(190, 250, 239, 0.55) 100%
+                );
+              "
+            ></i>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <button
+              class="btn btn-outline-dark mb-1"
+              (click)="openContactForm($event, contactTemplate, null)"
+              ngbTooltip="Add Contact"
+            >
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <table class="table table-sm">
+              <tbody>
+                <tr *ngFor="let contact of contacts; index as i">
+                  <td style="width: 50%; overflow-x: hidden">
+                    {{ contact.firstName }}
+                  </td>
+                  <td style="width: 50%">
+                    <div
+                      class="btn-group-sm"
+                      style="text-align: right"
+                      role="group"
+                      aria-label="First group"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-outline-dark btn-sm"
+                        (click)="
+                          openContactForm($event, contactTemplate, contact)
+                        "
+                        ngbTooltip="Edit Project"
+                      >
+                        <i class="bi bi-pen"></i>
+                      </button>
+
+                      <button
+                        (click)="
+                          openConfirmDeleteContact(
+                            $event,
+                            confirmDeleteAnyTemplate,
+                            contact.Name,
+                            deleteContact,
+                            contact
+                          )
+                        "
+                        type="button"
+                        class="btn btn-outline-dark btn-sm"
+                      >
+                        <i class="bi bi-dash-circle"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+        </ngb-panel> -->
+      </ngb-accordion>
+
+      <div style="width: 100%; text-align: center; padding: 8px">
+        <button class="btn-export-data" (click)="exportG()">
+          <i
+            class="bi bi-download"
+            style="padding-left: 10px; padding-right: 10px; margin: 5px auto"
+          ></i
+          >Export Data
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="drag-boundary"
+      id="sheetContainer"
+      [ngClass]="panelExpanded ? 'col-9' : 'col-9'"
+      [ngStyle]="{
+        'background-color':
+          sheets.length > 0 ? 'rgba(224, 247, 250, 0.35)' : '#ffffff'
+      }"
+      style="overflow: none; padding-left: 0; padding-right: 0"
+    >
+      <ul
+        ngbNav
+        [(activeId)]="activeId"
+        #nav="ngbNav"
+        class="nav nav-pills nav-fill nav-tabs"
+        style="
+          background-color: #fff;
+          border-top: 1px solid #dee2e6;
+          border-bottom: 0;
+          position: fixed;
+          width: 75%;
+          z-index: 10;
+        "
+        (navChange)="onNavChange($event)"
+      >
+        <li
+          ngbNavItem
+          class="nav-item"
+          [ngbNavItem]="sheet.ID"
+          *ngFor="let sheet of sheets; let i = index"
+          style="border: none; flex-grow: 0.2; margin-bottom: 0"
+        >
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            [class.active-close]="sheet.ID == activeId"
+            style="
+              outline: none;
+              color: #ccc;
+              line-height: 1.5;
+              padding-right: 4px;
+            "
+            (click)="removeSheetFromView(sheet)"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <a
+            ngbNavLink
+            class="nav-link"
+            style="border-bottom: 1px solid #dee2e6; color: #ccc"
+          >
+            <input
+              *ngIf="
+                !isSheetToEdit && sheet.SheetName == sheetSelected.SheetName
+              "
+              type="text"
+              [(ngModel)]="sheet.SheetName"
+              [ngClass]="isSheetToEdit ? 'readonly' : ''"
+              (change)="isSheetToEdit = true; saveSheet(sheetToEdit, true)"
+            />
+            <p
+              *ngIf="
+                isSheetToEdit || sheet.SheetName !== sheetSelected.SheetName
+              "
+              (dblclick)="isSheetToEdit = false; EditSheet(sheetSelected)"
+              style="margin: 0; padding: 0"
+            >
+              {{ sheet.SheetName }}
+            </p>
+          </a>
+          <ng-template ngbNavContent> </ng-template>
+        </li>
+        <li class="toggle-li" style="flex-grow: 1">
+          <a
+            class="nav-link text-right"
+            style="border-bottom: 1px solid #dee2e6"
+          >
+            <ui-switch
+              (changeEvent)="onChangeEvent($event)"
+              size="small"
+              switchColor="#fff"
+              color="#45d9d9"
+              [(checked)]="!panelExpanded"
+              [disabled]="nodes.length < 1"
+            ></ui-switch>
+          </a>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+      <div
+        style="
+          margin-top: 42px;
+          height: calc(100vh - 133px) !important;
+          margin-bottom: 9px;
+        "
+        (treeDrop)="onDrop($event)"
+        [treeAllowDrop]="allowDrop.bind(this)"
+      >
+        <app-joint
+          #paperView
+          (deleteGraphNodeEvent)="onDeleteGraphNodeEvent($event)"
+          (dblclickGraphNodeEvent)="panelExpanded = false"
+          (clickGraphNodeEvent)="saveNamePosition(positionCurrent, treeOrg)"
+          (clickPaperBlankAreaEvent)="
+            saveNamePosition(positionCurrent, treeOrg)
+          "
+          (clickGraphNodeEvent)="graphNodeSelected($event)"
+          (refreshSelectedSheetEvent)="refreshSelectedSheetAfterDelete($event)"
+          (sheetDimentionsChangeEvent)="setSheetNewSize($event)"
+          (graphNodeAddedEvent)="graphNodeAdded($event)"
+          (nodeGraphNameChangeEvent)="nodeGraphNameChange($event)"
+          (mouseDownGraphNodeEvent)="mouseDownGraphNode($event)"
+          (applyNewShapePropertiesEvent)="saveSheet(sheetSelected)"
+          (resizeSheetEvent)="resizeSheet()"
+          (reoderNodeEvent)="drawSheetFunctionalRels()"
+        >
+        </app-joint>
+      </div>
+      <div style="position: fixed; bottom: 1%; left: 25%">
+        <ul class="list-unstyled">
+          <li style="margin-bottom: 2px">
+            <span
+              class="badge"
+              style="
+                color: #ffffff;
+                background-color: #3cd039;
+                border-radius: 50%;
+                filter: drop-shadow(2px 2px 2px rgba(68, 255, 51, 0.7));
+              "
+              >0</span
+            >
+            Supervised Positions
+          </li>
+          <li style="margin-bottom: 2px">
+            <span
+              class="badge"
+              style="
+                color: #ffffff;
+                background-color: #ee9f06;
+                border-radius: 50%;
+                filter: drop-shadow(2px 2px 2px rgba(255, 202, 51, 0.7));
+              "
+              >0</span
+            >
+            Directly Supervised Positions
+          </li>
+          <li style="margin-bottom: 2px">
+            <span
+              class="badge"
+              style="
+                color: #ffffff;
+                background-color: #3977d4;
+                border-radius: 50%;
+                filter: drop-shadow(2px 2px 2px rgba(51, 133, 255, 0.7));
+              "
+              >0</span
+            >
+            Position Advisors
+          </li>
+        </ul>
+      </div>
+      <!--</div>-->
+      <!--<div [ngClass]="panelExpanded?'hidePanel':'col-3'" style="border: 1px solid #efefef">-->
+
+      <div
+        class="details-box"
+        [ngClass]="panelExpanded ? 'hidePanel' : 'div-panel-right'"
+        cdkDragBoundary=".drag-boundary"
+        cdkDrag
+      >
+        <div class="details-handle" cdkDragHandle>
+          <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
+            ></path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg>
+        </div>
+        <form style="width: 100%">
+          <div class="div-panel-right-inner">
+            <div class="form-row" style="text-align: left">
+              <div class="col">
+                <label for="PositionNameInput" class="label-input-panel"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control mt-1 input-panel"
+                  id="PositionNameInput"
+                  name="PositionNameInput"
+                  placeholder="Name"
+                  #PositionName="ngModel"
+                  [(ngModel)]="positionCurrent.PositionName"
+                  (change)="saveNamePosition(positionCurrent, treeOrg)"
+                />
+              </div>
+
+              <div class="col">
+                <label for="PositionCodeInput" class="label-input-panel"
+                  >Code</label
+                >
+                <input
+                  type="text"
+                  class="form-control mt-1 input-panel"
+                  id="PositionCodeInput"
+                  name="PositionCodeInput"
+                  #PositionCode="ngModel"
+                  [(ngModel)]="positionCurrent.PositionCode"
+                  (change)="savePosition(positionCurrent, tree)"
+                />
+              </div>
+            </div>
+
+            <div class="form-row" style="text-align: left">
+              <div class="col" style="position: relative">
+                <label
+                  for="PositionInmediateSuperiorInput"
+                  class="label-input-panel"
+                  >Direct Supervisor</label
+                >
+                <input
+                  type="text"
+                  class="form-control mt-1 input-panel"
+                  id="PositionInmediateSuperiorInput"
+                  name="PositionInmediateSuperiorInput"
+                  placeholder="Direct Supervisor"
+                  #PositionInmediateSuperior="ngModel"
+                  [(ngModel)]="positionCurrent.PositionInmediateSuperior"
+                  (change)="savePosition(positionCurrent, tree)"
+                  disabled
+                />
+                <i
+                  *ngIf="this.positionCurrent.PositionInmediateSuperior"
+                  (click)="
+                    openSetImendiateSuperior(
+                      $event,
+                      setImendiateSuperiorTemplate
+                    )
+                  "
+                  style="
+                    position: absolute;
+                    right: 14px;
+                    top: 30px;
+                    color: #45d9d9;
+                  "
+                  class="bi bi-search"
+                ></i>
+              </div>
+
+              <div class="col">
+                <label for="AbbreviationInput" class="label-input-panel"
+                  >Abbreviation</label
+                >
+                <input
+                  type="text"
+                  class="form-control mt-1 input-panel"
+                  id="AbbreviationInput"
+                  name="AbbreviationInput"
+                  placeholder="Abbreviation"
+                  #Abbreviation="ngModel"
+                  [(ngModel)]="positionCurrent.Abbreviation"
+                  (change)="savePosition(positionCurrent, tree)"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col" style="text-align: left">
+                <label for="LocationInput" class="label-input-panel"
+                  >Location</label
+                >
+                <input
+                  type="text"
+                  class="form-control mt-1 input-panel"
+                  id="LocationInput"
+                  name="LocationInput"
+                  placeholder="Location"
+                  #Location="ngModel"
+                  [(ngModel)]="positionCurrent.Location"
+                  (change)="savePosition(positionCurrent, tree)"
+                />
+              </div>
+
+              <div class="col" style="padding-top: 18px">
+                <div class="form-check mt-1" id="advising-input-wrap">
+                  <label
+                    id="advising-input-label"
+                    class="form-check-label"
+                    for="AdvisingAuthorityCodeInput"
+                  >
+                    Advisory Authority
+                  </label>
+                  <input
+                    class="form-check-input"
+                    style="margin-left: 0.75rem"
+                    type="checkbox"
+                    id="AdvisingAuthorityCodeInput"
+                    name="AdvisingAuthorityCodeInput"
+                    #AdvisingAuthority="ngModel"
+                    [(ngModel)]="positionCurrent.AdvisingAuthority"
+                    [disabled]="!this.positionCurrent.PositionInmediateSuperior"
+                    (change)="
+                      changeAdvisingAuthorityPosition(positionCurrent, treeOrg)
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row" style="text-align: left">
+              <div class="col">
+                <label for="CompanyInput" class="label-input-panel"
+                  >Company</label
+                >
+                <input
+                  type="text"
+                  class="form-control mt-1 input-panel"
+                  id="CompanyInput"
+                  name="CompanyInput"
+                  placeholder="Company"
+                  #Company="ngModel"
+                  [(ngModel)]="positionCurrent.Company"
+                  (change)="savePosition(positionCurrent, tree)"
+                />
+              </div>
+
+              <div class="col">
+                <label for="textBox.DedicationRegime" class="label-input-panel"
+                  >Dedication Regime</label
+                >
+                <select
+                  (change)="changeDedicationRegime(positionCurrent, treeOrg)"
+                  class="form-control input-panel label-select-panel"
+                  [(ngModel)]="positionCurrent.DedicationRegime"
+                  name="textBox.DedicationRegime"
+                >
+                  <option [ngValue]="'position'">Full</option>
+                  <option [ngValue]="'temporal'">Temporal</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row" style="text-align: left">
+              <div class="col col-6">
+                <label for="CompanyInput" class="label-input-panel"
+                  >Creation date</label
+                >
+                <input
+                  class="form-control mt-1 input-panel"
+                  placeholder="yyyy-mm-dd"
+                  name="CreationDate"
+                  type="date"
+                  #CreationDate="ngModel"
+                  [(ngModel)]="positionCurrent.CreationDate"
+                  (change)="savePosition(positionCurrent, tree)"
+                />
+              </div>
+              <div class="col col-6">
+                <label for="CompanyInput" class="label-input-panel"
+                  >Space to supervisor</label
+                >
+                <input
+                  type="number"
+                  class="form-control mt-1 input-panel"
+                  id="SpacesToSupervisorInput"
+                  name="SpacesToSupervisorInput"
+                  #SpacesToSupervisor="ngModel"
+                  min="0"
+                  [(ngModel)]="positionCurrent.SpacesToSupervisor"
+                  (change)="savePositionDisplacement(positionCurrent, tree)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="d-flex" id="position-data">
+            <ul
+              ngbNav
+              #nav3="ngbNav"
+              [(activeId)]="activeDetail"
+              class="nav-pills"
+              orientation="vertical"
+              (navChange)="onNavChangeNav3($event)"
+            >
+              <li [ngbNavItem]="1">
+                <a ngbNavLink><span class="tab-title-small">Mission</span></a>
+                <ng-template ngbNavContent>
+                  <textarea
+                    style="height: 100%"
+                    rows="8"
+                    class="form-control"
+                    id="PositionValues"
+                    name="PositionValues"
+                    placeholder="Mission"
+                    #PositionValues="ngModel"
+                    [(ngModel)]="positionCurrent.PositionValues"
+                    (change)="savePosition(positionCurrent, tree)"
+                  ></textarea>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <a ngbNavLink>
+                  <span class="tab-title-small">Position Description</span></a
+                >
+                <ng-template ngbNavContent>
+                  <ul
+                    ngbNav
+                    #nav="ngbNav"
+                    [(activeId)]="activeTab"
+                    class="nav nav-tabs ul-position"
+                  >
+                    <li
+                      [ngbNavItem]="1"
+                      class="nav-item"
+                      style="font-size: 80%; width: 62%"
+                    >
+                      <a ngbNavLink class="nav-link">Key responsabilities</a>
+                      <ng-template
+                        ngbNavContent
+                        style="background-color: #c7f4f4; margin-top: 0"
+                      >
+                        <div style="font-size: 80%; text-align: left">
+                          <!-- <p style="background-color:#c7f4f4;margin-top:0;text-align: left;padding-left: 5px;">Description</p> -->
+                          <button
+                            class="btn-responsability"
+                            style="padding-left: 4px"
+                          >
+                            <i>+</i>
+                          </button>
+                          <button class="btn-responsability"><i>-</i></button>
+                        </div>
+                      </ng-template>
+                    </li>
+                    <li
+                      [ngbNavItem]="2"
+                      class="nav-item"
+                      style="font-size: 80%; width: 38%"
+                    >
+                      <a ngbNavLink class="nav-link">Essential skills</a>
+                      <ng-template ngbNavContent>
+                        <!-- <p style="background-color:#c7f4f4;margin-top:0;text-align: left;padding-left: 5px;font-size:80%">Description</p> -->
+                        <textarea
+                          style="
+                            margin-top: 0;
+                            text-align: left;
+                            padding-left: 5px;
+                          "
+                          rows="8"
+                          class="form-control"
+                          id="PositionValues"
+                          name="PositionValues"
+                          placeholder="Essential Skills"
+                        ></textarea>
+                      </ng-template>
+                    </li>
+                  </ul>
+
+                  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                  <!-- <ul ngbNav [(activeId)]="activeDetail" class="nav-pills" orientation="horizontal" (navChange)="onNavChangeNav3($event)">
+                                        <li  [ngbNavItem]="1">
+                                            <a ngbNavLink><span class="tab-title">Key Responsabilities</span></a>
+                                            <ng-template ngbNavContent>
+                                            <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+                                            </ng-template>
+                                        </li>
+                                        <li  [ngbNavItem]="2">
+                                            <a ngbNavLink><span class="tab-title">Essential Skills</span></a>
+                                            <ng-template ngbNavContent>
+                                            <textarea style="height: 100%" rows="8" class="form-control col-12" id="PositionObjective" name="PositionObjective" placeholder="Position Description" #PositionObjective="ngModel" [(ngModel)]="positionCurrent.PositionObjective" (change)="savePosition(positionCurrent,tree)"></textarea>
+                                            </ng-template>
+                                        </li>
+                                    </ul> -->
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="3">
+                <a ngbNavLink
+                  ><span class="tab-title-small">Position Employee</span></a
+                >
+                <ng-template ngbNavContent>
+                  <div class="row head-position-emp" style="height: 30px">
+                    <div
+                      class="col-6"
+                      style="padding-left: 0; padding-right: 0"
+                    >
+                      <label
+                        (click)="addtocontacts()"
+                        class="form-control lbl-privacy"
+                        for="enableAditional"
+                      >
+                        <small class="lbl-position-title"
+                          >Position employee</small
+                        >
+                      </label>
+                    </div>
+                    <div
+                      class="col-6"
+                      style="padding-left: 0; padding-right: 0"
+                    >
+                      <div style="position: relative; width: 100%">
+                        <input
+                          type="text"
+                          id="txtSearchAditional"
+                          style="padding-left: 23px"
+                          name="txtSearchAditional"
+                          [(ngModel)]="txtSearchAditional"
+                          class="form-control mt-1 input-panel"
+                          placeholder="Search"
+                          (input)="onSearchContacts($event.target.value)"
+                        />
+                        <i
+                          *ngIf="txtSearchAditional.length <= 0"
+                          style="
+                            position: absolute;
+                            left: 6px;
+                            top: 8px;
+                            color: #797979;
+                          "
+                          class="bi bi-search"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    id="position-employee listopened"
+                    class="position-employee-listopened"
+                    *ngIf="!PositionEmployee_listopened"
+                  >
+                    <!-- <li style="list-style-type: none;"> -->
+
+                    <div class="nv-position-emp">
+                      <i
+                        (click)="addToContactClk()"
+                        class="bi bi-plus-circle pemp"
+                      ></i>
+
+                      <p class="txt-pemp">Add to contacts</p>
+                    </div>
+                    <div class="listopened-ul" *ngFor="let n of contactsSearch">
+                      <!-- (change)="savePosition2()" -->
+
+                      <div
+                        class="txt-one-line"
+                        (click)="selectdataClk(n)"
+                        [ngClass]="{
+                          highlighted_class: n.id === selectedDataValue
+                        }"
+                      >
+                        <div class="bx-img-emp">
+                          <img
+                            src="../../assets/images/user-w.png"
+                            class="user-w"
+                          />
+                        </div>
+
+                        <p
+                          [ngClass]="{
+                            highlighted_class: n.id === selectedDataValue
+                          }"
+                          class="user-nme-txt panel"
+                        >
+                          {{ n.firstName }}
+                          {{ n.lastName }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- </li> -->
+                  </div>
+
+                  <div
+                    id="position-employee"
+                    *ngIf="PositionEmployee_listopened"
+                  >
+                    <!-- <li style="list-style-type: none;"> -->
+
+                    <div *ngFor="let n of contactsSearch" class="c-one-line">
+                      <input
+                        class="position-txt-one-line"
+                        type="checkbox"
+                        name="enableAditional"
+                      />
+
+                      <div
+                        class="txt-one-line-highighted"
+                        (click)="selectdataClk(n)"
+                        [ngClass]="{
+                          highlighted_class: n.id === selectedDataValue
+                        }"
+                      >
+                        <img
+                          src="../../assets/images/user-w.png"
+                          class="user-w"
+                        />
+
+                        <p class="user-nme-txt">
+                          {{ n.firstName }}
+                          {{ n.lastName }}
+                        </p>
+
+                        <p class="floater">
+                          <i
+                            class="remove"
+                            (click)="
+                              openConfirmDeleteAny(
+                                $event,
+                                confirmDeleteAnyTemplate,
+                                n.firstName,
+                                deleteContact,
+                                n
+                              )
+                            "
+                            class="bi bi-x-circle closeicn"
+                          ></i>
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- </li> -->
+                  </div>
+                  <div class="div-position-delete">
+                    <button class="btn-position-delete"><i>-</i></button>
+                  </div>
+                  <!--
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <app-select-contact #selectContactComp (contactsAdded)="addNewContactsEmployeePosition($event)"></app-select-contact>
+                                        </div>
+                                        <table class="table table-sm">
+                                            <tbody>
+                                                <tr *ngFor="let person of treeNodeCurrent.data.employees_position">
+                                                    <td>
+                                                        <button class="btn" (click)="deleteContactsEmployeePosition(person)">
+                                                            <i class="bi bi-x-circle"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td> {{person.name}} </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    -->
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="4">
+                <a ngbNavLink
+                  ><span class="tab-title-small"
+                    >Functional Relationship</span
+                  ></a
+                >
+                <ng-template ngbNavContent>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark btn-sm"
+                    (click)="openAddFunctionalRel($event, funcionalRelTemplate)"
+                    ngbTooltip="Add Functional Relationship"
+                  >
+                    <i class="bi bi-plus-circle"></i>
+                  </button>
+                  <table>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let functionalRel of treeNodeCurrent.data
+                            .functionalrels
+                        "
+                      >
+                        <td>
+                          <button
+                            class="btn"
+                            (click)="
+                              openConfirmDeleteFuncRel(
+                                $event,
+                                functionalRel,
+                                confirmDeleteFuncRelTemplate
+                              )
+                            "
+                          >
+                            <i class="bi bi-x-circle"></i>
+                          </button>
+                        </td>
+                        <td>{{ functionalRel.name }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="5">
+                <a ngbNavLink><span class="tab-title-small">Notes</span></a>
+                <ng-template ngbNavContent>
+                  <textarea
+                    style="height: 100%"
+                    rows="8"
+                    class="form-control"
+                    id="Notes"
+                    name="Notes"
+                    placeholder="Notes"
+                    #Notes="ngModel"
+                    [(ngModel)]="positionCurrent.Notes"
+                    (change)="savePosition(positionCurrent, tree)"
+                  ></textarea>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="6">
+                <a ngbNavLink
+                  ><span class="tab-title-small">Attachments</span></a
+                >
+                <ng-template ngbNavContent>
+                  <div
+                    class="file-drop"
+                    appDragDrop
+                    (onFileDropped)="uploadFile($event.target.files, tree)"
+                  >
+                    <input
+                      type="file"
+                      #fileDropRef
+                      id="fileDropRef"
+                      (change)="uploadFile($event.target.files, tree)"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark btn-sm"
+                      (click)="openFileUpload($event, uploadTemplate)"
+                      ngbTooltip="Add Attachment"
+                    >
+                      <i class="bi bi-plus-circle"></i>
+                    </button>
+                    <table
+                      class="attachment-table-wrapper-scroll-y attachment-scrollbar"
+                    >
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let attachment of treeNodeCurrent.data.attachments.sort();
+                            index as i
+                          "
+                        >
+                          <td>
+                            <button
+                              (click)="
+                                openConfirmDeleteAttachment(
+                                  $event,
+                                  attachment,
+                                  confirmDeleteAttachmentTemplate
+                                )
+                              "
+                              type="button"
+                              class="btn btn-outline-dark btn-sm"
+                            >
+                              <i class="bi bi-x-circle"></i>
+                            </button>
+                          </td>
+                          <td style="font-size: 10">
+                            <i [class]="attachment.class"></i>
+                            {{ fileNameSub(attachment.name) }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="7">
+                <a ngbNavLink><span class="tab-title-small">Privacy</span></a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <div class="col-12" style="min-height: 140px">
+                      <div class="row" style="height: 30px">
+                        <div
+                          class="col-6"
+                          style="padding-left: 0; padding-right: 0"
+                        >
+                          <label
+                            class="form-control lbl-privacy"
+                            for="enableAditional"
+                          >
+                            <input
+                              id="chkAditional1"
+                              type="checkbox"
+                              name="enableAditional"
+                              [(ngModel)]="
+                                treeNodeCurrent.data.privacy.enableAditional
+                              "
+                              (change)="savePosition2()"
+                            />
+                            <label for="chkAditional1" style="margin-left: 10px"
+                              ><small>Aditional</small></label
+                            >
+                          </label>
+                        </div>
+                        <div
+                          class="col-6"
+                          style="padding-left: 0; padding-right: 0"
+                        >
+                          <div style="position: relative; width: 100%">
+                            <input
+                              type="text"
+                              id="txtSearchAditional"
+                              style="padding-left: 23px"
+                              name="txtSearchAditional"
+                              [(ngModel)]="txtSearchAditional"
+                              class="form-control mt-1 input-panel"
+                              placeholder="Search"
+                            />
+                            <i
+                              *ngIf="txtSearchAditional.length <= 0"
+                              style="
+                                position: absolute;
+                                left: 6px;
+                                top: 8px;
+                                color: #797979;
+                              "
+                              class="bi bi-search"
+                            ></i>
+                          </div>
+                        </div>
+                        <!--
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <app-select-contact #selectContactComp (contactsAdded)="addAditionalPosition($event)"></app-select-contact>
+                                                    </div>
+                                                </div>
+                                                -->
+                      </div>
+                      <table class="table table-sm table-privacy">
+                        <tbody>
+                          <tr>
+                            <th></th>
+                            <th><small>Name</small></th>
+                            <th><small>View</small></th>
+                            <th><small>Modify</small></th>
+                            <th><small>Delete</small></th>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button" class="close-privacy">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </td>
+                            <td><small>Name 1</small></td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button" class="close-privacy">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </td>
+                            <td><small>Name 2</small></td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button" class="close-privacy">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </td>
+                            <td><small>Name 3</small></td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableAditional
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                          </tr>
+                          <!--
+                                                    <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsAditional">
+                                                        <td>
+                                                            <button class="btn" (click)="deleteAditionalPosition(contact,tree)">
+                                                                <i class="bi bi-x-circle"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td> {{contact.name}} </td>
+                                                        <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see">
+                                                        </td>
+                                                        <td class="pt-2"><input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify">
+                                                        </td>
+                                                        <td class="pt-2"> <input (change)="updateAditionalPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
+                                                    </tr>
+                                                -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-12" style="min-height: 140px">
+                      <div class="row">
+                        <div
+                          class="col-6"
+                          style="padding-left: 0; padding-right: 0"
+                        >
+                          <form style="margin-bottom: 0px; height: 15px">
+                            <label
+                              class="form-control lbl-privacy"
+                              for="enableException"
+                            >
+                              <input
+                                id="chkAditional2"
+                                type="checkbox"
+                                name="enableException"
+                                [(ngModel)]="
+                                  treeNodeCurrent.data.privacy.enableException
+                                "
+                                (change)="
+                                  savePosition(positionCurrent, treeOrg)
+                                "
+                              />
+                              <label
+                                for="chkAditional2"
+                                style="margin-left: 10px"
+                                ><small>Except</small></label
+                              >
+                            </label>
+                          </form>
+                        </div>
+                        <div
+                          class="col-6"
+                          style="padding-left: 0; padding-right: 0"
+                        >
+                          <div style="position: relative; width: 100%">
+                            <input
+                              type="text"
+                              id="txtSearchAditional"
+                              style="padding-left: 23px"
+                              name="txtSearchAditional"
+                              [(ngModel)]="txtSearchAditional"
+                              class="form-control mt-1 input-panel"
+                              placeholder="Search"
+                            />
+                            <i
+                              *ngIf="txtSearchAditional.length <= 0"
+                              style="
+                                position: absolute;
+                                left: 6px;
+                                top: 8px;
+                                color: #797979;
+                              "
+                              class="bi bi-search"
+                            ></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <!--*ngIf="treeNodeCurrent.data.privacy.enableException"-->
+                          <!--<app-select-contact #selectContactComp (contactsAdded)="addExceptionPosition($event)"></app-select-contact>-->
+                          <!-- 
+                                                        <input *ngIf="positionCurrentPrivacy.enableAditional" class="form-control form-control-sm" type="text" name="enableAditionalSearch" placeholder="Search" [ngbTypeahead]="searchContacts" [resultTemplate]="rt" (selectItem)="selectAditionalPosition($event)" [inputFormatter]="formatter"> -->
+                        </div>
+                      </div>
+                      <table
+                        class="table table-sm table-privacy"
+                        style="margin-bottom: 0px"
+                      >
+                        <tbody>
+                          <tr>
+                            <th></th>
+                            <th><small>Name</small></th>
+                            <th><small>View</small></th>
+                            <th><small>Modify</small></th>
+                            <th><small>Delete</small></th>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button" class="close-privacy">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </td>
+                            <td><small>Name 1</small></td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button" class="close-privacy">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </td>
+                            <td><small>Name 2</small></td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button" class="close-privacy">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </td>
+                            <td><small>Name 3</small></td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                [attr.disabled]="
+                                  !treeNodeCurrent.data.privacy.enableException
+                                    ? true
+                                    : null
+                                "
+                              />
+                            </td>
+                          </tr>
+                          <!--
+                                                    <tr *ngFor="let contact of treeNodeCurrent.data.privacy.contactsException">
+                                                        <td> <button class="btn" (click)="deleteExceptionPosition(contact,tree)">
+                                                                <i class="bi bi-x-circle"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td> {{contact.name}} </td>
+                                                        <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.see}}" [(ngModel)]="contact.see"> </td>
+                                                        <td class="pt-2"><input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.modify}}" [(ngModel)]="contact.modify"></td>
+                                                        <td class="pt-2"> <input (change)="updateExceptionPosition(contact)" type="checkbox" name="{{contact.delete}}" [(ngModel)]="contact.delete"> </td>
+                                                    </tr>
+                                                    -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="nav3" class="ml-2"></div>
+          </div>
+        </form>
+      </div>
+
+      <div id="div-panel-right-inner-3" class="div-panel-right-inner">
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img
+                  style="width: 100%"
+                  src="assets/images/position-gray.png"
+                />
+              </div>
+              <div class="col-8">
+                <span class="text-info">Position</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img style="width: 100%" src="assets/images/external.png" />
+              </div>
+              <div class="col-8">
+                <span class="text-info">External Position</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img style="width: 100%" src="assets/images/advisor-gray.png" />
+              </div>
+              <div class="col-8">
+                <span class="text-info">Advisor</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img style="width: 100%" src="assets/images/temporal.png" />
+              </div>
+              <div class="col-8">
+                <span class="text-info">Temporal Position</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img
+                  style="width: 100%"
+                  src="assets/images/functionalrel.png"
+                />
+              </div>
+              <div class="col-8">
+                <span class="text-info">Functional Relationship</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img style="width: 100%" src="assets/images/vacant.png" />
+              </div>
+              <div class="col-8">
+                <span class="text-info">Vacant Position</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-4">
+                <img style="width: 100%" src="assets/images/directrel.png" />
+              </div>
+              <div class="col-8">
+                <span class="text-info">Direct Relationship</span>
               </div>
             </div>
           </div>

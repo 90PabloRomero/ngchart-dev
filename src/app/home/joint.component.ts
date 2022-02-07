@@ -48,7 +48,7 @@ export class JointComponent implements OnInit, AfterViewInit {
 
     paper: any;
     paperDimensions: any = {
-        width: 1500,
+        width: 1440,
         heigth: 1150
     }
     timer: any = null;
