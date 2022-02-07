@@ -82,13 +82,32 @@
 
 .ngNavbar {
   position: fixed;
-  z-index: 100;
-  width: 100%;
   top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1002;
+  background-color: #fff;
+  -webkit-box-shadow: 0 -3px 31px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 2%);
+  box-shadow: 0 -3px 31px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 2%);
 }
-
+[data-simplebar] {
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
 .ngContainer {
-  padding-top: 66px;
   height: calc(100% - 66px);
 }
 
@@ -474,6 +493,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
 #user-info {
   float: right;
+}
+.dropdown-menu-end {
+  left: auto!important;
+  right: 0!important;
 }
 
 #user-info i {
@@ -889,8 +912,74 @@ input[type="number"]::-webkit-inner-spin-button {
 ::ng-deep .sidebar {
   height: calc(100vh - 66px) !important;
   overflow: auto;
+  width: 400px;
+  z-index: 1001;
+  background: #fff;
+  bottom: 0;
+  margin-top: 0;
+  position: fixed;
+  top: 66px;
+  left:0;
+  -webkit-box-shadow: 0 -3px 31px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 2%);
+  box-shadow: 0 -3px 31px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 2%);
+}
+@media (max-width: 992px) {
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0!important;
+  }
+  .top-tab {
+    padding-left: 0px!important;
+  }
+}
+.top-tab {
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  right:0;
+  padding-left: 400px;
+}
+@media (max-width: 845px) {
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0!important;
+    padding-top: 145px!important;
+  }
 }
 
+@media (min-width: 846px) and (max-width: 1050px) {
+  .sidebar {
+    top: 111px!important;
+  }
+  .main-content {
+    padding-top: 111px!important;
+  }
+}
+
+::ng-deep .simplebar-wrapper {
+  overflow: auto;
+  width: inherit;
+  height: inherit;
+  max-width: inherit;
+  max-height: inherit;
+}
+.main-content {
+  margin-left: 400px;
+  overflow: hidden;
+  padding-top: 67px;
+}
+.main-content .document-content {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
 .dropdown-menu {
   margin-left: 25px;
 }
