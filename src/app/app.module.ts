@@ -14,6 +14,7 @@ import { SelectContactComponent } from "./select-contact/select-contact.componen
 import { AppRoutingModule } from "./app-routing.module";
 import { HomeComponent } from "./home/home.component";
 import { LoginComponent } from "./login/login.component";
+import { SmartSplashScreenModule } from "./splash-service/splash-screen.module";
 import { SelectNodeComponent } from "./select-node/select-node.component";
 import { UiSwitchModule } from "ngx-ui-switch";
 
@@ -30,6 +31,7 @@ import { UiSwitchModule } from "ngx-ui-switch";
     ColorPickerModule,
     AppRoutingModule,
     UiSwitchModule,
+    SmartSplashScreenModule,
   ],
   declarations: [
     AppComponent,

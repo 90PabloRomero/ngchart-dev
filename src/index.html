@@ -1,9 +1,105 @@
 <html>
   <head>
   	<base href="/">
+    <meta name="viewport"
+              content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
     <title>Org Chart App</title>
+    <!-- Splash screen styles -->
+    <style>
+      body smart-splash-screen {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #1A202E;
+          color: #FBFDFE;
+          z-index: 999999;
+          pointer-events: none;
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      body smart-splash-screen img {
+          width: 120px;
+          max-width: 120px;
+      }
+
+      body smart-splash-screen .spinner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 40px;
+          width: 56px;
+      }
+
+      body smart-splash-screen .spinner > div {
+          width: 12px;
+          height: 12px;
+          background-color: #32c8cc;
+          border-radius: 100%;
+          display: inline-block;
+          -webkit-animation: smart-bouncedelay 1s infinite ease-in-out both;
+          animation: smart-bouncedelay 1s infinite ease-in-out both;
+      }
+
+      body smart-splash-screen .spinner .bounce1 {
+          -webkit-animation-delay: -0.32s;
+          animation-delay: -0.32s;
+      }
+
+      body smart-splash-screen .spinner .bounce2 {
+          -webkit-animation-delay: -0.16s;
+          animation-delay: -0.16s;
+      }
+
+      @-webkit-keyframes smart-bouncedelay {
+          0%, 80%, 100% {
+              -webkit-transform: scale(0)
+          }
+          40% {
+              -webkit-transform: scale(1.0)
+          }
+      }
+
+      @keyframes smart-bouncedelay {
+          0%, 80%, 100% {
+              -webkit-transform: scale(0);
+              transform: scale(0);
+          }
+          40% {
+              -webkit-transform: scale(1.0);
+              transform: scale(1.0);
+          }
+      }
+
+      body:not(.smart-splash-screen-hidden) {
+          overflow: hidden;
+      }
+
+      body.smart-splash-screen-hidden smart-splash-screen {
+          visibility: hidden;
+          opacity: 0;
+      }
+    </style>
   </head>
   <body>
-  <my-app>loading</my-app>
+    <!-- Splash screen -->
+    <smart-splash-screen>
+      <img src="assets/images/splash.svg"
+           alt="Smart Chart logo">
+      <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+      </div>
+    </smart-splash-screen>
+    <my-app></my-app>
   </body>
 </html>
