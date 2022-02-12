@@ -1,7 +1,7 @@
 @import '~@circlon/angular-tree-component/css/angular-tree-component.css';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
+@import "~angular-notifier/styles";
 /* Add application styles & imports to this file! */
 
 html, body, div, span, my-app {

@@ -17,6 +17,7 @@ import { LoginComponent } from "./login/login.component";
 import { SmartSplashScreenModule } from "./splash-service/splash-screen.module";
 import { SelectNodeComponent } from "./select-node/select-node.component";
 import { UiSwitchModule } from "ngx-ui-switch";
+import { NotifierModule } from 'angular-notifier';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { UiSwitchModule } from "ngx-ui-switch";
     AppRoutingModule,
     UiSwitchModule,
     SmartSplashScreenModule,
+    NotifierModule,
   ],
   declarations: [
     AppComponent,

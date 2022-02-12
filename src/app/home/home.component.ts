@@ -14,6 +14,8 @@ import { ContactRight } from "../models/contactright";
 import { NgbAccordionConfig, NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
 import { Observable } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
+import Swal from 'sweetalert2/dist/sweetalert2.js'; 
+import { NotifierService } from 'angular-notifier';
 import {
   NgbModal,
   ModalDismissReasons,
@@ -76,7 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   })
   paperView: JointComponent;
   @ViewChild(SelectNodeComponent) selectNodeComponent: SelectNodeComponent;
-
+  private readonly notifier: NotifierService;
   nodeType: any = "child";
   name = "OrgChart";
   modalWindow: NgbModalRef;
@@ -245,11 +247,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private contactService: ContactService,
     private router: Router,
-    public globalService: GlobalService
+    public globalService: GlobalService,
+    notifierService: NotifierService
   ) {
     config.closeOthers = false;
     config.type = "light";
-
+    this.notifier = notifierService;
     //Switch
   }
 
@@ -1457,7 +1460,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (sheet.ID) {
       //if exists
       if (!sheet.SheetName || sheet.SheetName == "") {
-        alert("Sheet name is required!");
+        Swal.fire({  
+          icon: 'warning',  
+          title: 'Sheet name is required!',  
+           
+        })  
+
         return;
       }
       let sheetData = JSON.parse(sheet.Data);
@@ -1477,7 +1485,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         (err) => {
           if (err && err.error) {
             if (String(err.error.error).match("UNIQUE constraint failed")) {
-              alert("Sheet name exists!");
+              Swal.fire({  
+                icon: 'warning',  
+                title: 'Sheet name exists!',  
+                 
+              })  
               this.refreshSelectedSheetCB(sheet, (sh) => {
                 sheet.SheetName = sh.SheetName;
                 this.refreshSheetOnView();
@@ -1486,7 +1498,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
           }
 
           if (err.error && err.error.message) {
-            alert(err.error.message);
+            Swal.fire({  
+              icon: 'error',  
+              title: err.error.message,  
+               
+            })  
+            
           }
           return;
         }
@@ -1499,7 +1516,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (sheet.ID) {
       //if exists
       if (!sheet.SheetName || sheet.SheetName == "") {
-        alert("Sheet name is required!");
+        Swal.fire({  
+          icon: 'warning',  
+          title: 'Sheet name is required!',  
+          
+        }) 
         return;
       }
       let querystring = "";
@@ -1527,7 +1548,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
           (err) => {
             if (err && err.error) {
               if (String(err.error.error).match("UNIQUE constraint failed")) {
-                alert("Sheet name exists!");
+                Swal.fire({  
+                  icon: 'warning',  
+                  title: 'Sheet name exists!',  
+                  
+                }) 
                 this.refreshSelectedSheetCB(sheet, (sh) => {
                   sheet.SheetName = sh.SheetName;
                   this.refreshSheetOnView();
@@ -1536,14 +1561,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
             }
 
             if (err.error && err.error.message) {
-              alert(err.error.message);
+              Swal.fire({  
+                icon: 'error',  
+                title: err.error.message,  
+                
+              }) 
             }
             return;
           }
         );
     } else {
       if (!sheet.SheetName || sheet.SheetName == "") {
-        alert("Sheet name is required!");
+        Swal.fire({  
+          icon: 'warning',  
+          title: "Sheet name is required!",  
+          
+        }) 
         return;
       }
 
@@ -1881,11 +1914,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // generate sheet graph  from tree first node, after it will be called recursive generateGraphRecur
     this.tree = tree;
     if (!this.sheetSelected.ID) {
-      alert("No sheet selected!");
+      Swal.fire({   
+        icon: 'warning',  
+        title: 'No sheet selected!',  
+      });
       return;
     }
     if (!tree.treeModel.getActiveNode() && tree.treeModel.nodes.length > 0) {
-      alert("No active or selected Node!");
+      Swal.fire({   
+        icon: 'warning',  
+        title: 'No active or selected Node!',  
+      });
+      
       return;
     }
     let activeNode = tree.treeModel.getActiveNode();
@@ -2450,7 +2490,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log(flag);
     let activeNode = tree.treeModel.getActiveNode();
     if (!activeNode) {
-      alert("No active or selected Node!");
+      Swal.fire({  
+        icon: 'warning',  
+        title: 'No active or selected Node!',  
+        
+      });
       return;
     }
 
@@ -2459,11 +2503,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.clearAllProjectSheets();
     }
     this.deleteNodes(tree, flag);
-
+    this.notifier.notify('success', 'Succesfully deleted selected node(s) and below relations.');
     //Wait 500ms, enough for confirmDeleteTreeNodeTemplate to modal.dismiss
-    setTimeout(function () {
-      alert("Succesfully deleted selected node(s) and below relations.");
-    }, 500);
+    // setTimeout(function () {
+      
+    // }, 500);
   }
 
   deleteNodeFunctionalRels(node, tree) {
@@ -3478,7 +3522,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   openConfigDefaultShapeModal(event, inputFormTemplate) {
     // deafult config shape modal
     if (!this.sheetSelected.ID) {
-      alert("No Sheet Selected!");
+      Swal.fire({  
+        icon: 'warning',  
+        title: 'No Sheet Selected!',  
+         
+      });
+
       return;
     }
     this.getActiveSheetShapesDefaults();
