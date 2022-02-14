@@ -18,6 +18,7 @@ import { SmartSplashScreenModule } from "./splash-service/splash-screen.module";
 import { SelectNodeComponent } from "./select-node/select-node.component";
 import { UiSwitchModule } from "ngx-ui-switch";
 import { NotifierModule } from 'angular-notifier';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { NotifierModule } from 'angular-notifier';
     HomeComponent,
     LoginComponent,
     SelectNodeComponent,
+    FilterPipe ,
   ],
   bootstrap: [AppComponent],
 })

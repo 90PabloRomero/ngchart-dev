@@ -92,6 +92,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     width: 1440,
     heigth: 900,
   };
+  searchSheet = "";
   sheets: Sheet[]; //active sheets non view
   projectSheets: Sheet[]; //all sheets from project
   sheetSelected: Sheet;
@@ -1115,7 +1116,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   addNewCheckedSheetsToView() {
     if (this.optionsChecked.length < 1) {
-      alert("No sheet selected");
+      //alert("No sheet selected");
       return;
     }
     this.optionsChecked.forEach((id) => {

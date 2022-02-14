@@ -1,12 +1,12 @@
 <notifier-container></notifier-container>
 <nav class="navbar navbar-light bg-light ngNavbar">
   <div class="d-flex" style="align-items: center;">
-    <div style="padding-left: 50px;">
-      <img style="height: 50px" src="assets/images/logo.png" />
-    </div>
     
     <div>
-      <i class="bi bi-filter-left" style="position: relative; left: 30px; font-size: 170%"></i>
+      <i class="bi bi-filter-left" style="position: relative; left: 10px; font-size: 170%"></i>
+    </div>
+    <div style="padding-left: 20px;">
+      <img style="height: 50px" src="assets/images/logo.png" />
     </div>
     
   </div>
@@ -2569,7 +2569,7 @@
       <form style="margin: 0px">
         <div class="form-group row" style="margin: 0px">
           <div class="col-11" style="padding: 0px">
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" name="searchSheet" [(ngModel)]="searchSheet" />
           </div>
           <div class="col-1" style="padding: 0px">
             <button
@@ -2587,7 +2587,7 @@
 
     </div>
   </div>
-  <div *ngFor="let sheet of projectSheets; index as i">
+  <div *ngFor="let sheet of projectSheets | appFilter: searchSheet; index as i">
     <div class="sheetItem-class" [ngClass]="classes[sheet.ID]" (change)="updateCheckedOptions(sheet.ID); toggleClasses(sheet.ID)">
       <label class="form-check-label">
         <input type="checkbox" class="form-check-input" [checked]="activeSheets[sheet.ID]"
